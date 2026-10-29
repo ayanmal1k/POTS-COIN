@@ -1,9 +1,7 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import { Flag, Target, Rocket, Star } from 'lucide-react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 interface Phase {
   phaseNumber: string
@@ -60,57 +58,8 @@ const PHASES: Phase[] = [
 ]
 
 export function RoadmapSection() {
-  const sectionRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
-
-    const ctx = gsap.context(() => {
-      // Header scroll animation (in and out)
-      gsap.fromTo(
-        '.roadmap-header',
-        { y: 35, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 80%',
-            end: 'bottom 15%',
-            toggleActions: 'play reverse play reverse',
-          },
-        }
-      )
-
-      // 4 Phase Columns scroll animation (in and out with smooth stagger)
-      gsap.fromTo(
-        '.roadmap-phase-col',
-        { y: 55, opacity: 0, scale: 0.94 },
-        {
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          stagger: 0.14,
-          duration: 0.85,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: '.roadmap-phases-grid',
-            start: 'top 82%',
-            end: 'bottom 12%',
-            toggleActions: 'play reverse play reverse',
-          },
-        }
-      )
-    }, sectionRef)
-
-    return () => ctx.revert()
-  }, [])
-
   return (
     <section
-      ref={sectionRef}
       id="roadmap"
       className="relative w-full overflow-hidden text-white py-20 sm:py-24 lg:py-28"
       style={{

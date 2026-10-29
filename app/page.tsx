@@ -10,11 +10,15 @@ import { ContactFooterSection } from '@/components/contact-footer-section'
 
 function Brand() {
   return (
-    <a href="#home" className="flex items-center gap-2.5 text-lg font-extrabold tracking-tight text-white group">
-      <span className="grid size-8 sm:size-9 place-items-center rounded-full border-2 border-[#b87aff] bg-[#4b1e9d] text-lg sm:text-xl font-black text-white shadow-[0_0_18px_#a747ff] transition-transform duration-200 group-hover:scale-105">
-        e
+    <a href="#home" className="flex items-center gap-2.5 sm:gap-3 text-lg font-extrabold tracking-tight text-white group transition-transform duration-200 hover:scale-105">
+      <img
+        src="/logo.png"
+        alt="EpiCoin Logo"
+        className="size-10 sm:size-11 md:size-12 object-contain drop-shadow-[0_0_18px_rgba(168,85,247,0.75)]"
+      />
+      <span className="text-xl sm:text-2xl font-black tracking-tight text-white group-hover:text-[#e9d5ff]">
+        EpiCoin
       </span>
-      <span className="text-lg sm:text-xl font-extrabold tracking-tight text-white">EpiCoin</span>
     </a>
   )
 }
@@ -62,7 +66,9 @@ export function HeroSection() {
         </nav>
         <div className="flex items-center gap-3">
           <a
-            href="#utilities"
+            href="https://t.me/epicoins"
+            target="_blank"
+            rel="noopener noreferrer"
             className="hidden items-center gap-2 rounded-full bg-gradient-to-r from-[#9c3eff] to-[#c67aff] px-5 py-2.5 text-xs font-bold text-white shadow-[0_4px_20px_rgba(156,62,255,0.45)] transition duration-200 hover:scale-105 active:scale-95 lg:flex"
           >
             Join Community <Send size={13} className="fill-white" />
@@ -80,12 +86,6 @@ export function HeroSection() {
       {/* Hero Content - Centered on mobile, left-aligned on desktop */}
       <div className="relative z-20 mx-auto flex w-full max-w-[1440px] items-center justify-center lg:justify-start px-5 sm:px-10 lg:px-16 xl:px-20 pt-4 sm:pt-10 lg:pt-14 pb-[420px] sm:pb-[480px] lg:pb-28 xl:pb-36">
         <div className="flex w-full max-w-[540px] xl:max-w-[590px] flex-col items-center lg:items-start text-center lg:text-left space-y-4 sm:space-y-6">
-          {/* Eyebrow */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#b87aff]/35 bg-[#3c146e]/50 px-3.5 py-1 text-[11px] sm:text-xs font-semibold tracking-wide text-[#e3beff] backdrop-blur-md shadow-[0_0_16px_rgba(184,122,255,0.25)]">
-            <span className="size-1.5 rounded-full bg-[#d08bff] animate-pulse" />
-            <span>$POT Luck Community (PLC)</span>
-          </div>
-
           {/* Headline */}
           <h1 className="text-3xl min-[380px]:text-4xl sm:text-5xl md:text-6xl lg:text-[62px] xl:text-[68px] font-black leading-[1.05] tracking-[-0.035em] text-white">
             The EpiCoin<br />
@@ -142,18 +142,13 @@ export function HeroSection() {
           {/* CTA Buttons */}
           <div className="flex w-full max-w-[460px] flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-1 sm:pt-2">
             <a
-              href="#mission"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#9c3eff] via-[#ad4eff] to-[#cb7dff] px-6 py-3 sm:px-7 sm:py-3.5 text-xs sm:text-sm font-bold text-white shadow-[0_0_26px_rgba(168,62,255,0.55),0_4px_16px_rgba(0,0,0,0.3)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_36px_rgba(174,79,255,0.75)] active:scale-[0.98]"
+              href="https://t.me/epicoins"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#9c3eff] via-[#ad4eff] to-[#cb7dff] px-7 py-3.5 sm:px-8 sm:py-3.5 text-xs sm:text-sm font-bold text-white shadow-[0_0_26px_rgba(168,62,255,0.55),0_4px_16px_rgba(0,0,0,0.3)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_36px_rgba(174,79,255,0.75)] active:scale-[0.98]"
             >
               <span>Join the Community</span>
               <Send size={13} className="fill-white" />
-            </a>
-            <a
-              href="#ecosystem"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border border-[#ab5cf2]/60 bg-white/[0.04] px-6 py-3 sm:px-7 sm:py-3.5 text-xs sm:text-sm font-bold text-white shadow-[0_0_18px_rgba(156,67,255,0.18)] backdrop-blur-md transition-all duration-200 hover:border-[#bf7bff] hover:bg-white/[0.12] hover:scale-[1.03] hover:shadow-[0_0_24px_rgba(170,91,240,0.4)] active:scale-[0.98]"
-            >
-              <span>Explore Ecosystem</span>
-              <ArrowRight size={14} />
             </a>
           </div>
         </div>
