@@ -3,6 +3,7 @@
 import { ArrowRight, Check, Copy, Heart, Menu, PawPrint, Send, Shield, ShieldCheck, Users, Wallet, X } from 'lucide-react'
 import { useState } from 'react'
 import { WhyPotSection } from '@/components/why-pot-section'
+import { StJudePartnershipSection } from '@/components/st-jude-partnership'
 
 function Brand() {
   return (
@@ -43,7 +44,7 @@ export function HeroSection() {
               : 'hidden'
           } z-30 lg:static lg:flex lg:flex-row lg:items-center lg:gap-8 text-xs font-semibold tracking-wide text-white/80`}
         >
-          {['Home', 'Mission', 'Ecosystem', 'Roadmap', 'Token', 'Contact'].map((item, index) => (
+          {['Home', 'Mission', 'Ecosystem', 'Partnership', 'Roadmap', 'Token', 'Contact'].map((item, index) => (
             <a
               key={item}
               href={index === 0 ? '#home' : `#${item.toLowerCase()}`}
@@ -245,6 +246,7 @@ export default function Home() {
       <HeroSection />
       <MissionSection />
       <WhyPotSection />
+      <StJudePartnershipSection />
     </main>
   )
 }
