@@ -144,37 +144,96 @@ export function StJudePartnershipSection() {
       <div className="absolute top-1/4 right-5 size-[500px] bg-[radial-gradient(circle,rgba(192,132,252,0.2)_0%,transparent_60%)] blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 -left-10 size-[450px] bg-[radial-gradient(circle,rgba(244,114,182,0.12)_0%,transparent_65%)] blur-3xl pointer-events-none" />
 
-      {/* Main Container - Compact and fluid on mobile */}
-      <div className="relative z-10 mx-auto max-w-[1400px] px-4 sm:px-8 lg:px-14 xl:px-18 space-y-12 sm:space-y-16 lg:space-y-20">
+      {/* Main Container */}
+      <div className="relative z-10 mx-auto max-w-[1400px] px-5 sm:px-10 lg:px-16 xl:px-20 space-y-12 sm:space-y-16 lg:space-y-20">
 
-        {/* 1. Header: St. Jude Hospital Logo, Editorial Headline & Story */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 xl:gap-16 items-center pb-8 sm:pb-12 border-b border-[#e2ccfc]/80">
+        {/* Top Header: Big St. Jude Hospital Logo & Headline in an Open Editorial Flow */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 sm:gap-10 pb-16 sm:pb-20 border-b border-[#ebd8ff]/70 text-center lg:text-left">
           
-          <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-center sm:text-left">
-            {/* St. Jude Logo: larger on desktop like before */}
-            <div className="relative inline-block mb-1 sm:mb-2">
-              <div className="absolute -inset-4 rounded-full bg-[#ebd8ff]/70 blur-xl pointer-events-none" />
+          <div className="max-w-3xl mx-auto lg:mx-0">
+            <h2 className="text-3xl min-[420px]:text-4xl sm:text-5xl lg:text-[58px] xl:text-[64px] font-black tracking-[-0.035em] text-[#1c0836] leading-[1.05]">
+              Our Partnership with<br />
+              <span className="bg-gradient-to-r from-[#7c2ae8] via-[#a855f7] to-[#d946ef] bg-clip-text text-transparent">
+                St. Jude Children's
+              </span> Research Hospital
+            </h2>
+
+            <p className="mt-6 text-base sm:text-lg lg:text-[19px] leading-relaxed text-[#432d5e]">
+              Our most significant charitable relationship is our authorized connection with <strong className="font-extrabold text-[#1c0836]">St. Jude Children's Research Hospital</strong>. St. Jude is internationally recognized for its pioneering work in pediatric cancer treatment and research, freely sharing breakthroughs to advance childhood medicine worldwide.
+            </p>
+          </div>
+
+          {/* Big St. Jude Hospital Logo (Transparent, unboxed, bold) */}
+          <div className="shrink-0 flex items-center justify-center lg:justify-end">
+            <div className="relative group">
+              {/* Soft purple halo behind logo */}
+              <div className="absolute inset-0 -m-6 rounded-full bg-[#e9d5ff]/60 blur-2xl pointer-events-none group-hover:scale-110 transition-transform duration-500" />
               <img
                 src="/st jude children hospital logo.png"
-                alt="St. Jude Children's Research Hospital"
-                className="relative z-10 h-14 sm:h-20 md:h-24 lg:h-28 xl:h-32 w-auto object-contain mx-auto sm:mx-0 drop-shadow-[0_8px_20px_rgba(110,35,185,0.12)]"
+                alt="St. Jude Children's Research Hospital Logo"
+                className="relative z-10 w-48 sm:w-60 md:w-64 lg:w-72 xl:w-80 h-auto object-contain select-none drop-shadow-[0_12px_28px_rgba(120,40,200,0.18)] transition-transform duration-300 group-hover:scale-105 mx-auto lg:mx-0"
+              />
+            </div>
+          </div>
+
+        </div>
+
+        {/* Feature Story & Milestone (Fluid 2-Column with Transparent Children Image) */}
+        <div className="py-4 sm:py-6 lg:py-8 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+          
+          {/* Left: Transparent Children Image (Floating naturally with ambient light) */}
+          <div className="lg:col-span-6 relative flex flex-col items-center justify-center">
+            {/* Ambient radiant aura */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#d8b4fe]/50 via-[#f0abfc]/30 to-transparent blur-3xl pointer-events-none" />
+
+            <div className="relative z-10 w-full max-w-[320px] sm:max-w-[440px] lg:max-w-[540px] transition-transform duration-500 hover:scale-[1.02]">
+              <img
+                src="/children.png"
+                alt="Children smiling together, supported by St. Jude"
+                className="w-full h-auto object-contain select-none filter drop-shadow-[0_20px_35px_rgba(75,20,120,0.16)]"
               />
             </div>
 
-            <h2 className="text-2xl min-[380px]:text-3xl sm:text-4xl md:text-5xl lg:text-[50px] xl:text-[58px] font-black tracking-tight text-[#1c0836] leading-[1.12]">
-              Our Partnership with{' '}
-              <span className="bg-gradient-to-r from-[#7c2ae8] via-[#a855f7] to-[#d946ef] bg-clip-text text-transparent">
-                St. Jude Children's
-              </span>{' '}
-              Research Hospital
-            </h2>
+            {/* Subtle caption */}
+            <div className="relative z-10 mt-6 inline-flex items-center gap-2 rounded-full border border-[#d8b4fe]/50 bg-white/70 px-4 py-1.5 text-xs font-semibold text-[#543b74] backdrop-blur-md shadow-sm text-center">
+              <Sparkles className="size-3.5 text-[#a855f7] shrink-0" />
+              <span>Finding cures. Saving children. &bull; No family ever receives a bill.</span>
+            </div>
+          </div>
 
-            <p className="text-xs sm:text-base lg:text-[17px] leading-relaxed text-[#432d5e] font-normal pt-1 max-w-2xl">
-              Our most significant charitable relationship is our authorized connection with <strong className="font-extrabold text-[#1c0836]">St. Jude Children's Research Hospital</strong>. St. Jude freely shares its breakthroughs to advance pediatric medicine worldwide. Our goal is to support this mission through transparent, on-chain contributions.
+          {/* Right: Milestone Story & Transparent Verification Commitment */}
+          <div className="lg:col-span-6 flex flex-col justify-center space-y-6 sm:space-y-7 text-center sm:text-left">
+            <div>
+              <span className="text-xs sm:text-sm font-black tracking-[0.2em] uppercase text-[#7c2ae8]">
+                FIRST CHARITABLE MILESTONE
+              </span>
+              <h3 className="mt-2 text-2xl sm:text-4xl lg:text-[42px] font-black text-[#1c0836] tracking-tight leading-[1.12]">
+                Target: $100,000 Market Cap &rarr; 12 SOL Donated
+              </h3>
+            </div>
+
+            <p className="text-sm sm:text-base lg:text-lg leading-relaxed text-[#4b3566]">
+              Our mission is built on transparent, verifiable impact. When the token reaches a <strong className="font-extrabold text-[#1c0836]">$100,000 market capitalization</strong>, a planned charitable contribution of <strong className="font-extrabold text-[#7c2ae8]">12 SOL</strong> will be sent directly to St. Jude Children's Research Hospital.
             </p>
 
-            {/* Action Links */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center sm:justify-start gap-3 pt-3">
+            {/* Quick Metrics Line */}
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 sm:gap-6 pt-2 text-xs sm:text-sm text-[#543d73]">
+              <div className="flex items-center gap-2">
+                <span className="size-2 rounded-full bg-[#7c2ae8]" />
+                <span><strong>Target:</strong> $100K Market Cap</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="size-2 rounded-full bg-[#7c2ae8]" />
+                <span><strong>Donation:</strong> 12 SOL</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="size-2 rounded-full bg-[#7c2ae8]" />
+                <span><strong>Beneficiary:</strong> St. Jude Children's Hospital</span>
+              </div>
+            </div>
+
+            {/* Action buttons */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center sm:justify-start gap-3 pt-2">
               <a
                 href="https://www.stjude.org/donate/crypto.html"
                 target="_blank"
@@ -195,33 +254,15 @@ export function StJudePartnershipSection() {
             </div>
           </div>
 
-          {/* Children Visual: Larger on bigger screens with rich depth */}
-          <div className="lg:col-span-5 relative flex flex-col items-center justify-center pt-2 lg:pt-0">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#d8b4fe]/50 via-[#f0abfc]/30 to-transparent blur-3xl pointer-events-none" />
-
-            <div className="relative z-10 w-full max-w-[280px] sm:max-w-[380px] md:max-w-[460px] lg:max-w-[560px] xl:max-w-[640px] transition-transform duration-300 hover:scale-[1.02]">
-              <img
-                src="/children.png"
-                alt="Children supported by St. Jude"
-                className="w-full h-auto object-contain select-none filter drop-shadow-[0_20px_35px_rgba(75,20,120,0.18)]"
-              />
-            </div>
-
-            <div className="relative z-10 mt-3 sm:mt-4 inline-flex items-center gap-1.5 text-[11px] sm:text-xs md:text-sm font-semibold text-[#543b74] text-center">
-              <Sparkles className="size-3.5 text-[#a855f7] shrink-0" />
-              <span>Finding cures. Saving children. &bull; No family receives a bill.</span>
-            </div>
-          </div>
-
         </div>
 
         {/* 2. Milestone & Live Progress (Open, Cardless, Ultra-Fluid on Mobile) */}
-        <div id="milestone-tracker" className="space-y-6 sm:space-y-8">
+        <div id="milestone-tracker" className="space-y-6 sm:space-y-8 pt-4">
           
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 text-center sm:text-left">
             <div>
               <span className="text-[10.5px] sm:text-xs font-black uppercase tracking-[0.2em] text-[#7c2ae8]">
-                FIRST CHARITABLE MILESTONE
+                LIVE ON-CHAIN & DEX METRICS
               </span>
               <h3 className="mt-1 text-xl sm:text-2xl md:text-3xl font-black text-[#1c0836] tracking-tight">
                 Target: $100,000 Market Cap &rarr; 12 SOL to St. Jude
