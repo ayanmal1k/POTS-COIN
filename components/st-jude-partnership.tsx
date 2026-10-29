@@ -148,20 +148,20 @@ export function StJudePartnershipSection() {
       <div className="relative z-10 mx-auto max-w-[1400px] px-4 sm:px-8 lg:px-14 xl:px-18 space-y-12 sm:space-y-16 lg:space-y-20">
 
         {/* 1. Header: St. Jude Hospital Logo, Editorial Headline & Story */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 sm:gap-10 pb-8 sm:pb-12 border-b border-[#e2ccfc]/80">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 xl:gap-16 items-center pb-8 sm:pb-12 border-b border-[#e2ccfc]/80">
           
-          <div className="max-w-3xl space-y-3 sm:space-y-4 text-center sm:text-left">
-            {/* St. Jude Logo on Mobile: Centered / Inline and properly scaled */}
+          <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-center sm:text-left">
+            {/* St. Jude Logo: larger on desktop like before */}
             <div className="relative inline-block mb-1 sm:mb-2">
-              <div className="absolute -inset-3 rounded-full bg-[#ebd8ff]/60 blur-xl pointer-events-none" />
+              <div className="absolute -inset-4 rounded-full bg-[#ebd8ff]/70 blur-xl pointer-events-none" />
               <img
                 src="/st jude children hospital logo.png"
                 alt="St. Jude Children's Research Hospital"
-                className="relative z-10 h-14 sm:h-20 lg:h-24 w-auto object-contain mx-auto sm:mx-0 drop-shadow-[0_8px_20px_rgba(110,35,185,0.12)]"
+                className="relative z-10 h-14 sm:h-20 md:h-24 lg:h-28 xl:h-32 w-auto object-contain mx-auto sm:mx-0 drop-shadow-[0_8px_20px_rgba(110,35,185,0.12)]"
               />
             </div>
 
-            <h2 className="text-2xl min-[380px]:text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black tracking-tight text-[#1c0836] leading-[1.12]">
+            <h2 className="text-2xl min-[380px]:text-3xl sm:text-4xl md:text-5xl lg:text-[50px] xl:text-[58px] font-black tracking-tight text-[#1c0836] leading-[1.12]">
               Our Partnership with{' '}
               <span className="bg-gradient-to-r from-[#7c2ae8] via-[#a855f7] to-[#d946ef] bg-clip-text text-transparent">
                 St. Jude Children's
@@ -169,17 +169,17 @@ export function StJudePartnershipSection() {
               Research Hospital
             </h2>
 
-            <p className="text-xs sm:text-base lg:text-[17px] leading-relaxed text-[#432d5e] font-normal pt-1">
+            <p className="text-xs sm:text-base lg:text-[17px] leading-relaxed text-[#432d5e] font-normal pt-1 max-w-2xl">
               Our most significant charitable relationship is our authorized connection with <strong className="font-extrabold text-[#1c0836]">St. Jude Children's Research Hospital</strong>. St. Jude freely shares its breakthroughs to advance pediatric medicine worldwide. Our goal is to support this mission through transparent, on-chain contributions.
             </p>
 
-            {/* Quick Mobile Action Links */}
+            {/* Action Links */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center sm:justify-start gap-3 pt-3">
               <a
                 href="https://www.stjude.org/donate/crypto.html"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#e11d48] via-[#e63946] to-[#be123c] px-6 py-3 text-xs sm:text-sm font-black text-white shadow-[0_6px_20px_rgba(225,29,72,0.28)] transition-all hover:scale-[1.02] active:scale-95"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#e11d48] via-[#e63946] to-[#be123c] px-6 sm:px-7 py-3 sm:py-3.5 text-xs sm:text-sm font-black text-white shadow-[0_6px_20px_rgba(225,29,72,0.28)] transition-all hover:scale-[1.02] active:scale-95"
               >
                 <span>Donate to St. Jude Directly (Crypto)</span>
                 <ExternalLink size={14} />
@@ -187,7 +187,7 @@ export function StJudePartnershipSection() {
 
               <a
                 href="#milestone-tracker"
-                className="inline-flex items-center justify-center gap-1.5 rounded-full border border-[#b87aff]/60 bg-white/80 backdrop-blur-md px-5 py-3 text-xs sm:text-sm font-bold text-[#7c2ae8] shadow-sm transition hover:bg-white active:scale-95"
+                className="inline-flex items-center justify-center gap-1.5 rounded-full border border-[#b87aff]/60 bg-white/80 backdrop-blur-md px-5 sm:px-6 py-3 sm:py-3.5 text-xs sm:text-sm font-bold text-[#7c2ae8] shadow-sm transition hover:bg-white active:scale-95"
               >
                 <span>View Donation Milestone</span>
                 <ArrowUpRight size={14} />
@@ -195,20 +195,20 @@ export function StJudePartnershipSection() {
             </div>
           </div>
 
-          {/* Children Visual on Mobile: Perfectly scaled and centered */}
-          <div className="relative flex flex-col items-center justify-center pt-2 lg:pt-0">
+          {/* Children Visual: Larger on bigger screens with rich depth */}
+          <div className="lg:col-span-5 relative flex flex-col items-center justify-center pt-2 lg:pt-0">
             <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#d8b4fe]/50 via-[#f0abfc]/30 to-transparent blur-3xl pointer-events-none" />
 
-            <div className="relative z-10 w-full max-w-[280px] sm:max-w-[360px] lg:max-w-[420px] transition-transform duration-300 hover:scale-[1.02]">
+            <div className="relative z-10 w-full max-w-[280px] sm:max-w-[380px] md:max-w-[460px] lg:max-w-[560px] xl:max-w-[640px] transition-transform duration-300 hover:scale-[1.02]">
               <img
                 src="/children.png"
                 alt="Children supported by St. Jude"
-                className="w-full h-auto object-contain select-none filter drop-shadow-[0_16px_30px_rgba(75,20,120,0.15)]"
+                className="w-full h-auto object-contain select-none filter drop-shadow-[0_20px_35px_rgba(75,20,120,0.18)]"
               />
             </div>
 
-            <div className="relative z-10 mt-3 sm:mt-4 inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-[#543b74] text-center">
-              <Sparkles className="size-3 text-[#a855f7] shrink-0" />
+            <div className="relative z-10 mt-3 sm:mt-4 inline-flex items-center gap-1.5 text-[11px] sm:text-xs md:text-sm font-semibold text-[#543b74] text-center">
+              <Sparkles className="size-3.5 text-[#a855f7] shrink-0" />
               <span>Finding cures. Saving children. &bull; No family receives a bill.</span>
             </div>
           </div>
