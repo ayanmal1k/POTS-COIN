@@ -5,6 +5,8 @@ import { useState } from 'react'
 import { WhyPotSection } from '@/components/why-pot-section'
 import { StJudePartnershipSection } from '@/components/st-jude-partnership'
 import { RoadmapSection } from '@/components/roadmap-section'
+import { TokenInfoSection } from '@/components/token-info-section'
+import { ContactFooterSection } from '@/components/contact-footer-section'
 
 function Brand() {
   return (
@@ -249,6 +251,8 @@ export default function Home() {
       <WhyPotSection />
       <StJudePartnershipSection />
       <RoadmapSection />
+      <TokenInfoSection />
+      <ContactFooterSection />
     </main>
   )
 }
