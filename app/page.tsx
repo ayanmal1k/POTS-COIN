@@ -2,6 +2,7 @@
 
 import { ArrowRight, Check, Copy, Heart, Menu, PawPrint, Send, Shield, ShieldCheck, Users, Wallet, X } from 'lucide-react'
 import { useState } from 'react'
+import { WhyPotSection } from '@/components/why-pot-section'
 
 function Brand() {
   return (
@@ -17,7 +18,7 @@ function Brand() {
 export function HeroSection() {
   const [copied, setCopied] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const address = 'GUtUrPOwfJDj3WTb2dEe289UnLtG1GGdBMreFtDXJaEw'
+  const address = 'GUtUrPGwfJDj3WTb2dEe2B9UnLtG1GGdBMreFtDXJxEw'
 
   const copyAddress = async () => {
     try {
@@ -238,48 +239,12 @@ export function MissionSection() {
   )
 }
 
-export function UtilitiesSection() {
-  const cards = [
-    { icon: Wallet, title: 'Financial Utility', heading: '$OL Reflection Rewards', text: '3% of trading activity in $OL distributed to holders.', foot: 'Rewards depend on volume, fees and project needs.' },
-    { icon: Heart, title: 'Impact Utility', heading: 'Community-Powered Charity', text: 'Reach $100K market cap and donate 12 SOL to St. Jude.', foot: 'Your hold helps us grow and give back.' },
-    { icon: PawPrint, title: 'Organic Growth', heading: 'No paid pumps.', text: 'No artificial hype. No paid pumps. Only real people, real activity, real community.', foot: 'Together we grow. Together we give.' }
-  ]
-
-  return (
-    <section id="ecosystem" className="utilities-section relative overflow-hidden text-white">
-      <div className="absolute -right-20 top-8 size-72 rounded-full bg-[#a239ff]/20 blur-3xl pointer-events-none" />
-      <div className="relative mx-auto max-w-[1200px] px-5 py-16 lg:px-8 lg:py-20">
-        <p className="eyebrow text-[#d2a5ff]">WHY $POT LUCK</p>
-        <h2 className="section-title text-white">Two Utilities. One Mission.</h2>
-        <p className="mt-3 text-sm text-white/80">$POT Luck combines holder rewards with charitable impact.</p>
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {cards.map(({ icon: Icon, title, heading, text, foot }) => (
-            <article key={title} className="rounded-2xl border border-white/10 bg-white/[.08] p-5 shadow-[inset_0_1px_0_#fff2] backdrop-blur transition hover:-translate-y-1 hover:bg-white/[.12]">
-              <div className="flex items-start gap-4">
-                <span className="grid size-11 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#c969ff] to-[#7027d7] shadow-[0_0_22px_#af43ff88]">
-                  <Icon size={21} />
-                </span>
-                <div>
-                  <h3 className="text-sm font-extrabold">{title}</h3>
-                  <h4 className="mt-1 text-xs font-bold text-[#d7aaff]">{heading}</h4>
-                  <p className="mt-3 text-xs leading-relaxed text-white/80">{text}</p>
-                  <p className="mt-4 text-[10px] leading-relaxed text-white/50">{foot}</p>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
 export default function Home() {
   return (
     <main>
       <HeroSection />
       <MissionSection />
-      <UtilitiesSection />
+      <WhyPotSection />
     </main>
   )
 }
