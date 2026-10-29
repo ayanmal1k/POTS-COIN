@@ -4,6 +4,7 @@ import { ArrowRight, Check, Copy, Heart, Menu, PawPrint, Send, Shield, ShieldChe
 import { useState } from 'react'
 import { WhyPotSection } from '@/components/why-pot-section'
 import { StJudePartnershipSection } from '@/components/st-jude-partnership'
+import { RoadmapSection } from '@/components/roadmap-section'
 
 function Brand() {
   return (
@@ -247,6 +248,7 @@ export default function Home() {
       <MissionSection />
       <WhyPotSection />
       <StJudePartnershipSection />
+      <RoadmapSection />
     </main>
   )
 }
