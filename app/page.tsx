@@ -11,11 +11,13 @@ import { ContactFooterSection } from '@/components/contact-footer-section'
 function Brand() {
   return (
     <a href="#home" className="flex items-center gap-2.5 sm:gap-3 text-lg font-extrabold tracking-tight text-white group transition-transform duration-200 hover:scale-105">
-      <img
-        src="/logo.png"
-        alt="EpiCoin Logo"
-        className="size-10 sm:size-11 md:size-12 object-contain drop-shadow-[0_0_18px_rgba(168,85,247,0.75)]"
-      />
+      <div className="grid size-10 sm:size-11 md:size-12 shrink-0 place-items-center rounded-full bg-white p-1 shadow-[0_0_18px_rgba(255,255,255,0.4)] border border-white/80 overflow-hidden">
+        <img
+          src="/logo.png"
+          alt="EpiCoin Logo"
+          className="size-full object-contain"
+        />
+      </div>
       <span className="text-xl sm:text-2xl font-black tracking-tight text-white group-hover:text-[#e9d5ff]">
         EpiCoin
       </span>
@@ -45,20 +47,18 @@ export function HeroSection() {
       <header className="relative z-30 mx-auto flex w-full max-w-[1440px] items-center justify-between px-6 py-5 sm:px-10 lg:px-16 xl:px-20">
         <Brand />
         <nav
-          className={`${
-            mobileOpen
+          className={`${mobileOpen
               ? 'absolute left-4 right-4 top-20 flex flex-col gap-5 rounded-2xl border border-white/15 bg-[#1b083c]/95 p-6 shadow-2xl backdrop-blur-xl'
               : 'hidden'
-          } z-30 lg:static lg:flex lg:flex-row lg:items-center lg:gap-8 text-xs font-semibold tracking-wide text-white/80`}
+            } z-30 lg:static lg:flex lg:flex-row lg:items-center lg:gap-8 text-xs font-semibold tracking-wide text-white/80`}
         >
           {['Home', 'Mission', 'Ecosystem', 'Partnership', 'Roadmap', 'Token', 'Contact'].map((item, index) => (
             <a
               key={item}
               href={index === 0 ? '#home' : `#${item.toLowerCase()}`}
               onClick={() => setMobileOpen(false)}
-              className={`transition-colors duration-200 hover:text-white ${
-                index === 0 ? 'border-b-2 border-white pb-1 text-white' : ''
-              }`}
+              className={`transition-colors duration-200 hover:text-white ${index === 0 ? 'border-b-2 border-white pb-1 text-white' : ''
+                }`}
             >
               {item}
             </a>
@@ -86,6 +86,12 @@ export function HeroSection() {
       {/* Hero Content - Centered on mobile, left-aligned on desktop */}
       <div className="relative z-20 mx-auto flex w-full max-w-[1440px] items-center justify-center lg:justify-start px-5 sm:px-10 lg:px-16 xl:px-20 pt-4 sm:pt-10 lg:pt-14 pb-[420px] sm:pb-[480px] lg:pb-28 xl:pb-36">
         <div className="flex w-full max-w-[540px] xl:max-w-[590px] flex-col items-center lg:items-start text-center lg:text-left space-y-4 sm:space-y-6">
+          {/* Eyebrow */}
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#b87aff]/35 bg-[#3c146e]/50 px-3.5 py-1 text-[11px] sm:text-xs font-semibold tracking-wide text-[#e3beff] backdrop-blur-md shadow-[0_0_16px_rgba(184,122,255,0.25)]">
+            <span className="size-1.5 rounded-full bg-[#d08bff] animate-pulse" />
+            <span>$POT Luck Community (PLC)</span>
+          </div>
+
           {/* Headline */}
           <h1 className="text-3xl min-[380px]:text-4xl sm:text-5xl md:text-6xl lg:text-[62px] xl:text-[68px] font-black leading-[1.05] tracking-[-0.035em] text-white">
             The EpiCoin<br />
@@ -127,11 +133,10 @@ export function HeroSection() {
               <button
                 onClick={copyAddress}
                 title={copied ? "Copied!" : "Copy address"}
-                className={`grid size-9 shrink-0 place-items-center rounded-xl border transition-all active:scale-90 ${
-                  copied
+                className={`grid size-9 shrink-0 place-items-center rounded-xl border transition-all active:scale-90 ${copied
                     ? 'border-emerald-500/60 bg-emerald-500/20 text-emerald-400 shadow-[0_0_15px_rgba(52,211,153,0.4)]'
                     : 'border-white/10 bg-white/5 text-white/80 hover:bg-white/15 hover:text-white'
-                }`}
+                  }`}
                 aria-label="Copy contract address"
               >
                 {copied ? <Check size={16} /> : <Copy size={15} />}
