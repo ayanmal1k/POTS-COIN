@@ -150,7 +150,7 @@ export function HowToBuySection() {
                 <EditableButton
                   text={h.buyButtonText}
                   textPath="howToBuy.buyButtonText"
-                  link={h.buyButtonLink}
+                  link={h.buyButtonLink || 'http://fomo.family/tokens/solana/GUtUrPGwfJDj3WTb2dEe2B9UnLtG1GGdBMreFtDXJxEw?r=MistyJustViper'}
                   linkPath="howToBuy.buyButtonLink"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -183,6 +183,7 @@ export function HowToBuySection() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 lg:gap-8 xl:gap-10 items-start">
             {h.steps.map((step, idx) => {
               const defIcon = defaultStepIcons[idx % defaultStepIcons.length]
+              const fomoLink = h.buyButtonLink || 'http://fomo.family/tokens/solana/GUtUrPGwfJDj3WTb2dEe2B9UnLtG1GGdBMreFtDXJxEw?r=MistyJustViper'
               return (
                 <div
                   key={step.stepNumber + idx}
@@ -237,12 +238,53 @@ export function HowToBuySection() {
                     className="mt-3 text-xs sm:text-sm lg:text-[13.5px] leading-relaxed text-[#f3e8ff]/80 font-normal"
                   />
 
+                  {/* Contextual Action Link for Step 3 and Step 4 */}
+                  {idx === 2 && (
+                    <a
+                      href={fomoLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3.5 inline-flex items-center gap-1.5 text-xs font-bold text-[#c084fc] hover:text-white transition-colors underline-offset-4 hover:underline"
+                    >
+                      <span>Open FOMO Portal</span>
+                      <ExternalLink size={12} />
+                    </a>
+                  )}
+
+                  {idx === 3 && (
+                    <a
+                      href={fomoLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3.5 inline-flex items-center gap-1.5 text-xs font-bold text-[#facc15] hover:text-white transition-colors underline-offset-4 hover:underline"
+                    >
+                      <span>Swap Now on FOMO</span>
+                      <ExternalLink size={12} />
+                    </a>
+                  )}
+
                   {/* Delicate fading accent beam under step */}
                   <div className="w-16 h-[2px] bg-gradient-to-r from-[#c084fc]/50 via-purple-400/20 to-transparent mt-6 group-hover:w-28 transition-all duration-300" />
 
                 </div>
               )
             })}
+          </div>
+
+          {/* Bottom Call-To-Action Banner */}
+          <div className="mt-14 sm:mt-16 flex flex-col items-center justify-center gap-3 text-center">
+            <a
+              href={h.buyButtonLink || 'http://fomo.family/tokens/solana/GUtUrPGwfJDj3WTb2dEe2B9UnLtG1GGdBMreFtDXJxEw?r=MistyJustViper'}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-[#9c3eff] via-[#b24eff] to-[#cb7dff] px-8 py-4 text-sm sm:text-base font-black text-white shadow-[0_0_32px_rgba(168,62,255,0.65),0_4px_16px_rgba(0,0,0,0.3)] transition-all hover:scale-105 hover:shadow-[0_0_42px_rgba(174,79,255,0.85)] active:scale-95"
+            >
+              <span>Buy $POT on FOMO</span>
+              <ExternalLink size={16} />
+            </a>
+            <span className="text-[11px] sm:text-xs text-purple-200/60 font-medium">
+              Instant Solana swap via verified FOMO contract link
+            </span>
           </div>
 
         </div>
