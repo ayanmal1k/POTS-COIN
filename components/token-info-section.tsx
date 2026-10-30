@@ -6,11 +6,7 @@ import {
   Copy,
   ExternalLink,
   TrendingUp,
-  Moon,
-  Sun,
   Activity,
-  ArrowUpRight,
-  ShieldCheck,
 } from 'lucide-react'
 
 const TOKEN_SPECS = [
@@ -35,7 +31,6 @@ const KEY_FEATURES = [
 
 export function TokenInfoSection() {
   const [copied, setCopied] = useState(false)
-  const [chartTheme, setChartTheme] = useState<'dark' | 'light'>('dark')
   const [chartLoaded, setChartLoaded] = useState(false)
   const contractAddress = 'GUtUrPGwfJDj3WTb2dEe2B9UnLtG1GGdBMreFtDXJxEw'
 
@@ -50,7 +45,7 @@ export function TokenInfoSection() {
     }
   }
 
-  const chartUrl = `https://dexscreener.com/solana/${contractAddress}?embed=1&theme=${chartTheme}&trades=0&info=0`
+  const chartUrl = `https://dexscreener.com/solana/${contractAddress}?embed=1&theme=dark&trades=0&info=0`
 
   return (
     <section
@@ -200,49 +195,23 @@ export function TokenInfoSection() {
         <div className="mt-10 sm:mt-14 lg:mt-16 rounded-3xl sm:rounded-[32px] border border-[#d8b4fe]/80 bg-white/90 p-4 sm:p-6 lg:p-8 backdrop-blur-xl shadow-[0_20px_60px_rgba(110,40,185,0.1)] transition-all duration-300">
           
           {/* Chart Header Bar */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-[#f0e4ff]">
-            <div className="flex items-center gap-3">
-              <div className="grid size-11 sm:size-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#7c2ae8] via-[#9333ea] to-[#c084fc] text-white shadow-[0_6px_20px_rgba(124,42,232,0.35)]">
-                <TrendingUp className="size-6 text-white" />
-              </div>
-              <div>
-                <div className="flex flex-wrap items-center gap-2">
-                  <h3 className="text-xl sm:text-2xl font-black text-[#1c0836] tracking-tight">
-                    Live DexScreener Chart
-                  </h3>
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100/90 px-2.5 py-0.5 text-[11px] font-black text-emerald-800 border border-emerald-300/60 shadow-sm">
-                    <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>LIVE ON-CHAIN</span>
-                  </span>
-                </div>
-                <p className="mt-0.5 text-xs sm:text-sm text-[#705295]">
-                  Real-time price candles, liquidity, and trading volume for <strong className="font-extrabold text-[#1c0836]">$POT / SOL</strong>
-                </p>
-              </div>
+          <div className="flex items-center gap-3 pb-5 border-b border-[#f0e4ff]">
+            <div className="grid size-11 sm:size-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#7c2ae8] via-[#9333ea] to-[#c084fc] text-white shadow-[0_6px_20px_rgba(124,42,232,0.35)]">
+              <TrendingUp className="size-6 text-white" />
             </div>
-
-            {/* Quick Action Controls */}
-            <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap">
-              {/* Theme Toggle (Dark / Light) */}
-              <button
-                onClick={() => setChartTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))}
-                className="inline-flex items-center gap-1.5 rounded-full border border-[#d8b4fe] bg-[#faf6ff] px-3.5 py-2 text-xs font-bold text-[#7c2ae8] hover:bg-[#7c2ae8] hover:text-white transition-all active:scale-95 shadow-sm"
-                title={`Switch to ${chartTheme === 'dark' ? 'Light' : 'Dark'} chart theme`}
-              >
-                {chartTheme === 'dark' ? <Sun className="size-3.5" /> : <Moon className="size-3.5" />}
-                <span className="capitalize">{chartTheme} Mode</span>
-              </button>
-
-              {/* Direct Link to DexScreener */}
-              <a
-                href={`https://dexscreener.com/solana/${contractAddress}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#7c2ae8] via-[#8b31ea] to-[#a855f7] px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-black text-white shadow-[0_6px_20px_rgba(124,42,232,0.3)] transition-all hover:scale-[1.02] active:scale-95"
-              >
-                <span>View Full DexScreener</span>
-                <ExternalLink size={14} />
-              </a>
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="text-xl sm:text-2xl font-black text-[#1c0836] tracking-tight">
+                  Live DexScreener Chart
+                </h3>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100/90 px-2.5 py-0.5 text-[11px] font-black text-emerald-800 border border-emerald-300/60 shadow-sm">
+                  <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span>LIVE ON-CHAIN</span>
+                </span>
+              </div>
+              <p className="mt-0.5 text-xs sm:text-sm text-[#705295]">
+                Real-time price candles, liquidity, and trading volume for <strong className="font-extrabold text-[#1c0836]">$POT / SOL</strong>
+              </p>
             </div>
           </div>
 
@@ -271,41 +240,12 @@ export function TokenInfoSection() {
             </div>
           </div>
 
-          {/* Footer Metrics & Explorer Links */}
-          <div className="mt-4 pt-3 border-t border-[#f0e4ff] flex flex-wrap items-center justify-between gap-3 text-xs text-[#705295]">
-            <div className="flex items-center gap-2">
-              <Activity className="size-4 text-[#7c2ae8]" />
-              <span>
-                Contract: <span className="font-mono font-bold text-[#1c0836] select-all">{contractAddress}</span>
-              </span>
-            </div>
-
-            <div className="flex items-center gap-4 font-bold text-[#7c2ae8]">
-              <a
-                href={`https://solscan.io/token/${contractAddress}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 hover:underline"
-              >
-                <span>Solscan Explorer</span>
-                <ArrowUpRight size={13} />
-              </a>
-              <span className="text-[#d8b4fe]">&bull;</span>
-              <a
-                href={`https://dexscreener.com/solana/${contractAddress}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 hover:underline"
-              >
-                <span>DexScreener Pair</span>
-                <ArrowUpRight size={13} />
-              </a>
-              <span className="text-[#d8b4fe]">&bull;</span>
-              <span className="inline-flex items-center gap-1 text-emerald-700">
-                <ShieldCheck className="size-3.5" />
-                <span>Verified Liquidity</span>
-              </span>
-            </div>
+          {/* Footer Metrics */}
+          <div className="mt-4 pt-3 border-t border-[#f0e4ff] flex items-center gap-2 text-xs text-[#705295]">
+            <Activity className="size-4 text-[#7c2ae8]" />
+            <span>
+              Contract: <span className="font-mono font-bold text-[#1c0836] select-all">{contractAddress}</span>
+            </span>
           </div>
 
         </div>
