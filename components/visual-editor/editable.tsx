@@ -2,8 +2,30 @@
 
 import React, { useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import { Edit3, ExternalLink, Check, Link as LinkIcon, X, Sparkles } from 'lucide-react'
+import {
+  Edit3,
+  ExternalLink,
+  Check,
+  Link as LinkIcon,
+  X,
+  Sparkles,
+  Move,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  ArrowDown,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  RotateCcw,
+} from 'lucide-react'
 import { useContent } from '@/context/content-context'
+
+interface TextStyleData {
+  x?: number
+  y?: number
+  align?: 'left' | 'center' | 'right'
+}
 
 interface EditableTextProps {
   value: string
@@ -16,8 +38,13 @@ interface EditableTextProps {
 }
 
 /**
- * Visual In-Place Editable Text component.
- * When isVisualEditMode is ON, users can click directly on the text on the live page and type!
+ * Visual In-Place Editable Text component with WordPress-style mover & alignment controls.
+ * When isVisualEditMode is ON:
+ * - Click directly on text to edit content inline
+ * - Hover or focus to reveal the WordPress-style micro toolbar
+ * - Drag the ✥ handle or click ⬅ ➡️ ⬆ ⬇ arrows to move text within its area without breaking layout!
+ * - Toggle alignment: Left, Center, Right
+ * - Reset position anytime with ↺
  */
 export function EditableText({
   value,
@@ -28,28 +55,68 @@ export function EditableText({
   multiline = false,
   children,
 }: EditableTextProps) {
-  const { isVisualEditMode, updateFieldByPath } = useContent()
+  const { content, isVisualEditMode, updateFieldByPath } = useContent()
   const ref = useRef<HTMLElement>(null)
   const [isFocused, setIsFocused] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+
+  // Safe unique key for style indexing in content.textStyles
+  const styleKey = path.replace(/[^a-zA-Z0-9_]/g, '_')
+  const savedStyle: TextStyleData = (content?.textStyles as any)?.[styleKey] || {}
+
+  const [localOffset, setLocalOffset] = useState<{ x: number; y: number }>({
+    x: savedStyle.x || 0,
+    y: savedStyle.y || 0,
+  })
+
+  // Synchronize when external content changes
+  useEffect(() => {
+    setLocalOffset({
+      x: savedStyle.x || 0,
+      y: savedStyle.y || 0,
+    })
+  }, [savedStyle.x, savedStyle.y])
 
   // Update text when external content changes
   useEffect(() => {
     if (ref.current && !isFocused) {
-      if (children) {
-        // If complex children, we leave it to react
-      } else {
+      if (!children) {
         ref.current.innerText = value || ''
       }
     }
   }, [value, isFocused, children])
 
-  if (!isVisualEditMode) {
-    if (children) {
-      return <Component className={className}>{children}</Component>
-    }
-    return <Component className={className}>{value}</Component>
+  // Compute CSS transform and alignment
+  const hasOffset = localOffset.x !== 0 || localOffset.y !== 0
+  const transformStyle = hasOffset
+    ? `translate3d(${localOffset.x}px, ${localOffset.y}px, 0)`
+    : undefined
+
+  const inlineStyle: React.CSSProperties = {
+    transform: transformStyle,
+    textAlign: savedStyle.align,
+    display: Component === 'span' && (transformStyle || savedStyle.align) ? 'inline-block' : undefined,
+    transition: isDragging ? 'none' : 'transform 0.15s ease-out',
   }
 
+  // When NOT in admin visual edit mode: render clean native component with applied styles
+  if (!isVisualEditMode) {
+    if (children) {
+      return (
+        <Component className={className} style={inlineStyle}>
+          {children}
+        </Component>
+      )
+    }
+    return (
+      <Component className={className} style={inlineStyle}>
+        {value}
+      </Component>
+    )
+  }
+
+  // --- Mover & Alignment Handlers ---
   const handleBlur = () => {
     setIsFocused(false)
     if (ref.current) {
@@ -67,26 +134,221 @@ export function EditableText({
     }
   }
 
+  // Safe clamping so text never breaks out of bounds
+  const clampX = (val: number) => Math.max(-100, Math.min(100, val))
+  const clampY = (val: number) => Math.max(-80, Math.min(80, val))
+
+  const nudge = (dx: number, dy: number, e?: React.MouseEvent) => {
+    e?.preventDefault()
+    e?.stopPropagation()
+    const step = e?.shiftKey ? 12 : 4
+    const newX = clampX(localOffset.x + dx * step)
+    const newY = clampY(localOffset.y + dy * step)
+    setLocalOffset({ x: newX, y: newY })
+    updateFieldByPath(`textStyles.${styleKey}`, {
+      ...savedStyle,
+      x: newX,
+      y: newY,
+    })
+  }
+
+  const handleAlign = (align: 'left' | 'center' | 'right', e?: React.MouseEvent) => {
+    e?.preventDefault()
+    e?.stopPropagation()
+    const newAlign = savedStyle.align === align ? undefined : align
+    updateFieldByPath(`textStyles.${styleKey}`, {
+      ...savedStyle,
+      align: newAlign,
+    })
+  }
+
+  const handleReset = (e?: React.MouseEvent) => {
+    e?.preventDefault()
+    e?.stopPropagation()
+    setLocalOffset({ x: 0, y: 0 })
+    updateFieldByPath(`textStyles.${styleKey}`, {
+      x: 0,
+      y: 0,
+      align: undefined,
+    })
+  }
+
+  // Drag to Move handle
+  const handlePointerDownDrag = (e: React.PointerEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(true)
+    const startX = e.clientX
+    const startY = e.clientY
+    const initX = localOffset.x
+    const initY = localOffset.y
+
+    const handlePointerMove = (moveEvt: PointerEvent) => {
+      const deltaX = moveEvt.clientX - startX
+      const deltaY = moveEvt.clientY - startY
+      const newX = clampX(initX + deltaX)
+      const newY = clampY(initY + deltaY)
+      setLocalOffset({ x: newX, y: newY })
+    }
+
+    const handlePointerUp = (upEvt: PointerEvent) => {
+      setIsDragging(false)
+      window.removeEventListener('pointermove', handlePointerMove)
+      window.removeEventListener('pointerup', handlePointerUp)
+      const deltaX = upEvt.clientX - startX
+      const deltaY = upEvt.clientY - startY
+      const finalX = clampX(initX + deltaX)
+      const finalY = clampY(initY + deltaY)
+      updateFieldByPath(`textStyles.${styleKey}`, {
+        ...savedStyle,
+        x: finalX,
+        y: finalY,
+      })
+    }
+
+    window.addEventListener('pointermove', handlePointerMove)
+    window.addEventListener('pointerup', handlePointerUp)
+  }
+
+  const showToolbar = isHovered || isFocused || isDragging
+
   return (
-    <Component
-      ref={ref as any}
-      contentEditable
-      suppressContentEditableWarning
-      onFocus={() => setIsFocused(true)}
-      onBlur={handleBlur}
-      onKeyDown={handleKeyDown}
-      onClick={(e: React.MouseEvent) => {
-        e.stopPropagation()
-      }}
-      title="Click to edit text directly"
-      className={`${className} outline-dashed outline-2 ${
-        isFocused
-          ? 'outline-[#c084fc] bg-purple-500/20 shadow-[0_0_15px_rgba(192,132,252,0.4)]'
-          : 'outline-purple-400/50 hover:outline-purple-400 hover:bg-purple-500/10'
-      } cursor-text transition-all rounded px-1 -mx-1`}
+    <span
+      className="relative group/editable inline-block max-w-full"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => !isDragging && setIsHovered(false)}
     >
-      {children || value || placeholder}
-    </Component>
+      {/* WordPress-style Floating Micro Toolbar */}
+      {showToolbar && (
+        <span
+          contentEditable={false}
+          className="absolute bottom-full left-0 mb-1 z-[9999] flex items-center gap-1 rounded-full border border-[#c084fc]/70 bg-[#1e073c]/95 px-2 py-1 text-xs text-white shadow-[0_8px_24px_rgba(0,0,0,0.6),0_0_15px_rgba(168,85,247,0.4)] backdrop-blur-xl select-none animate-in fade-in zoom-in-95 duration-150"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Drag Handle */}
+          <span
+            onPointerDown={handlePointerDownDrag}
+            title="Click and drag to move text around safely within bounds"
+            className="grid size-6 place-items-center rounded-full bg-purple-500/25 hover:bg-purple-500/50 cursor-grab active:cursor-grabbing text-purple-200 hover:text-white transition"
+          >
+            <Move size={12} />
+          </span>
+
+          <span className="w-px h-3.5 bg-white/20" />
+
+          {/* Directional Nudge Arrows (← ↑ ↓ →) */}
+          <button
+            type="button"
+            onClick={(e) => nudge(-1, 0, e)}
+            title="Nudge Left (Shift+Click for 12px)"
+            className="grid size-5 place-items-center rounded-md hover:bg-white/20 text-white/80 hover:text-white transition active:scale-90"
+          >
+            <ArrowLeft size={11} />
+          </button>
+          <button
+            type="button"
+            onClick={(e) => nudge(0, -1, e)}
+            title="Nudge Up (Shift+Click for 12px)"
+            className="grid size-5 place-items-center rounded-md hover:bg-white/20 text-white/80 hover:text-white transition active:scale-90"
+          >
+            <ArrowUp size={11} />
+          </button>
+          <button
+            type="button"
+            onClick={(e) => nudge(0, 1, e)}
+            title="Nudge Down (Shift+Click for 12px)"
+            className="grid size-5 place-items-center rounded-md hover:bg-white/20 text-white/80 hover:text-white transition active:scale-90"
+          >
+            <ArrowDown size={11} />
+          </button>
+          <button
+            type="button"
+            onClick={(e) => nudge(1, 0, e)}
+            title="Nudge Right (Shift+Click for 12px)"
+            className="grid size-5 place-items-center rounded-md hover:bg-white/20 text-white/80 hover:text-white transition active:scale-90"
+          >
+            <ArrowRight size={11} />
+          </button>
+
+          <span className="w-px h-3.5 bg-white/20" />
+
+          {/* Alignment Toggles */}
+          <button
+            type="button"
+            onClick={(e) => handleAlign('left', e)}
+            title="Align Left"
+            className={`grid size-5 place-items-center rounded-md transition ${
+              savedStyle.align === 'left' ? 'bg-[#9333ea] text-white' : 'hover:bg-white/20 text-white/70'
+            }`}
+          >
+            <AlignLeft size={11} />
+          </button>
+          <button
+            type="button"
+            onClick={(e) => handleAlign('center', e)}
+            title="Align Center"
+            className={`grid size-5 place-items-center rounded-md transition ${
+              savedStyle.align === 'center' ? 'bg-[#9333ea] text-white' : 'hover:bg-white/20 text-white/70'
+            }`}
+          >
+            <AlignCenter size={11} />
+          </button>
+          <button
+            type="button"
+            onClick={(e) => handleAlign('right', e)}
+            title="Align Right"
+            className={`grid size-5 place-items-center rounded-md transition ${
+              savedStyle.align === 'right' ? 'bg-[#9333ea] text-white' : 'hover:bg-white/20 text-white/70'
+            }`}
+          >
+            <AlignRight size={11} />
+          </button>
+
+          {/* Offset Indicator & Reset */}
+          {hasOffset && (
+            <>
+              <span className="w-px h-3.5 bg-white/20" />
+              <span className="font-mono text-[9px] text-[#c084fc] px-1 font-bold">
+                {localOffset.x >= 0 ? `+${localOffset.x}` : localOffset.x},
+                {localOffset.y >= 0 ? `+${localOffset.y}` : localOffset.y}
+              </span>
+              <button
+                type="button"
+                onClick={handleReset}
+                title="Reset position to default (0, 0)"
+                className="grid size-5 place-items-center rounded-md hover:bg-rose-500/30 text-rose-300 hover:text-white transition active:scale-90"
+              >
+                <RotateCcw size={10} />
+              </button>
+            </>
+          )}
+        </span>
+      )}
+
+      {/* Actual Editable Element */}
+      <Component
+        ref={ref as any}
+        contentEditable
+        suppressContentEditableWarning
+        onFocus={() => setIsFocused(true)}
+        onBlur={handleBlur}
+        onKeyDown={handleKeyDown}
+        onClick={(e: React.MouseEvent) => {
+          e.stopPropagation()
+        }}
+        style={inlineStyle}
+        title="Click to edit text. Hover for move & align toolbar."
+        className={`${className} outline-dashed outline-2 ${
+          isFocused
+            ? 'outline-[#c084fc] bg-purple-500/20 shadow-[0_0_15px_rgba(192,132,252,0.4)]'
+            : isHovered
+            ? 'outline-[#c084fc]/70 bg-purple-500/10'
+            : 'outline-purple-400/40 hover:outline-purple-400'
+        } cursor-text transition-all rounded px-1 -mx-1`}
+      >
+        {children || value || placeholder}
+      </Component>
+    </span>
   )
 }
 

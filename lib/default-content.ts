@@ -128,6 +128,11 @@ export interface SiteContent {
     contactIconFilled?: boolean
     copyright: string
   }
+  textStyles?: Record<string, {
+    x?: number
+    y?: number
+    align?: 'left' | 'center' | 'right'
+  }>
 }
 
 export const DEFAULT_CONTENT: SiteContent = {
@@ -347,4 +352,5 @@ export const DEFAULT_CONTENT: SiteContent = {
     telegramButtonLink: 'https://t.me/epicoins',
     copyright: '© 2026 $POT Luck Community. All rights reserved.',
   },
+  textStyles: {},
 }
