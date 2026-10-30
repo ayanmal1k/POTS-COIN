@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowRight, Check, Copy, Heart, Menu, PawPrint, Send, Shield, ShieldCheck, TrendingUp, Users, Wallet, X } from 'lucide-react'
+import { ArrowRight, Check, Copy, ExternalLink, Heart, Menu, PawPrint, Send, Shield, ShieldCheck, TrendingUp, Users, Wallet, X } from 'lucide-react'
 import { useState } from 'react'
 import { useContent } from '@/context/content-context'
 import { WhyPotSection } from '@/components/why-pot-section'
@@ -225,7 +225,7 @@ export function HeroSection() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-[#9c3eff] via-[#ad4eff] to-[#cb7dff] px-7 py-3.5 sm:px-8 sm:py-4 text-xs sm:text-sm md:text-base font-bold text-white shadow-[0_0_26px_rgba(168,62,255,0.55),0_4px_16px_rgba(0,0,0,0.3)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_36px_rgba(174,79,255,0.75)] active:scale-[0.98]"
-                icon={<Send size={15} className="fill-white" />}
+                icon={<ExternalLink size={15} className="text-white" />}
               />
 
               <EditableButton
