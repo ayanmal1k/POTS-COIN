@@ -100,17 +100,27 @@ export function HeroSection() {
               </a>
             )
           })}
+          <a
+            href={content.hero.joinButtonLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setMobileOpen(false)}
+            className="mt-2 flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#9c3eff] to-[#c67aff] px-5 py-3 text-xs font-bold text-white shadow-lg"
+          >
+            <span>{content.hero.joinButtonText || 'Buy Now'}</span>
+            <ExternalLink size={13} />
+          </a>
         </nav>
         <div className="flex items-center gap-3">
           <EditableButton
             text={content.hero.joinButtonText}
             textPath="hero.joinButtonText"
-            link={content.global.telegramUrl}
-            linkPath="global.telegramUrl"
+            link={content.hero.joinButtonLink}
+            linkPath="hero.joinButtonLink"
             target="_blank"
             rel="noopener noreferrer"
             className="hidden items-center gap-2 rounded-full bg-gradient-to-r from-[#9c3eff] to-[#c67aff] px-5 py-2.5 text-xs font-bold text-white shadow-[0_4px_20px_rgba(156,62,255,0.45)] transition duration-200 hover:scale-105 active:scale-95 lg:flex"
-            icon={<Send size={13} className="fill-white" />}
+            icon={<ExternalLink size={13} className="text-white" />}
           />
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -152,25 +162,6 @@ export function HeroSection() {
               path="hero.eyebrow"
               className="text-xs sm:text-[13px] md:text-sm font-black tracking-[0.24em] uppercase text-[#e9d5ff]/90"
             />
-
-            {/* 100% Verified Transparency Badge */}
-            <div className="flex justify-center lg:justify-start pt-1">
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#b56fff]/55 bg-[#7526de]/30 px-4 py-1.5 sm:px-5 sm:py-2 md:px-6 md:py-2.5 text-xs sm:text-[13px] md:text-sm font-bold text-white shadow-[0_0_25px_rgba(160,65,255,0.45)] backdrop-blur-md">
-                <EditableIcon
-                  name={content.hero.transparencyBadgeIcon}
-                  namePath="hero.transparencyBadgeIcon"
-                  filled={content.hero.transparencyBadgeIconFilled}
-                  fillPath="hero.transparencyBadgeIconFilled"
-                  defaultIcon="ShieldCheck"
-                  defaultFilled={false}
-                  className="size-4 sm:size-4.5 md:size-5 text-[#3df586] shrink-0"
-                />
-                <EditableText
-                  value={content.hero.transparencyBadge}
-                  path="hero.transparencyBadge"
-                />
-              </div>
-            </div>
 
             {/* Description */}
             <EditableText
@@ -215,8 +206,8 @@ export function HeroSection() {
               </div>
             </div>
 
-            {/* CTA Buttons: Join the Community & View $POT live chart */}
-            <div className="flex w-full max-w-[480px] md:max-w-[580px] flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-1">
+            {/* CTA Buttons & Transparency Badge */}
+            <div className="flex w-full max-w-[540px] md:max-w-[640px] flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-3.5 pt-1">
               <EditableButton
                 text={content.hero.joinButtonText}
                 textPath="hero.joinButtonText"
@@ -236,6 +227,23 @@ export function HeroSection() {
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border border-white/35 bg-white/5 hover:bg-white/15 hover:border-white/60 px-6 py-3.5 sm:px-7 sm:py-4 text-xs sm:text-sm md:text-base font-bold text-white backdrop-blur-md transition-all duration-200 hover:scale-[1.03] active:scale-[0.98]"
                 icon={<TrendingUp size={16} className="text-emerald-400" />}
               />
+
+              {/* 100% Verified Transparency Badge moved next to View Chart */}
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#b56fff]/55 bg-[#7526de]/30 px-4 py-2.5 sm:px-5 sm:py-3.5 text-xs sm:text-[13px] md:text-sm font-bold text-white shadow-[0_0_25px_rgba(160,65,255,0.45)] backdrop-blur-md">
+                <EditableIcon
+                  name={content.hero.transparencyBadgeIcon}
+                  namePath="hero.transparencyBadgeIcon"
+                  filled={content.hero.transparencyBadgeIconFilled}
+                  fillPath="hero.transparencyBadgeIconFilled"
+                  defaultIcon="ShieldCheck"
+                  defaultFilled={false}
+                  className="size-4 sm:size-4.5 text-[#3df586] shrink-0"
+                />
+                <EditableText
+                  value={content.hero.transparencyBadge}
+                  path="hero.transparencyBadge"
+                />
+              </div>
             </div>
           </div>
 
