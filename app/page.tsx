@@ -3,6 +3,7 @@
 import { ArrowRight, Check, Copy, Heart, Menu, PawPrint, Send, Shield, ShieldCheck, Users, Wallet, X } from 'lucide-react'
 import { useState } from 'react'
 import { WhyPotSection } from '@/components/why-pot-section'
+import { PawPrint3DWatermark } from '@/components/why-pot-icons'
 import { StJudePartnershipSection } from '@/components/st-jude-partnership'
 import { RoadmapSection } from '@/components/roadmap-section'
 import { TokenInfoSection } from '@/components/token-info-section'
@@ -52,7 +53,7 @@ export function HeroSection() {
               : 'hidden'
             } z-30 lg:static lg:flex lg:flex-row lg:items-center lg:gap-8 text-xs font-semibold tracking-wide text-white/80`}
         >
-          {['Home', 'Mission', 'Ecosystem', 'Partnership', 'Roadmap', 'Token', 'Contact'].map((item, index) => (
+          {['Home', 'Ecosystem', 'Mission', 'Partnership', 'Roadmap', 'Token', 'Contact'].map((item, index) => (
             <a
               key={item}
               href={index === 0 ? '#home' : `#${item.toLowerCase()}`}
@@ -182,35 +183,51 @@ export function MissionSection() {
   ]
 
   return (
-    <section id="mission" className="mission-section relative overflow-hidden py-20 sm:py-24 lg:py-32">
-      {/* Background ambient decorative elements */}
-      <div className="absolute -right-24 top-10 size-96 rounded-full bg-[#e8c8ff]/40 blur-3xl pointer-events-none" />
-      <div className="absolute -left-20 bottom-10 size-80 rounded-full bg-[#f1ddff]/50 blur-3xl pointer-events-none" />
+    <section
+      id="mission"
+      className="mission-section relative overflow-hidden py-20 sm:py-24 lg:py-32 text-white"
+      style={{
+        background: `
+          radial-gradient(circle at 80% 25%, rgba(192, 132, 252, 0.35) 0%, transparent 45%),
+          radial-gradient(circle at 18% 60%, rgba(168, 85, 247, 0.3) 0%, transparent 45%),
+          radial-gradient(ellipse 90% 65% at 50% -10%, rgba(147, 51, 234, 0.4) 0%, transparent 60%),
+          linear-gradient(135deg, #2a0a6b 0%, #3e1284 45%, #230752 100%)
+        `,
+      }}
+    >
+      {/* Ambient purple backlight matching former utilities section */}
+      <div className="absolute top-0 right-1/4 size-[550px] bg-[radial-gradient(circle,rgba(168,85,247,0.28)_0%,transparent_65%)] blur-3xl pointer-events-none" />
+      <div className="absolute bottom-4 left-10 size-[450px] bg-[radial-gradient(circle,rgba(192,132,252,0.2)_0%,transparent_65%)] blur-3xl pointer-events-none" />
 
-      <div className="relative mx-auto grid max-w-[1360px] items-center gap-12 sm:gap-14 px-6 sm:px-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16 xl:gap-20 lg:px-16 xl:px-20">
+      {/* Giant 3D Sculpted Purple Paw Print in the Upper Right Background */}
+      <div className="absolute -top-10 -right-6 sm:-top-6 sm:right-4 md:right-10 lg:right-16 xl:right-24 w-[320px] sm:w-[420px] md:w-[480px] lg:w-[540px] xl:w-[580px] aspect-square pointer-events-none select-none opacity-40 sm:opacity-55 lg:opacity-75 z-0 transition-opacity">
+        <PawPrint3DWatermark className="w-full h-full drop-shadow-[0_20px_45px_rgba(20,3,45,0.75)]" />
+      </div>
+
+      <div className="relative z-10 mx-auto grid max-w-[1360px] items-center gap-12 sm:gap-14 px-6 sm:px-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16 xl:gap-20 lg:px-16 xl:px-20">
         {/* Left Column: Text & Features */}
         <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
-          <p className="text-xs sm:text-sm font-extrabold uppercase tracking-[0.2em] text-[#7c2ae8]">
+          <p className="text-[11px] sm:text-xs font-black tracking-[0.22em] uppercase text-[#e9d5ff]">
             OUR MISSION
           </p>
-          <h2 className="mt-3 text-3xl min-[400px]:text-4xl sm:text-5xl lg:text-[50px] xl:text-[54px] font-black tracking-[-0.035em] text-[#1c0836] leading-[1.08]">
+          <h2 className="mt-3 text-3xl min-[400px]:text-4xl sm:text-5xl lg:text-[50px] xl:text-[54px] font-black tracking-[-0.035em] text-white leading-[1.08]">
             More Than a Meme Coin
           </h2>
-          <p className="mt-4 sm:mt-5 max-w-[540px] text-base sm:text-lg lg:text-[17px] leading-relaxed text-[#432d5e]">
+          <p className="mt-4 sm:mt-5 max-w-[540px] text-base sm:text-lg lg:text-[17px] leading-relaxed text-[#f3e8ff]/90">
             We’re building a transparent, organic, peer-to-peer community focused on sustainable growth and meaningful impact. PLC represents the philanthropic heart of the EpiCoin ecosystem.
           </p>
 
           <div className="mt-9 sm:mt-11 w-full space-y-6 sm:space-y-8 max-w-[560px]">
             {points.map(({ icon: Icon, title, text }) => (
               <div className="flex items-start gap-4 sm:gap-5 text-left" key={title}>
-                <span className="grid size-12 sm:size-14 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#a855f7] via-[#8638ea] to-[#6819d4] shadow-[0_8px_22px_rgba(134,56,234,0.36)] transition-transform duration-200 hover:scale-105">
+                <span className="grid size-12 sm:size-14 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#c084fc] via-[#9333ea] to-[#581c87] shadow-[0_0_24px_rgba(192,132,252,0.8),inset_0_2px_4px_rgba(255,255,255,0.6)] ring-1 ring-white/35 transition-transform duration-200 hover:scale-105">
                   <Icon className="size-6 sm:size-6.5 text-white fill-white" />
                 </span>
                 <div className="pt-0.5 sm:pt-1">
-                  <h3 className="text-base sm:text-lg lg:text-[19px] font-black text-[#1c0836] tracking-tight">
+                  <h3 className="text-base sm:text-lg lg:text-[19px] font-black text-white tracking-tight">
                     {title}
                   </h3>
-                  <p className="mt-1 text-xs sm:text-sm lg:text-[14.5px] leading-relaxed text-[#594772]">
+                  <p className="mt-1 text-xs sm:text-sm lg:text-[14.5px] leading-relaxed text-[#f3e8ff]/80">
                     {text}
                   </p>
                 </div>
@@ -221,15 +238,8 @@ export function MissionSection() {
 
         {/* Right Column: Polaroid Image & Accents */}
         <div className="relative mx-auto flex w-full max-w-[520px] lg:max-w-[580px] items-center justify-center pt-4 lg:pt-0">
-          {/* Soft floating decorative petals / sparkles */}
-          <span className="absolute top-1/3 -left-2 size-3.5 rounded-full bg-[#b87aff]/35 blur-[1px] pointer-events-none" />
-          <span className="absolute bottom-1/4 -right-1 size-3 rounded-full bg-[#8638ea]/30 blur-[1px] pointer-events-none" />
-
-          {/* Subtle paw print watermark */}
-          <PawPrint className="absolute -bottom-4 left-6 size-20 sm:size-28 text-[#8638ea]/12 rotate-[-22deg] pointer-events-none select-none" />
-
           {/* Polaroid Image from public */}
-          <div className="relative z-[1] w-full filter drop-shadow-[0_20px_40px_rgba(40,10,70,0.18)] transition-transform duration-300 hover:scale-[1.02]">
+          <div className="relative z-[1] w-full filter drop-shadow-[0_24px_50px_rgba(10,2,25,0.65)] transition-transform duration-300 hover:scale-[1.02]">
             <img
               src="/mission-polaroid.webp"
               alt="Together We Make A Difference - Golden Retriever holding purple heart"
@@ -247,8 +257,8 @@ export default function Home() {
   return (
     <main>
       <HeroSection />
-      <MissionSection />
       <WhyPotSection />
+      <MissionSection />
       <StJudePartnershipSection />
       <RoadmapSection />
       <TokenInfoSection />
