@@ -3,7 +3,7 @@
 import { ArrowRight, Check, Copy, Heart, Menu, PawPrint, Send, Shield, ShieldCheck, Users, Wallet, X } from 'lucide-react'
 import { useState } from 'react'
 import { WhyPotSection } from '@/components/why-pot-section'
-import { PawPrint3DWatermark } from '@/components/why-pot-icons'
+import { PawPrint3DWatermark, CustomPawPrint } from '@/components/why-pot-icons'
 import { StJudePartnershipSection } from '@/components/st-jude-partnership'
 import { RoadmapSection } from '@/components/roadmap-section'
 import { TokenInfoSection } from '@/components/token-info-section'
@@ -43,7 +43,31 @@ export function HeroSection() {
   }
 
   return (
-    <section id="home" className="hero-section relative w-full overflow-hidden text-white">
+    <section
+      id="home"
+      className="hero-section relative w-full overflow-hidden text-white"
+      style={{
+        background: `
+          radial-gradient(ellipse 85% 65% at 50% -12%, rgba(168, 85, 247, 0.45) 0%, transparent 65%),
+          radial-gradient(circle at 85% 30%, rgba(192, 132, 252, 0.3) 0%, transparent 45%),
+          radial-gradient(circle at 15% 70%, rgba(147, 51, 234, 0.28) 0%, transparent 50%),
+          linear-gradient(145deg, #180538 0%, #290a60 40%, #150330 100%)
+        `,
+      }}
+    >
+      {/* Ambient background glows */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[600px] sm:size-[750px] bg-[radial-gradient(circle,rgba(168,85,247,0.3)_0%,transparent_60%)] blur-3xl pointer-events-none" />
+
+      {/* Scattered Floating Purple Paw Prints in Background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
+        <CustomPawPrint className="absolute top-28 left-[45%] lg:left-[42%] size-12 sm:size-14 text-[#c084fc]/25 rotate-[-18deg]" />
+        <CustomPawPrint className="absolute top-24 right-[25%] lg:right-[32%] size-14 sm:size-16 text-[#c084fc]/30 rotate-[22deg]" />
+        <CustomPawPrint className="absolute top-[48%] left-[36%] lg:left-[35%] size-11 sm:size-13 text-[#c084fc]/20 rotate-[35deg]" />
+        <CustomPawPrint className="absolute top-[42%] right-[20%] lg:right-[26%] size-14 sm:size-16 text-[#c084fc]/28 rotate-[-12deg]" />
+        <CustomPawPrint className="absolute bottom-16 right-[12%] size-16 sm:size-20 text-[#c084fc]/18 rotate-[15deg]" />
+        <CustomPawPrint className="absolute top-36 left-[8%] size-12 text-[#c084fc]/15 rotate-[-30deg]" />
+      </div>
+
       {/* Top Header / Navigation */}
       <header className="relative z-30 mx-auto flex w-full max-w-[1440px] items-center justify-between px-6 py-5 sm:px-10 lg:px-16 xl:px-20">
         <Brand />
@@ -84,79 +108,160 @@ export function HeroSection() {
         </div>
       </header>
 
-      {/* Hero Content - Centered on mobile, left-aligned on desktop */}
-      <div className="relative z-20 mx-auto flex w-full max-w-[1440px] items-center justify-center lg:justify-start px-5 sm:px-10 lg:px-16 xl:px-20 pt-4 sm:pt-10 lg:pt-14 pb-[420px] sm:pb-[480px] lg:pb-28 xl:pb-36">
-        <div className="flex w-full max-w-[540px] xl:max-w-[590px] flex-col items-center lg:items-start text-center lg:text-left space-y-4 sm:space-y-6">
-          {/* Eyebrow */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#b87aff]/35 bg-[#3c146e]/50 px-3.5 py-1 text-[11px] sm:text-xs font-semibold tracking-wide text-[#e3beff] backdrop-blur-md shadow-[0_0_16px_rgba(184,122,255,0.25)]">
-            <span className="size-1.5 rounded-full bg-[#d08bff] animate-pulse" />
-            <span>$POT Luck Community (PLC)</span>
-          </div>
+      {/* Hero Content Grid - Responsive 3-Column on Desktop, Balanced Natural Flow on Mobile */}
+      <div className="relative z-20 mx-auto w-full max-w-[1440px] px-5 sm:px-10 lg:px-14 xl:px-18 pt-6 sm:pt-10 lg:pt-12 pb-14 sm:pb-20 lg:pb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 xl:gap-8 items-center">
+          
+          {/* Left Column: Text, Headline, Address Card, Buttons (5 cols) */}
+          <div className="lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left space-y-4 sm:space-y-5">
+            {/* Eyebrow */}
+            <p className="text-xs sm:text-[13px] font-black tracking-[0.22em] uppercase text-[#e9d5ff]">
+              THE EpiCoin ECOSYSTEM
+            </p>
 
-          {/* Headline */}
-          <h1 className="text-3xl min-[380px]:text-4xl sm:text-5xl md:text-6xl lg:text-[62px] xl:text-[68px] font-black leading-[1.05] tracking-[-0.035em] text-white">
-            The EpiCoin<br />
-            <span className="bg-gradient-to-r from-[#e3b8ff] via-[#b366ff] to-[#df9aff] bg-clip-text text-transparent drop-shadow-[0_0_28px_rgba(168,82,255,0.65)] inline-block">
-              Ecosystem
-            </span>
-          </h1>
+            {/* Headline with $POT Luck being yellow gradient as requested */}
+            <h1 className="text-3xl min-[380px]:text-4xl sm:text-5xl md:text-6xl lg:text-[54px] xl:text-[62px] font-black leading-[1.06] tracking-[-0.035em] text-white">
+              <span className="bg-gradient-to-r from-[#ffe066] via-[#f59e0b] to-[#fbbf24] bg-clip-text text-transparent drop-shadow-[0_4px_18px_rgba(245,158,11,0.38)]">
+                $POT
+              </span>{' '}
+              <span className="bg-gradient-to-r from-[#ffe066] via-[#f59e0b] to-[#fbbf24] bg-clip-text text-transparent drop-shadow-[0_4px_18px_rgba(245,158,11,0.38)]">
+                Luck
+              </span>
+              <br />
+              Community
+            </h1>
 
-          {/* 100% Verified Transparency Badge */}
-          <div className="flex justify-center lg:justify-start">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#b56fff]/55 bg-[#7526de]/30 px-3.5 py-1.5 sm:px-5 sm:py-2 text-[11px] sm:text-[13px] font-bold text-white shadow-[0_0_25px_rgba(160,65,255,0.45)] backdrop-blur-md">
-              <ShieldCheck className="size-4 sm:size-4.5 text-[#3df586] shrink-0" />
-              <span>100% Verified Transparency</span>
+            {/* Sub-headline description */}
+            <div className="space-y-1 text-xs sm:text-sm md:text-[14.5px] leading-relaxed text-white/85 max-w-[470px]">
+              <p className="font-bold text-white text-sm sm:text-base">
+                More than a meme coin. A movement for a better tomorrow.
+              </p>
+              <p className="text-white/80">
+                Join a transparent, organic community on Solana and help make a real difference.
+              </p>
+            </div>
+
+            {/* 100% Verified Transparency Badge */}
+            <div className="flex justify-center lg:justify-start pt-0.5">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#b56fff]/55 bg-[#7526de]/30 px-3.5 py-1.5 sm:px-4 sm:py-2 text-[11px] sm:text-xs font-bold text-white shadow-[0_0_25px_rgba(160,65,255,0.4)] backdrop-blur-md">
+                <ShieldCheck className="size-4 text-[#3df586] shrink-0" />
+                <span>100% Verified Transparency</span>
+              </div>
+            </div>
+
+            {/* Contract Address Card */}
+            <div className="w-full max-w-[460px] rounded-2xl border border-[#9d4eff]/45 bg-[#170932]/85 p-2.5 sm:p-3 shadow-[0_8px_32px_rgba(0,0,0,0.55),0_0_24px_rgba(150,65,255,0.25)] backdrop-blur-xl transition-all duration-300 hover:border-[#bf7bff]/80 hover:shadow-[0_0_32px_rgba(168,82,255,0.45)] text-left">
+              <div className="flex items-center justify-between gap-2.5">
+                <div className="flex min-w-0 flex-1 items-center gap-2.5 sm:gap-3">
+                  <div className="grid size-9 sm:size-10 shrink-0 place-items-center rounded-xl bg-black/60 border border-white/10 shadow-inner">
+                    <img src="/solana-logo.svg" alt="Solana Logo" className="size-5 sm:size-5.5" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-1.5 text-[9.5px] sm:text-[10px] font-medium tracking-wider uppercase text-white/55">
+                      <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <span>Contract Address (SPL)</span>
+                    </div>
+                    <span className="block truncate font-mono text-[11px] min-[400px]:text-[11.5px] sm:text-xs font-semibold tracking-tight text-white/95 select-all">
+                      {address}
+                    </span>
+                  </div>
+                </div>
+                <button
+                  onClick={copyAddress}
+                  title={copied ? "Copied!" : "Copy address"}
+                  className={`grid size-9 shrink-0 place-items-center rounded-xl border transition-all active:scale-90 ${copied
+                      ? 'border-emerald-500/60 bg-emerald-500/20 text-emerald-400 shadow-[0_0_15px_rgba(52,211,153,0.4)]'
+                      : 'border-white/10 bg-white/5 text-white/80 hover:bg-white/15 hover:text-white'
+                    }`}
+                  aria-label="Copy contract address"
+                >
+                  {copied ? <Check size={16} /> : <Copy size={15} />}
+                </button>
+              </div>
+            </div>
+
+            {/* CTA Buttons (Get $POT & View Roadmap) */}
+            <div className="flex w-full max-w-[460px] flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-1">
+              <a
+                href="https://t.me/epicoins"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#9c3eff] via-[#ad4eff] to-[#cb7dff] px-7 py-3 text-xs sm:text-sm font-bold text-white shadow-[0_0_26px_rgba(168,62,255,0.55),0_4px_16px_rgba(0,0,0,0.3)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_36px_rgba(174,79,255,0.75)] active:scale-[0.98]"
+              >
+                <span>Get $POT</span>
+                <Send size={13} className="fill-white" />
+              </a>
+
+              <a
+                href="#roadmap"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 hover:bg-white/20 px-6 py-3 text-xs sm:text-sm font-bold text-white backdrop-blur-md transition-all duration-200 hover:scale-[1.03] active:scale-[0.98]"
+              >
+                <span>View Roadmap</span>
+              </a>
             </div>
           </div>
 
-          {/* Description */}
-          <p className="text-xs sm:text-sm md:text-[14.5px] leading-relaxed text-white/85 max-w-[470px]">
-            Welcome to the $POT Luck Community (PLC), a community-driven Solana meme coin built on transparency, organic growth, and real-world charitable impact.
-          </p>
+          {/* Center Column: Dog Mascot Image with Ambient Glow & Floating Paws (4 cols) */}
+          <div className="lg:col-span-4 relative flex flex-col items-center justify-end z-10 py-4 lg:py-0">
+            {/* Ambient radiant circle behind dog */}
+            <div className="absolute inset-0 -m-4 sm:-m-8 rounded-full bg-gradient-to-tr from-[#9333ea]/40 via-[#c084fc]/25 to-transparent blur-3xl pointer-events-none" />
 
-          {/* Contract Address Card */}
-          <div className="w-full max-w-[460px] rounded-2xl border border-[#9d4eff]/45 bg-[#170932]/85 p-2.5 sm:p-3 shadow-[0_8px_32px_rgba(0,0,0,0.55),0_0_24px_rgba(150,65,255,0.25)] backdrop-blur-xl transition-all duration-300 hover:border-[#bf7bff]/80 hover:shadow-[0_0_32px_rgba(168,82,255,0.45)] text-left">
-            <div className="flex items-center justify-between gap-2.5">
-              <div className="flex min-w-0 flex-1 items-center gap-2.5 sm:gap-3">
-                <div className="grid size-9 sm:size-10 shrink-0 place-items-center rounded-xl bg-black/60 border border-white/10 shadow-inner">
-                  <img src="/solana-logo.svg" alt="Solana Logo" className="size-5 sm:size-5.5" />
+            <div className="relative z-10 w-full max-w-[280px] min-[400px]:max-w-[320px] sm:max-w-[380px] lg:max-w-[420px] xl:max-w-[450px] transition-transform duration-500 hover:scale-[1.02]">
+              <img
+                src="/dog.png"
+                alt="$POT Mascot Dog"
+                className="w-full h-auto object-contain select-none filter drop-shadow-[0_20px_45px_rgba(10,2,25,0.75)]"
+                loading="eager"
+              />
+            </div>
+          </div>
+
+          {/* Right Column: St. Jude Partnership Glassmorphic Card (3 cols) */}
+          <div className="lg:col-span-3 w-full max-w-sm sm:max-w-md lg:max-w-none mx-auto relative z-20">
+            <div className="rounded-3xl border border-white/15 bg-gradient-to-b from-white/[0.10] to-[#1d0838]/80 backdrop-blur-xl p-5 sm:p-6 shadow-[0_16px_40px_rgba(0,0,0,0.4),0_0_30px_rgba(168,85,247,0.18)] transition-all duration-300 hover:border-[#a855f7]/50 space-y-4">
+              
+              {/* Card Top: 3D Heart + Supporting Text */}
+              <div className="flex items-center gap-3">
+                <div className="size-10 sm:size-11 shrink-0 rounded-2xl bg-gradient-to-br from-[#c084fc] via-[#9333ea] to-[#6b21a8] flex items-center justify-center shadow-[0_0_20px_rgba(192,132,252,0.65)]">
+                  <Heart className="size-5 sm:size-5.5 text-white fill-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]" />
                 </div>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-1.5 text-[9.5px] sm:text-[10px] font-medium tracking-wider uppercase text-white/55">
-                    <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    <span>Contract Address (SPL)</span>
-                  </div>
-                  <span className="block truncate font-mono text-[11px] min-[400px]:text-[11.5px] sm:text-xs font-semibold tracking-tight text-white/95 select-all">
-                    {address}
+                <div>
+                  <span className="block text-[11px] font-semibold text-purple-200/80 uppercase tracking-wider">
+                    Supporting
                   </span>
+                  <h4 className="text-sm sm:text-base font-extrabold text-white leading-tight">
+                    St. Jude Children&apos;s<br />Research Hospital
+                  </h4>
                 </div>
               </div>
-              <button
-                onClick={copyAddress}
-                title={copied ? "Copied!" : "Copy address"}
-                className={`grid size-9 shrink-0 place-items-center rounded-xl border transition-all active:scale-90 ${copied
-                    ? 'border-emerald-500/60 bg-emerald-500/20 text-emerald-400 shadow-[0_0_15px_rgba(52,211,153,0.4)]'
-                    : 'border-white/10 bg-white/5 text-white/80 hover:bg-white/15 hover:text-white'
-                  }`}
-                aria-label="Copy contract address"
-              >
-                {copied ? <Check size={16} /> : <Copy size={15} />}
-              </button>
+
+              {/* Card Middle: Milestone Goal + Arrow Link */}
+              <div className="flex items-center justify-between gap-3 pt-2 pb-2 border-t border-white/10">
+                <p className="text-xs sm:text-[13px] leading-relaxed text-[#f3e8ff]/90">
+                  When we reach a $100K market cap, we donate <strong className="text-[#fbbf24] font-black">12 SOL</strong> to St. Jude.
+                </p>
+
+                <a
+                  href="#partnership"
+                  className="grid size-8 shrink-0 place-items-center rounded-full bg-[#7c2ae8] text-white hover:bg-[#9333ea] shadow-[0_0_15px_rgba(124,42,232,0.7)] transition-all hover:scale-110 active:scale-95"
+                  aria-label="View St. Jude details"
+                >
+                  <ArrowRight className="size-4" />
+                </a>
+              </div>
+
+              {/* Card Bottom: St. Jude Logo All White using CSS */}
+              <div className="pt-3 border-t border-white/10 flex flex-col items-center justify-center">
+                <img
+                  src="/st jude children hospital logo.png"
+                  alt="St. Jude Children's Research Hospital"
+                  className="h-14 sm:h-16 w-auto object-contain filter brightness-0 invert opacity-95 hover:opacity-100 transition-opacity"
+                />
+              </div>
+
             </div>
           </div>
 
-          {/* CTA Buttons */}
-          <div className="flex w-full max-w-[460px] flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-1 sm:pt-2">
-            <a
-              href="https://t.me/epicoins"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#9c3eff] via-[#ad4eff] to-[#cb7dff] px-7 py-3.5 sm:px-8 sm:py-3.5 text-xs sm:text-sm font-bold text-white shadow-[0_0_26px_rgba(168,62,255,0.55),0_4px_16px_rgba(0,0,0,0.3)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_36px_rgba(174,79,255,0.75)] active:scale-[0.98]"
-            >
-              <span>Join the Community</span>
-              <Send size={13} className="fill-white" />
-            </a>
-          </div>
         </div>
       </div>
     </section>
