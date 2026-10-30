@@ -6,65 +6,65 @@ import {
   Save,
   RotateCcw,
   ExternalLink,
-  Shield,
-  Layers,
-  Heart,
-  TrendingUp,
-  MapPin,
   Lock,
   Unlock,
   CheckCircle2,
   AlertCircle,
   Sparkles,
-  Database,
-  ArrowRight,
-  Plus,
-  Trash2,
   RefreshCw,
   Eye,
   Settings,
   HelpCircle,
+  Monitor,
+  Tablet,
+  Smartphone,
+  X,
+  ShieldCheck,
+  Check,
+  Globe,
+  Layers,
+  ArrowRight,
+  Send,
+  LogOut,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { useContent } from '@/context/content-context'
-import { SiteContent, DEFAULT_CONTENT } from '@/lib/default-content'
+import { HeroSection, MissionSection } from '@/app/page'
+import { WhyPotSection } from '@/components/why-pot-section'
+import { StJudePartnershipSection } from '@/components/st-jude-partnership'
+import { RoadmapSection } from '@/components/roadmap-section'
+import { TokenInfoSection } from '@/components/token-info-section'
+import { ContactFooterSection } from '@/components/contact-footer-section'
 
-type AdminTab =
-  | 'hero'
-  | 'utilities'
-  | 'mission'
-  | 'partnership'
-  | 'roadmap'
-  | 'token'
-  | 'footer'
-  | 'global'
-  | 'settings'
+type ViewportMode = 'desktop' | 'tablet' | 'mobile'
 
 const DEFAULT_PASSCODE = 'admin123'
 
 export default function AdminPage() {
   const {
-    content: liveContent,
+    content,
     updateContent,
+    updateFieldByPath,
+    saveChanges,
     resetToDefaults,
     isFirebaseConnected,
     lastSavedAt,
+    isVisualEditMode,
+    setIsVisualEditMode,
+    hasUnsavedChanges,
   } = useContent()
 
-  // Local draft state for editing before saving
-  const [draft, setDraft] = useState<SiteContent>(liveContent)
-  const [activeTab, setActiveTab] = useState<AdminTab>('hero')
-  const [isSaving, setIsSaving] = useState(false)
+  // Authentication state
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [passcode, setPasscode] = useState('')
   const [customPasscode, setCustomPasscode] = useState(DEFAULT_PASSCODE)
   const [newPasscode, setNewPasscode] = useState('')
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
 
-  // Sync draft when liveContent loads from Firestore
-  useEffect(() => {
-    setDraft(liveContent)
-  }, [liveContent])
+  // Studio UI states
+  const [viewport, setViewport] = useState<ViewportMode>('desktop')
+  const [isSaving, setIsSaving] = useState(false)
+  const [showSettingsDrawer, setShowSettingsDrawer] = useState(false)
+  const [showResetConfirm, setShowResetConfirm] = useState(false)
 
   // Check saved session passcode
   useEffect(() => {
@@ -76,110 +76,124 @@ export default function AdminPage() {
     }
   }, [])
 
+  // Enable visual edit mode exclusively when inside admin and authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      setIsVisualEditMode(true)
+    }
+    return () => {
+      setIsVisualEditMode(false)
+    }
+  }, [isAuthenticated, setIsVisualEditMode])
+
+  // Keyboard shortcut Ctrl+S / Cmd+S to save
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault()
+        handleSave()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [saveChanges])
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
     if (passcode === customPasscode || passcode === 'admin123' || passcode === 'potadmin2026') {
       setIsAuthenticated(true)
       sessionStorage.setItem('pot_admin_auth', 'true')
-      toast.success('Welcome back to $POT Admin!')
+      toast.success('Welcome to $POT Visual Studio!')
     } else {
-      toast.error('Incorrect passcode. Try: admin123')
+      toast.error('Incorrect passcode. Default: admin123')
     }
   }
 
   const handleLogout = () => {
     setIsAuthenticated(false)
+    setIsVisualEditMode(false)
     sessionStorage.removeItem('pot_admin_auth')
-    toast.info('Logged out of Admin Panel')
+    toast.info('Logged out of Admin Studio')
   }
 
   const handleSave = async () => {
     setIsSaving(true)
     try {
-      const success = await updateContent(draft)
-      if (success) {
-        toast.success("All changes saved to Firebase 'pots' collection!")
-        setHasUnsavedChanges(false)
+      // Blur any actively focused editable DOM elements to ensure their changes commit to state
+      if (typeof document !== 'undefined' && document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur()
+      }
+      await new Promise((r) => setTimeout(r, 80))
+
+      const ok = await saveChanges()
+      if (ok) {
+        toast.success("All edits successfully saved to Firebase 'pots' collection!")
       } else {
-        toast.error("Failed to save changes to Firebase. Check network/rules.")
+        toast.error('Failed to save to Firebase.')
       }
     } catch (err) {
-      toast.error("Error saving to Firebase: " + (err as Error).message)
+      toast.error('Save error: ' + (err as Error).message)
     } finally {
       setIsSaving(false)
     }
   }
 
-  const handleResetSection = (sectionKey: keyof SiteContent) => {
-    if (confirm(`Reset ${sectionKey} to default content?`)) {
-      setDraft((prev) => ({
-        ...prev,
-        [sectionKey]: DEFAULT_CONTENT[sectionKey],
-      }))
-      setHasUnsavedChanges(true)
-      toast.info(`Reset ${sectionKey} to defaults. Click "Save All Changes" to sync.`)
-    }
-  }
-
-  const handleSyncAllDefaults = async () => {
-    if (confirm("Sync and push all original defaults into Firebase 'pots' collection?")) {
-      setIsSaving(true)
+  const handleReset = async () => {
+    setIsSaving(true)
+    try {
       const ok = await resetToDefaults()
-      setIsSaving(false)
       if (ok) {
-        setDraft(DEFAULT_CONTENT)
-        setHasUnsavedChanges(false)
-        toast.success("Successfully seeded default content into Firebase 'pots' collection!")
+        toast.success('Content reset to initial default copy!')
+        setShowResetConfirm(false)
       } else {
-        toast.error("Could not sync defaults to Firebase.")
+        toast.error('Failed to reset content.')
       }
+    } catch (err) {
+      toast.error('Reset error: ' + (err as Error).message)
+    } finally {
+      setIsSaving(false)
     }
   }
 
-  const handleChangePasscode = (e: React.FormEvent) => {
+  const handleUpdatePasscode = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!newPasscode.trim()) return
+    if (!newPasscode.trim()) {
+      toast.error('Please enter a valid passcode')
+      return
+    }
     localStorage.setItem('pot_admin_passcode', newPasscode.trim())
     setCustomPasscode(newPasscode.trim())
     setNewPasscode('')
     toast.success('Admin passcode updated successfully!')
   }
 
-  // Helper for simple text field changes
-  const updateField = <T extends keyof SiteContent, K extends keyof SiteContent[T]>(
-    section: T,
-    field: K,
-    value: SiteContent[T][K]
-  ) => {
-    setDraft((prev) => ({
-      ...prev,
-      [section]: {
-        ...prev[section],
-        [field]: value,
-      },
-    }))
-    setHasUnsavedChanges(true)
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
   }
 
-  // If not logged in, render the sleek lock screen
+  // ==================== 1. LOGIN SCREEN ====================
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen w-full bg-[#0d041a] text-white flex items-center justify-center p-6 relative overflow-hidden">
-        {/* Ambient Glows */}
-        <div className="absolute top-1/4 left-1/4 size-[400px] bg-[radial-gradient(circle,rgba(168,85,247,0.25)_0%,transparent_60%)] blur-3xl pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/4 size-[400px] bg-[radial-gradient(circle,rgba(216,180,254,0.18)_0%,transparent_60%)] blur-3xl pointer-events-none" />
+      <div className="min-h-screen bg-[#0e041d] text-white flex flex-col items-center justify-center p-4 selection:bg-[#9c3fff] selection:text-white">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(168,85,247,0.25)_0%,transparent_60%)] pointer-events-none" />
 
-        <div className="relative z-10 w-full max-w-md rounded-3xl border border-[#9d4eff]/40 bg-[#170932]/90 p-8 shadow-[0_20px_60px_rgba(0,0,0,0.6)] backdrop-blur-2xl text-center space-y-6">
-          <div className="mx-auto size-16 rounded-2xl bg-gradient-to-br from-[#c084fc] via-[#9333ea] to-[#6b21a8] grid place-items-center shadow-[0_0_24px_rgba(168,85,247,0.6)] border border-white/20">
+        <div className="relative z-10 w-full max-w-md rounded-3xl border border-purple-500/30 bg-[#16062c]/90 p-8 sm:p-10 shadow-[0_20px_60px_rgba(0,0,0,0.8),0_0_40px_rgba(168,85,247,0.25)] backdrop-blur-2xl text-center space-y-6">
+          <div className="mx-auto size-16 rounded-2xl bg-gradient-to-br from-[#c084fc] via-[#9333ea] to-[#6b21a8] grid place-items-center shadow-lg border border-white/20">
             <Lock className="size-8 text-white" />
           </div>
 
           <div>
-            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-              $POT Admin Panel
+            <span className="text-[11px] font-black uppercase tracking-[0.22em] text-[#c084fc]">
+              Admin Control Center
+            </span>
+            <h1 className="mt-1 text-2xl sm:text-3xl font-black text-white tracking-tight">
+              $POT Visual Studio
             </h1>
-            <p className="mt-1.5 text-xs sm:text-sm text-purple-200/70">
-              WordPress-Style Content Management for $POT Luck Community
+            <p className="mt-2 text-xs sm:text-sm text-purple-200/75 leading-relaxed">
+              Live in-place visual editor &amp; CMS for the $POT Luck Community website
             </p>
           </div>
 
@@ -192,32 +206,28 @@ export default function AdminPage() {
                 type="password"
                 value={passcode}
                 onChange={(e) => setPasscode(e.target.value)}
-                placeholder="Enter passcode..."
-                className="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/40 focus:border-[#c084fc] focus:outline-none focus:ring-2 focus:ring-[#9333ea]/50 transition"
+                placeholder="Enter passcode (default: admin123)"
+                className="w-full rounded-xl border border-white/15 bg-black/50 px-4 py-3 text-sm text-white placeholder-white/35 focus:border-[#c084fc] focus:outline-none transition shadow-inner font-mono"
                 autoFocus
               />
             </div>
 
             <button
               type="submit"
-              className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#9c3eff] via-[#ad4eff] to-[#cb7dff] py-3 text-sm font-bold text-white shadow-[0_0_24px_rgba(168,62,255,0.5)] transition hover:scale-[1.02] active:scale-[0.98]"
+              className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#9c3eff] to-[#cb7dff] py-3 text-sm font-bold text-white shadow-[0_4px_20px_rgba(156,62,255,0.4)] transition hover:scale-[1.02] active:scale-[0.98]"
             >
               <Unlock size={16} />
-              <span>Enter Admin Dashboard</span>
+              <span>Unlock Visual Studio</span>
             </button>
           </form>
 
-          <div className="pt-2 border-t border-white/10 text-xs text-purple-300/60 flex items-center justify-center gap-1.5">
-            <HelpCircle size={14} />
-            <span>Default passcode: <strong className="text-purple-200">admin123</strong></span>
-          </div>
-
-          <div>
-            <Link
-              href="/"
-              className="text-xs text-purple-300/80 hover:text-white transition flex items-center justify-center gap-1"
-            >
-              <span>&larr; Return to Live Site</span>
+          <div className="pt-2 border-t border-white/10 flex items-center justify-between text-xs text-purple-300/60">
+            <span>
+              Default: <strong className="text-purple-200 font-mono">admin123</strong>
+            </span>
+            <Link href="/" className="hover:text-white transition flex items-center gap-1">
+              <span>View Public Site</span>
+              <ExternalLink size={12} />
             </Link>
           </div>
         </div>
@@ -225,1352 +235,400 @@ export default function AdminPage() {
     )
   }
 
+  // ==================== 2. VISUAL STUDIO WORKSPACE ====================
   return (
-    <div className="min-h-screen bg-[#0e031e] text-white flex flex-col font-sans">
-      {/* ================= TOP WORDPRESS-STYLE ADMIN BAR ================= */}
-      <header className="sticky top-0 z-50 h-14 bg-[#140628]/95 border-b border-white/10 px-4 sm:px-6 flex items-center justify-between backdrop-blur-xl">
-        <div className="flex items-center gap-3 sm:gap-4">
-          <div className="flex items-center gap-2 text-white font-extrabold tracking-tight text-sm sm:text-base">
-            <span className="grid size-7 place-items-center rounded-lg bg-gradient-to-br from-[#c084fc] to-[#7c2ae8] text-white shadow-sm font-black text-xs">
-              P
-            </span>
-            <span className="hidden sm:inline">$POT Luck</span>
-            <span className="text-[10px] font-black uppercase tracking-wider bg-purple-500/30 text-purple-200 px-2 py-0.5 rounded-full border border-purple-400/30">
-              CMS Admin
-            </span>
-          </div>
+    <div className="min-h-screen bg-[#0d031c] text-white flex flex-col selection:bg-[#9c3fff] selection:text-white">
+      
+      {/* ================= STICKY TOP COMMAND BAR ================= */}
+      <header className="sticky top-0 z-50 w-full border-b border-purple-500/30 bg-[#14052b]/95 backdrop-blur-2xl px-4 sm:px-6 py-2.5 shadow-[0_10px_30px_rgba(0,0,0,0.6)]">
+        <div className="mx-auto flex flex-wrap items-center justify-between gap-3 max-w-[1920px]">
+          
+          {/* Left: Brand, Live Mode Badge & Section Jumper */}
+          <div className="flex items-center gap-3 sm:gap-4">
+            <Link
+              href="/"
+              target="_blank"
+              title="Preview Public Website in new tab"
+              className="flex items-center gap-2.5 group"
+            >
+              <div className="size-8 rounded-full bg-white p-0.5 border border-white/80 shadow-md">
+                <img src="/logo.png" alt="Logo" className="size-full object-contain" />
+              </div>
+              <div className="hidden min-[480px]:block text-left">
+                <span className="block text-xs font-black tracking-tight text-white group-hover:text-purple-200">
+                  $POT Visual Studio
+                </span>
+                <span className="block text-[9.5px] font-semibold text-purple-300/70">
+                  Live Visual Editor
+                </span>
+              </div>
+            </Link>
 
-          <div className="h-4 w-px bg-white/15 hidden md:block" />
-
-          {/* Quick link to live site */}
-          <Link
-            href="/"
-            target="_blank"
-            className="hidden md:inline-flex items-center gap-1.5 text-xs text-purple-200/70 hover:text-white transition py-1 px-2.5 rounded-lg hover:bg-white/5"
-          >
-            <Eye size={13} />
-            <span>View Live Site</span>
-            <ExternalLink size={11} className="opacity-60" />
-          </Link>
-        </div>
-
-        {/* Right Header Status & Save Actions */}
-        <div className="flex items-center gap-2.5 sm:gap-3">
-          {/* Firestore Connection status */}
-          <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] text-purple-200/80">
-            <span
-              className={`size-2 rounded-full ${
-                isFirebaseConnected ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'
-              }`}
-            />
-            <span>
-              {isFirebaseConnected ? "Firebase: 'pots' connected" : 'Firebase offline'}
-            </span>
-          </div>
-
-          {/* Sync Defaults button */}
-          <button
-            onClick={handleSyncAllDefaults}
-            title="Seed / Reset all content to original defaults"
-            className="hidden lg:inline-flex items-center gap-1 text-xs text-purple-200/70 hover:text-white py-1.5 px-3 rounded-lg border border-white/10 hover:bg-white/5 transition"
-          >
-            <Database size={13} />
-            <span>Seed Firebase</span>
-          </button>
-
-          {/* Save Button */}
-          <button
-            onClick={handleSave}
-            disabled={isSaving}
-            className={`inline-flex items-center gap-2 rounded-xl px-4 sm:px-5 py-2 text-xs sm:text-sm font-bold text-white shadow-lg transition active:scale-95 ${
-              hasUnsavedChanges
-                ? 'bg-gradient-to-r from-emerald-500 to-teal-500 shadow-emerald-500/25 animate-pulse'
-                : 'bg-gradient-to-r from-[#9c3eff] to-[#cb7dff] shadow-purple-500/25 hover:scale-105'
-            }`}
-          >
-            {isSaving ? (
-              <RefreshCw size={14} className="animate-spin" />
-            ) : (
-              <Save size={14} />
-            )}
-            <span>{isSaving ? 'Saving...' : hasUnsavedChanges ? 'Save Changes *' : 'Save Content'}</span>
-          </button>
-
-          {/* Logout */}
-          <button
-            onClick={handleLogout}
-            title="Log out"
-            className="text-xs text-purple-300/60 hover:text-white p-2 rounded-lg hover:bg-white/10 transition"
-          >
-            <Lock size={15} />
-          </button>
-        </div>
-      </header>
-
-      {/* ================= MAIN WORDPRESS-STYLE LAYOUT: SIDEBAR + CONTENT ================= */}
-      <div className="flex-1 flex flex-col md:flex-row">
-        {/* Left Sidebar Navigation */}
-        <aside className="w-full md:w-64 bg-[#120424] border-b md:border-b-0 md:border-r border-white/10 p-3 sm:p-4 flex md:flex-col gap-1.5 overflow-x-auto md:overflow-x-visible shrink-0">
-          <div className="hidden md:block px-3 py-2 text-[10px] font-black uppercase tracking-wider text-purple-300/50">
-            Site Sections
-          </div>
-
-          {[
-            { id: 'hero' as AdminTab, label: 'Hero Section', icon: Sparkles },
-            { id: 'utilities' as AdminTab, label: 'Two Utilities', icon: Layers },
-            { id: 'mission' as AdminTab, label: 'Core Mission', icon: Shield },
-            { id: 'partnership' as AdminTab, label: 'St. Jude Partnership', icon: Heart },
-            { id: 'roadmap' as AdminTab, label: 'Roadmap & Phases', icon: MapPin },
-            { id: 'token' as AdminTab, label: 'Token Info & Chart', icon: TrendingUp },
-            { id: 'footer' as AdminTab, label: 'Footer & Socials', icon: HelpCircle },
-            { id: 'global' as AdminTab, label: 'Global Contracts & Links', icon: Database },
-            { id: 'settings' as AdminTab, label: 'Admin Settings', icon: Settings },
-          ].map((item) => {
-            const Icon = item.icon
-            const isActive = activeTab === item.id
-
-            return (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap md:whitespace-normal w-full text-left ${
-                  isActive
-                    ? 'bg-gradient-to-r from-[#9c3eff] to-[#ad4eff] text-white shadow-md shadow-purple-900/50'
-                    : 'text-purple-200/70 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <Icon size={16} className={isActive ? 'text-white' : 'text-purple-300/70'} />
-                <span>{item.label}</span>
-              </button>
-            )
-          })}
-
-          <div className="hidden md:block mt-auto pt-6 px-3">
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-3 text-center space-y-2">
-              <span className="block text-[10px] uppercase font-bold text-purple-300/60 tracking-wider">
-                Firestore Target
+            {/* Mode Indicator Badge */}
+            <div className="flex items-center gap-2 pl-2 sm:pl-3 border-l border-white/15">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-[11px] font-bold">
+                <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="hidden sm:inline">Visual Edit Mode ON</span>
+                <span className="sm:hidden">ON</span>
               </span>
-              <p className="text-xs font-mono font-bold text-white truncate">
-                pots / content
-              </p>
-              {lastSavedAt && (
-                <span className="block text-[10px] text-emerald-400">
-                  Last saved: {lastSavedAt}
+
+              {isFirebaseConnected && (
+                <span className="hidden xl:inline-flex items-center gap-1 text-[11px] text-purple-300/80">
+                  <span className="size-1.5 rounded-full bg-purple-400" />
+                  <span>Firestore pots</span>
                 </span>
               )}
             </div>
+
+            {/* Quick Section Nav Bar */}
+            <nav className="hidden lg:flex items-center gap-1 pl-2 border-l border-white/15 text-[11px] font-semibold text-purple-200/80">
+              <button
+                onClick={() => scrollToSection('home')}
+                className="px-2.5 py-1 rounded-lg hover:bg-white/10 hover:text-white transition"
+              >
+                Hero
+              </button>
+              <button
+                onClick={() => scrollToSection('ecosystem')}
+                className="px-2.5 py-1 rounded-lg hover:bg-white/10 hover:text-white transition"
+              >
+                Ecosystem
+              </button>
+              <button
+                onClick={() => scrollToSection('mission')}
+                className="px-2.5 py-1 rounded-lg hover:bg-white/10 hover:text-white transition"
+              >
+                Mission
+              </button>
+              <button
+                onClick={() => scrollToSection('partnership')}
+                className="px-2.5 py-1 rounded-lg hover:bg-white/10 hover:text-white transition"
+              >
+                St. Jude
+              </button>
+              <button
+                onClick={() => scrollToSection('roadmap')}
+                className="px-2.5 py-1 rounded-lg hover:bg-white/10 hover:text-white transition"
+              >
+                Roadmap
+              </button>
+              <button
+                onClick={() => scrollToSection('token')}
+                className="px-2.5 py-1 rounded-lg hover:bg-white/10 hover:text-white transition"
+              >
+                Token
+              </button>
+              <button
+                onClick={() => scrollToSection('contact')}
+                className="px-2.5 py-1 rounded-lg hover:bg-white/10 hover:text-white transition"
+              >
+                Contact
+              </button>
+            </nav>
           </div>
-        </aside>
 
-        {/* Main Editor Canvas */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto max-w-5xl">
-          {/* ================= TAB 1: HERO SECTION ================= */}
-          {activeTab === 'hero' && (
-            <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-white/10">
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-black text-white">
-                    Hero Section Editor
-                  </h2>
-                  <p className="text-xs sm:text-sm text-purple-200/70">
-                    Customize the main headline, subtitle, action buttons, contract badge, and St. Jude card.
-                  </p>
-                </div>
-                <button
-                  onClick={() => handleResetSection('hero')}
-                  className="inline-flex items-center gap-1.5 text-xs text-purple-300 hover:text-white px-3 py-1.5 rounded-lg border border-white/10 hover:bg-white/5 transition self-start sm:self-auto"
-                >
-                  <RotateCcw size={13} />
-                  <span>Reset Hero</span>
-                </button>
-              </div>
+          {/* Center: Device Viewport Switcher */}
+          <div className="flex items-center rounded-xl bg-black/40 border border-white/15 p-1 shadow-inner">
+            <button
+              onClick={() => setViewport('desktop')}
+              title="Desktop View (Full Width)"
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition ${
+                viewport === 'desktop'
+                  ? 'bg-gradient-to-r from-[#9c3eff] to-[#cb7dff] text-white shadow-sm'
+                  : 'text-purple-200/70 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <Monitor size={14} />
+              <span className="hidden sm:inline">Desktop</span>
+            </button>
+            <button
+              onClick={() => setViewport('tablet')}
+              title="Tablet View (768px iPad)"
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition ${
+                viewport === 'tablet'
+                  ? 'bg-gradient-to-r from-[#9c3eff] to-[#cb7dff] text-white shadow-sm'
+                  : 'text-purple-200/70 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <Tablet size={14} />
+              <span className="hidden sm:inline">iPad (768px)</span>
+            </button>
+            <button
+              onClick={() => setViewport('mobile')}
+              title="Mobile View (390px Mobile)"
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition ${
+                viewport === 'mobile'
+                  ? 'bg-gradient-to-r from-[#9c3eff] to-[#cb7dff] text-white shadow-sm'
+                  : 'text-purple-200/70 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <Smartphone size={14} />
+              <span className="hidden sm:inline">Mobile</span>
+            </button>
+          </div>
 
-              {/* Headline Split inputs */}
-              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 space-y-4">
-                <h3 className="text-sm font-bold text-purple-200 uppercase tracking-wider">
-                  Headline Components
+          {/* Right: Actions (Save, Settings, Reset, Live Site, Logout) */}
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            
+            {/* Save Button */}
+            <button
+              onClick={handleSave}
+              disabled={isSaving}
+              title="Save all changes to Firebase (Ctrl + S)"
+              className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-black text-white shadow-lg transition active:scale-95 ${
+                hasUnsavedChanges
+                  ? 'bg-gradient-to-r from-emerald-500 to-teal-500 shadow-emerald-500/30 animate-pulse'
+                  : 'bg-gradient-to-r from-[#9c3eff] to-[#cb7dff] shadow-purple-500/25 hover:scale-105'
+              }`}
+            >
+              {isSaving ? (
+                <RefreshCw size={13} className="animate-spin" />
+              ) : (
+                <Save size={13} />
+              )}
+              <span>{isSaving ? 'Saving...' : hasUnsavedChanges ? 'Save Changes *' : 'Save to Firebase'}</span>
+            </button>
+
+            {/* Global Settings Drawer Toggle */}
+            <button
+              onClick={() => setShowSettingsDrawer(true)}
+              title="Global Chain &amp; Project Settings"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/5 hover:bg-white/15 px-3 py-2 text-xs font-bold text-white transition"
+            >
+              <Settings size={14} />
+              <span className="hidden md:inline">Settings</span>
+            </button>
+
+            {/* View Live Public Site */}
+            <Link
+              href="/"
+              target="_blank"
+              title="Open Public Site (What visitors see)"
+              className="inline-flex items-center gap-1 rounded-xl border border-white/15 bg-white/5 hover:bg-white/15 px-3 py-2 text-xs font-bold text-purple-200 hover:text-white transition"
+            >
+              <Eye size={13} />
+              <span className="hidden md:inline">Live Site</span>
+              <ExternalLink size={11} className="opacity-70" />
+            </Link>
+
+            {/* Logout */}
+            <button
+              onClick={handleLogout}
+              title="Lock Admin Studio"
+              className="grid size-8 place-items-center rounded-xl border border-white/15 bg-white/5 text-white/70 hover:text-red-400 hover:bg-red-500/10 transition"
+            >
+              <LogOut size={14} />
+            </button>
+
+          </div>
+
+        </div>
+      </header>
+
+      {/* ================= EDITING HINT BANNER ================= */}
+      <div className="bg-gradient-to-r from-purple-900/50 via-indigo-900/50 to-purple-900/50 border-b border-purple-500/20 py-2 px-4 text-center text-xs text-purple-200">
+        <span className="font-bold text-amber-300">Visual Editing Active:</span> Click any copy on the page below to type directly in-place. Click any button to update its text and destination URL. Press <kbd className="px-1.5 py-0.5 rounded bg-black/50 font-mono text-[10px] text-white">Ctrl+S</kbd> to save to Firebase.
+      </div>
+
+      {/* ================= VISUAL CANVAS PREVIEW AREA ================= */}
+      <main className="flex-1 overflow-x-hidden bg-[#0d031c] flex justify-center p-0">
+        <div
+          className={`transition-all duration-300 ${
+            viewport === 'desktop'
+              ? 'w-full'
+              : viewport === 'tablet'
+              ? 'w-[768px] max-w-full my-6 rounded-[28px] border-4 border-purple-500/40 shadow-[0_25px_70px_rgba(0,0,0,0.8),0_0_50px_rgba(168,85,247,0.3)] overflow-hidden bg-black'
+              : 'w-[390px] max-w-full my-6 rounded-[40px] border-4 border-purple-500/50 shadow-[0_25px_70px_rgba(0,0,0,0.9),0_0_50px_rgba(168,85,247,0.35)] overflow-hidden bg-black'
+          }`}
+        >
+          {/* Live Page Components Rendered In-Place With EditableText & EditableButton */}
+          <HeroSection />
+          <WhyPotSection />
+          <MissionSection />
+          <StJudePartnershipSection />
+          <RoadmapSection />
+          <TokenInfoSection />
+          <ContactFooterSection />
+        </div>
+      </main>
+
+      {/* ================= GLOBAL SETTINGS DRAWER ================= */}
+      {showSettingsDrawer && (
+        <div className="fixed inset-0 z-50 flex justify-end bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-md h-full bg-[#16062c] border-l border-purple-500/30 p-6 overflow-y-auto space-y-6 shadow-2xl animate-in slide-in-from-right duration-300"
+          >
+            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              <div className="flex items-center gap-2">
+                <Settings className="size-5 text-[#c084fc]" />
+                <h3 className="text-lg font-black text-white">
+                  Global &amp; Chain Settings
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Prefix Text</label>
-                    <input
-                      type="text"
-                      value={draft.hero.headingPart1}
-                      onChange={(e) => updateField('hero', 'headingPart1', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-amber-300 font-semibold mb-1">
-                      Yellow Highlight Text
-                    </label>
-                    <input
-                      type="text"
-                      value={draft.hero.headingHighlight}
-                      onChange={(e) => updateField('hero', 'headingHighlight', e.target.value)}
-                      className="w-full rounded-xl border border-amber-400/40 bg-black/40 px-3.5 py-2.5 text-sm text-amber-300 focus:border-amber-400 focus:outline-none font-bold"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Suffix Text</label>
-                    <input
-                      type="text"
-                      value={draft.hero.headingPart2}
-                      onChange={(e) => updateField('hero', 'headingPart2', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Eyebrow Subtitle (under headline)</label>
-                    <input
-                      type="text"
-                      value={draft.hero.eyebrow}
-                      onChange={(e) => updateField('hero', 'eyebrow', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Transparency Badge Text</label>
-                    <input
-                      type="text"
-                      value={draft.hero.transparencyBadge}
-                      onChange={(e) => updateField('hero', 'transparencyBadge', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs text-white/70 mb-1">Hero Description Paragraph</label>
-                  <textarea
-                    rows={3}
-                    value={draft.hero.description}
-                    onChange={(e) => updateField('hero', 'description', e.target.value)}
-                    className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none leading-relaxed"
-                  />
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 space-y-4">
-                <h3 className="text-sm font-bold text-purple-200 uppercase tracking-wider">
-                  Call to Action Buttons
-                </h3>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {/* Button 1: Community */}
-                  <div className="p-4 rounded-xl border border-purple-500/20 bg-purple-950/20 space-y-3">
-                    <span className="block text-xs font-bold text-purple-300">
-                      Primary Button (Gradient Pill)
-                    </span>
-                    <div>
-                      <label className="block text-xs text-white/70 mb-1">Button Text</label>
-                      <input
-                        type="text"
-                        value={draft.hero.joinButtonText}
-                        onChange={(e) => updateField('hero', 'joinButtonText', e.target.value)}
-                        className="w-full rounded-xl border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs text-white/70 mb-1">Button Link (URL)</label>
-                      <input
-                        type="text"
-                        value={draft.hero.joinButtonLink}
-                        onChange={(e) => updateField('hero', 'joinButtonLink', e.target.value)}
-                        className="w-full rounded-xl border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Button 2: Live Chart */}
-                  <div className="p-4 rounded-xl border border-emerald-500/20 bg-emerald-950/10 space-y-3">
-                    <span className="block text-xs font-bold text-emerald-300">
-                      Secondary Button (Outline Glass Pill)
-                    </span>
-                    <div>
-                      <label className="block text-xs text-white/70 mb-1">Button Text</label>
-                      <input
-                        type="text"
-                        value={draft.hero.chartButtonText}
-                        onChange={(e) => updateField('hero', 'chartButtonText', e.target.value)}
-                        className="w-full rounded-xl border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs text-white/70 mb-1">Button Link / Anchor</label>
-                      <input
-                        type="text"
-                        value={draft.hero.chartButtonLink}
-                        onChange={(e) => updateField('hero', 'chartButtonLink', e.target.value)}
-                        placeholder="#chart or external url"
-                        className="w-full rounded-xl border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right St. Jude Card */}
-              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 space-y-4">
-                <h3 className="text-sm font-bold text-purple-200 uppercase tracking-wider">
-                  Hero St. Jude Partnership Card
-                </h3>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Card Eyebrow</label>
-                    <input
-                      type="text"
-                      value={draft.hero.stJudeCardEyebrow}
-                      onChange={(e) => updateField('hero', 'stJudeCardEyebrow', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Card Title</label>
-                    <input
-                      type="text"
-                      value={draft.hero.stJudeCardTitle}
-                      onChange={(e) => updateField('hero', 'stJudeCardTitle', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Milestone Text (Before)</label>
-                    <input
-                      type="text"
-                      value={draft.hero.stJudeCardMilestonePrefix}
-                      onChange={(e) => updateField('hero', 'stJudeCardMilestonePrefix', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-amber-300 font-semibold mb-1">
-                      Milestone Highlight (e.g. 12 SOL)
-                    </label>
-                    <input
-                      type="text"
-                      value={draft.hero.stJudeCardMilestoneHighlight}
-                      onChange={(e) => updateField('hero', 'stJudeCardMilestoneHighlight', e.target.value)}
-                      className="w-full rounded-xl border border-amber-400/40 bg-black/40 px-3.5 py-2.5 text-sm text-amber-300 focus:border-amber-400 focus:outline-none font-bold"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Milestone Text (After)</label>
-                    <input
-                      type="text"
-                      value={draft.hero.stJudeCardMilestoneSuffix}
-                      onChange={(e) => updateField('hero', 'stJudeCardMilestoneSuffix', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs text-white/70 mb-1">Arrow Button Link</label>
-                  <input
-                    type="text"
-                    value={draft.hero.stJudeCardButtonLink}
-                    onChange={(e) => updateField('hero', 'stJudeCardButtonLink', e.target.value)}
-                    className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* ================= TAB 2: TWO UTILITIES ================= */}
-          {activeTab === 'utilities' && (
-            <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-white/10">
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-black text-white">
-                    Two Utilities Section Editor
-                  </h2>
-                  <p className="text-xs sm:text-sm text-purple-200/70">
-                    Edit the "Two Utilities. One Mission." section, Holder Rewards card, and Real Impact card.
-                  </p>
-                </div>
-                <button
-                  onClick={() => handleResetSection('utilities')}
-                  className="inline-flex items-center gap-1.5 text-xs text-purple-300 hover:text-white px-3 py-1.5 rounded-lg border border-white/10 hover:bg-white/5 transition self-start sm:self-auto"
-                >
-                  <RotateCcw size={13} />
-                  <span>Reset Section</span>
-                </button>
-              </div>
-
-              {/* Main Column */}
-              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Eyebrow Badge</label>
-                    <input
-                      type="text"
-                      value={draft.utilities.eyebrow}
-                      onChange={(e) => updateField('utilities', 'eyebrow', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Heading</label>
-                    <input
-                      type="text"
-                      value={draft.utilities.heading}
-                      onChange={(e) => updateField('utilities', 'heading', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs text-white/70 mb-1">Description</label>
-                  <textarea
-                    rows={2}
-                    value={draft.utilities.description}
-                    onChange={(e) => updateField('utilities', 'description', e.target.value)}
-                    className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Button Text</label>
-                    <input
-                      type="text"
-                      value={draft.utilities.buttonText}
-                      onChange={(e) => updateField('utilities', 'buttonText', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Button Link</label>
-                    <input
-                      type="text"
-                      value={draft.utilities.buttonLink}
-                      onChange={(e) => updateField('utilities', 'buttonLink', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* The Two Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Card 1 */}
-                <div className="rounded-2xl border border-purple-500/30 bg-purple-950/20 p-5 space-y-3">
-                  <span className="block text-xs font-bold text-purple-300 uppercase">
-                    Card 1: Holder Rewards
-                  </span>
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Title</label>
-                    <input
-                      type="text"
-                      value={draft.utilities.card1Title}
-                      onChange={(e) => updateField('utilities', 'card1Title', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Badge (e.g. 3% SOL Reflections)</label>
-                    <input
-                      type="text"
-                      value={draft.utilities.card1Badge}
-                      onChange={(e) => updateField('utilities', 'card1Badge', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#c084fc] focus:outline-none font-bold text-purple-300"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Description</label>
-                    <textarea
-                      rows={2}
-                      value={draft.utilities.card1Desc}
-                      onChange={(e) => updateField('utilities', 'card1Desc', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                </div>
-
-                {/* Card 2 */}
-                <div className="rounded-2xl border border-emerald-500/30 bg-emerald-950/20 p-5 space-y-3">
-                  <span className="block text-xs font-bold text-emerald-300 uppercase">
-                    Card 2: Real Impact
-                  </span>
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Title</label>
-                    <input
-                      type="text"
-                      value={draft.utilities.card2Title}
-                      onChange={(e) => updateField('utilities', 'card2Title', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Badge (e.g. Charity at $100K MC)</label>
-                    <input
-                      type="text"
-                      value={draft.utilities.card2Badge}
-                      onChange={(e) => updateField('utilities', 'card2Badge', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#c084fc] focus:outline-none font-bold text-emerald-300"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Description</label>
-                    <textarea
-                      rows={2}
-                      value={draft.utilities.card2Desc}
-                      onChange={(e) => updateField('utilities', 'card2Desc', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* ================= TAB 3: MISSION ================= */}
-          {activeTab === 'mission' && (
-            <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-white/10">
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-black text-white">
-                    Core Mission Editor
-                  </h2>
-                  <p className="text-xs sm:text-sm text-purple-200/70">
-                    Edit the mission statements and bullet points in the purple gradient section.
-                  </p>
-                </div>
-                <button
-                  onClick={() => handleResetSection('mission')}
-                  className="inline-flex items-center gap-1.5 text-xs text-purple-300 hover:text-white px-3 py-1.5 rounded-lg border border-white/10 hover:bg-white/5 transition self-start sm:self-auto"
-                >
-                  <RotateCcw size={13} />
-                  <span>Reset Mission</span>
-                </button>
-              </div>
-
-              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Eyebrow</label>
-                    <input
-                      type="text"
-                      value={draft.mission.eyebrow}
-                      onChange={(e) => updateField('mission', 'eyebrow', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Main Heading</label>
-                    <input
-                      type="text"
-                      value={draft.mission.heading}
-                      onChange={(e) => updateField('mission', 'heading', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs text-white/70 mb-1">Mission Paragraph</label>
-                  <textarea
-                    rows={3}
-                    value={draft.mission.description}
-                    onChange={(e) => updateField('mission', 'description', e.target.value)}
-                    className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              {/* Dynamic Mission Points */}
-              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-bold text-purple-200 uppercase tracking-wider">
-                    Mission Feature Points
-                  </h3>
-                  <button
-                    onClick={() => {
-                      setDraft((prev) => ({
-                        ...prev,
-                        mission: {
-                          ...prev.mission,
-                          points: [
-                            ...prev.mission.points,
-                            { title: 'New Point', text: 'Point description...' },
-                          ],
-                        },
-                      }))
-                      setHasUnsavedChanges(true)
-                    }}
-                    className="inline-flex items-center gap-1 text-xs font-bold text-purple-300 hover:text-white px-2.5 py-1 rounded-lg bg-purple-500/20 hover:bg-purple-500/30 transition"
-                  >
-                    <Plus size={13} />
-                    <span>Add Point</span>
-                  </button>
-                </div>
-
-                <div className="space-y-3">
-                  {draft.mission.points.map((pt, idx) => (
-                    <div
-                      key={idx}
-                      className="p-4 rounded-xl border border-white/10 bg-black/40 space-y-2 relative group"
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="text-xs font-bold text-purple-300">
-                          Point #{idx + 1}
-                        </span>
-                        {draft.mission.points.length > 1 && (
-                          <button
-                            onClick={() => {
-                              setDraft((prev) => ({
-                                ...prev,
-                                mission: {
-                                  ...prev.mission,
-                                  points: prev.mission.points.filter((_, i) => i !== idx),
-                                },
-                              }))
-                              setHasUnsavedChanges(true)
-                            }}
-                            className="text-red-400/60 hover:text-red-400 p-1 transition"
-                            title="Remove point"
-                          >
-                            <Trash2 size={14} />
-                          </button>
-                        )}
-                      </div>
-                      <input
-                        type="text"
-                        value={pt.title}
-                        onChange={(e) => {
-                          const newPts = [...draft.mission.points]
-                          newPts[idx].title = e.target.value
-                          setDraft((prev) => ({
-                            ...prev,
-                            mission: { ...prev.mission, points: newPts },
-                          }))
-                          setHasUnsavedChanges(true)
-                        }}
-                        className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-sm font-bold text-white focus:border-[#c084fc] focus:outline-none"
-                        placeholder="Point title..."
-                      />
-                      <textarea
-                        rows={2}
-                        value={pt.text}
-                        onChange={(e) => {
-                          const newPts = [...draft.mission.points]
-                          newPts[idx].text = e.target.value
-                          setDraft((prev) => ({
-                            ...prev,
-                            mission: { ...prev.mission, points: newPts },
-                          }))
-                          setHasUnsavedChanges(true)
-                        }}
-                        className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white/90 focus:border-[#c084fc] focus:outline-none"
-                        placeholder="Point description..."
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* ================= TAB 4: ST JUDE PARTNERSHIP ================= */}
-          {activeTab === 'partnership' && (
-            <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-white/10">
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-black text-white">
-                    St. Jude Partnership Section Editor
-                  </h2>
-                  <p className="text-xs sm:text-sm text-purple-200/70">
-                    Edit the main story copy, direct donation link, and milestone targets.
-                  </p>
-                </div>
-                <button
-                  onClick={() => handleResetSection('partnership')}
-                  className="inline-flex items-center gap-1.5 text-xs text-purple-300 hover:text-white px-3 py-1.5 rounded-lg border border-white/10 hover:bg-white/5 transition self-start sm:self-auto"
-                >
-                  <RotateCcw size={13} />
-                  <span>Reset Section</span>
-                </button>
-              </div>
-
-              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Heading Prefix</label>
-                    <input
-                      type="text"
-                      value={draft.partnership.heading}
-                      onChange={(e) => updateField('partnership', 'heading', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-purple-300 font-semibold mb-1">
-                      Gradient Highlight
-                    </label>
-                    <input
-                      type="text"
-                      value={draft.partnership.headingHighlight}
-                      onChange={(e) => updateField('partnership', 'headingHighlight', e.target.value)}
-                      className="w-full rounded-xl border border-purple-400/40 bg-black/40 px-3.5 py-2.5 text-sm text-purple-300 focus:border-purple-400 focus:outline-none font-bold"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Heading Suffix</label>
-                    <input
-                      type="text"
-                      value={draft.partnership.headingSuffix}
-                      onChange={(e) => updateField('partnership', 'headingSuffix', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs text-white/70 mb-1">Partnership Description</label>
-                  <textarea
-                    rows={4}
-                    value={draft.partnership.description}
-                    onChange={(e) => updateField('partnership', 'description', e.target.value)}
-                    className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none leading-relaxed"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Donate Button Text</label>
-                    <input
-                      type="text"
-                      value={draft.partnership.donateButtonText}
-                      onChange={(e) => updateField('partnership', 'donateButtonText', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Donate Button URL</label>
-                    <input
-                      type="text"
-                      value={draft.partnership.donateButtonLink}
-                      onChange={(e) => updateField('partnership', 'donateButtonLink', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* ================= TAB 5: ROADMAP ================= */}
-          {activeTab === 'roadmap' && (
-            <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-white/10">
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-black text-white">
-                    Roadmap & Phases Editor
-                  </h2>
-                  <p className="text-xs sm:text-sm text-purple-200/70">
-                    Edit each of the 4 project phases, their titles, status tags, and milestone check items.
-                  </p>
-                </div>
-                <button
-                  onClick={() => handleResetSection('roadmap')}
-                  className="inline-flex items-center gap-1.5 text-xs text-purple-300 hover:text-white px-3 py-1.5 rounded-lg border border-white/10 hover:bg-white/5 transition self-start sm:self-auto"
-                >
-                  <RotateCcw size={13} />
-                  <span>Reset Roadmap</span>
-                </button>
-              </div>
-
-              {/* Section Header */}
-              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Eyebrow</label>
-                    <input
-                      type="text"
-                      value={draft.roadmap.eyebrow}
-                      onChange={(e) => updateField('roadmap', 'eyebrow', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Title</label>
-                    <input
-                      type="text"
-                      value={draft.roadmap.heading}
-                      onChange={(e) => updateField('roadmap', 'heading', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-xs text-white/70 mb-1">Description</label>
-                  <input
-                    type="text"
-                    value={draft.roadmap.description}
-                    onChange={(e) => updateField('roadmap', 'description', e.target.value)}
-                    className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              {/* Phases */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {draft.roadmap.phases.map((phase, pIdx) => (
-                  <div
-                    key={phase.id || pIdx}
-                    className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 space-y-3"
-                  >
-                    <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
-                      <input
-                        type="text"
-                        value={phase.phaseNumber}
-                        onChange={(e) => {
-                          const newPhases = [...draft.roadmap.phases]
-                          newPhases[pIdx].phaseNumber = e.target.value
-                          setDraft((prev) => ({
-                            ...prev,
-                            roadmap: { ...prev.roadmap, phases: newPhases },
-                          }))
-                          setHasUnsavedChanges(true)
-                        }}
-                        className="rounded-lg border border-white/15 bg-black/40 px-2 py-1 text-xs font-black uppercase tracking-wider text-purple-300 w-28"
-                      />
-                      <input
-                        type="text"
-                        value={phase.badge}
-                        onChange={(e) => {
-                          const newPhases = [...draft.roadmap.phases]
-                          newPhases[pIdx].badge = e.target.value
-                          setDraft((prev) => ({
-                            ...prev,
-                            roadmap: { ...prev.roadmap, phases: newPhases },
-                          }))
-                          setHasUnsavedChanges(true)
-                        }}
-                        className="rounded-lg border border-emerald-500/40 bg-emerald-950/20 px-2 py-1 text-xs font-bold text-emerald-300 text-right w-28"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs text-white/70 mb-1">Phase Title</label>
-                      <input
-                        type="text"
-                        value={phase.title}
-                        onChange={(e) => {
-                          const newPhases = [...draft.roadmap.phases]
-                          newPhases[pIdx].title = e.target.value
-                          setDraft((prev) => ({
-                            ...prev,
-                            roadmap: { ...prev.roadmap, phases: newPhases },
-                          }))
-                          setHasUnsavedChanges(true)
-                        }}
-                        className="w-full rounded-xl border border-white/15 bg-black/40 px-3 py-2 text-sm font-bold text-white focus:border-[#c084fc] focus:outline-none"
-                      />
-                    </div>
-
-                    {/* Milestone Items */}
-                    <div>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <label className="text-xs text-white/70">Checklist Items</label>
-                        <button
-                          onClick={() => {
-                            const newPhases = [...draft.roadmap.phases]
-                            newPhases[pIdx].items.push('New milestone item')
-                            setDraft((prev) => ({
-                              ...prev,
-                              roadmap: { ...prev.roadmap, phases: newPhases },
-                            }))
-                            setHasUnsavedChanges(true)
-                          }}
-                          className="text-[11px] text-purple-300 hover:text-white"
-                        >
-                          + Add Item
-                        </button>
-                      </div>
-
-                      <div className="space-y-1.5">
-                        {phase.items.map((item, itemIdx) => (
-                          <div key={itemIdx} className="flex items-center gap-1.5">
-                            <input
-                              type="text"
-                              value={item}
-                              onChange={(e) => {
-                                const newPhases = [...draft.roadmap.phases]
-                                newPhases[pIdx].items[itemIdx] = e.target.value
-                                setDraft((prev) => ({
-                                  ...prev,
-                                  roadmap: { ...prev.roadmap, phases: newPhases },
-                                }))
-                                setHasUnsavedChanges(true)
-                              }}
-                              className="flex-1 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 text-xs text-white/90 focus:border-[#c084fc] focus:outline-none"
-                            />
-                            {phase.items.length > 1 && (
-                              <button
-                                onClick={() => {
-                                  const newPhases = [...draft.roadmap.phases]
-                                  newPhases[pIdx].items = newPhases[pIdx].items.filter(
-                                    (_, i) => i !== itemIdx
-                                  )
-                                  setDraft((prev) => ({
-                                    ...prev,
-                                    roadmap: { ...prev.roadmap, phases: newPhases },
-                                  }))
-                                  setHasUnsavedChanges(true)
-                                }}
-                                className="text-red-400/50 hover:text-red-400 p-1"
-                              >
-                                <Trash2 size={13} />
-                              </button>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* ================= TAB 6: TOKEN INFO & CHART ================= */}
-          {activeTab === 'token' && (
-            <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-white/10">
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-black text-white">
-                    Token Info & Chart Editor
-                  </h2>
-                  <p className="text-xs sm:text-sm text-purple-200/70">
-                    Edit token specifications, key bullet features, and DexScreener chart titles.
-                  </p>
-                </div>
-                <button
-                  onClick={() => handleResetSection('tokenInfo')}
-                  className="inline-flex items-center gap-1.5 text-xs text-purple-300 hover:text-white px-3 py-1.5 rounded-lg border border-white/10 hover:bg-white/5 transition self-start sm:self-auto"
-                >
-                  <RotateCcw size={13} />
-                  <span>Reset Token Info</span>
-                </button>
-              </div>
-
-              {/* Specs */}
-              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 space-y-4">
-                <h3 className="text-sm font-bold text-purple-200 uppercase tracking-wider">
-                  Token Specs
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Token Name</label>
-                    <input
-                      type="text"
-                      value={draft.tokenInfo.tokenName}
-                      onChange={(e) => updateField('tokenInfo', 'tokenName', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Ticker</label>
-                    <input
-                      type="text"
-                      value={draft.tokenInfo.ticker}
-                      onChange={(e) => updateField('tokenInfo', 'ticker', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none font-bold"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Blockchain</label>
-                    <input
-                      type="text"
-                      value={draft.tokenInfo.blockchain}
-                      onChange={(e) => updateField('tokenInfo', 'blockchain', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Chart details */}
-              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 space-y-4">
-                <h3 className="text-sm font-bold text-purple-200 uppercase tracking-wider">
-                  Live DexScreener Chart Block
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Chart Title</label>
-                    <input
-                      type="text"
-                      value={draft.tokenInfo.chartTitle}
-                      onChange={(e) => updateField('tokenInfo', 'chartTitle', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Chart Status Badge</label>
-                    <input
-                      type="text"
-                      value={draft.tokenInfo.chartBadge}
-                      onChange={(e) => updateField('tokenInfo', 'chartBadge', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none font-bold text-emerald-300"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-xs text-white/70 mb-1">Chart Subtitle</label>
-                  <input
-                    type="text"
-                    value={draft.tokenInfo.chartSubtitle}
-                    onChange={(e) => updateField('tokenInfo', 'chartSubtitle', e.target.value)}
-                    className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              {/* Key Features Bullet List */}
-              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-bold text-purple-200 uppercase tracking-wider">
-                    Key Highlights List
-                  </h3>
-                  <button
-                    onClick={() => {
-                      setDraft((prev) => ({
-                        ...prev,
-                        tokenInfo: {
-                          ...prev.tokenInfo,
-                          features: [...prev.tokenInfo.features, 'New key highlight'],
-                        },
-                      }))
-                      setHasUnsavedChanges(true)
-                    }}
-                    className="text-xs font-bold text-purple-300 hover:text-white px-2.5 py-1 rounded-lg bg-purple-500/20 hover:bg-purple-500/30 transition"
-                  >
-                    + Add Highlight
-                  </button>
-                </div>
-
-                <div className="space-y-2">
-                  {draft.tokenInfo.features.map((feat, i) => (
-                    <div key={i} className="flex items-center gap-2">
-                      <span className="size-6 shrink-0 rounded-full bg-purple-500/20 text-purple-300 grid place-items-center text-xs font-bold">
-                        {i + 1}
-                      </span>
-                      <input
-                        type="text"
-                        value={feat}
-                        onChange={(e) => {
-                          const newFeats = [...draft.tokenInfo.features]
-                          newFeats[i] = e.target.value
-                          setDraft((prev) => ({
-                            ...prev,
-                            tokenInfo: { ...prev.tokenInfo, features: newFeats },
-                          }))
-                          setHasUnsavedChanges(true)
-                        }}
-                        className="flex-1 rounded-xl border border-white/10 bg-black/40 px-3 py-2 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                      />
-                      {draft.tokenInfo.features.length > 1 && (
-                        <button
-                          onClick={() => {
-                            setDraft((prev) => ({
-                              ...prev,
-                              tokenInfo: {
-                                ...prev.tokenInfo,
-                                features: prev.tokenInfo.features.filter((_, idx) => idx !== i),
-                              },
-                            }))
-                            setHasUnsavedChanges(true)
-                          }}
-                          className="text-red-400/60 hover:text-red-400 p-1.5"
-                        >
-                          <Trash2 size={14} />
-                        </button>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* ================= TAB 7: FOOTER & SOCIALS ================= */}
-          {activeTab === 'footer' && (
-            <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-white/10">
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-black text-white">
-                    Footer & Socials Editor
-                  </h2>
-                  <p className="text-xs sm:text-sm text-purple-200/70">
-                    Edit footer copyright notices, brand naming, and Telegram community buttons.
-                  </p>
-                </div>
-                <button
-                  onClick={() => handleResetSection('footer')}
-                  className="inline-flex items-center gap-1.5 text-xs text-purple-300 hover:text-white px-3 py-1.5 rounded-lg border border-white/10 hover:bg-white/5 transition self-start sm:self-auto"
-                >
-                  <RotateCcw size={13} />
-                  <span>Reset Footer</span>
-                </button>
-              </div>
-
-              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Footer Heading</label>
-                    <input
-                      type="text"
-                      value={draft.footer.heading}
-                      onChange={(e) => updateField('footer', 'heading', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Footer Subheading</label>
-                    <input
-                      type="text"
-                      value={draft.footer.subheading}
-                      onChange={(e) => updateField('footer', 'subheading', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Telegram Button Text</label>
-                    <input
-                      type="text"
-                      value={draft.footer.telegramButtonText}
-                      onChange={(e) => updateField('footer', 'telegramButtonText', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Telegram Button URL</label>
-                    <input
-                      type="text"
-                      value={draft.footer.telegramButtonLink}
-                      onChange={(e) => updateField('footer', 'telegramButtonLink', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs text-white/70 mb-1">Copyright Line</label>
-                  <input
-                    type="text"
-                    value={draft.footer.copyright}
-                    onChange={(e) => updateField('footer', 'copyright', e.target.value)}
-                    className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* ================= TAB 8: GLOBAL CONTRACTS & ADDRESSES ================= */}
-          {activeTab === 'global' && (
-            <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-white/10">
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-black text-white">
-                    Global Contracts & Links
-                  </h2>
-                  <p className="text-xs sm:text-sm text-purple-200/70">
-                    Update on-chain Solana addresses, official channels, and live DexScreener URLs. Updates everywhere site-wide.
-                  </p>
-                </div>
-                <button
-                  onClick={() => handleResetSection('global')}
-                  className="inline-flex items-center gap-1.5 text-xs text-purple-300 hover:text-white px-3 py-1.5 rounded-lg border border-white/10 hover:bg-white/5 transition self-start sm:self-auto"
-                >
-                  <RotateCcw size={13} />
-                  <span>Reset Global</span>
-                </button>
-              </div>
-
-              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 space-y-4">
-                <div>
-                  <label className="block text-xs text-white/70 mb-1">
-                    Brand Name (e.g. EpiCoin)
-                  </label>
-                  <input
-                    type="text"
-                    value={draft.global.brandName}
-                    onChange={(e) => updateField('global', 'brandName', e.target.value)}
-                    className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none font-bold"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs text-purple-300 font-semibold mb-1">
-                    Solana Contract Address (SPL Token)
-                  </label>
-                  <input
-                    type="text"
-                    value={draft.global.solanaContractAddress}
-                    onChange={(e) => updateField('global', 'solanaContractAddress', e.target.value)}
-                    className="w-full rounded-xl border border-purple-400/40 bg-black/40 px-3.5 py-2.5 font-mono text-sm text-purple-200 focus:border-[#c084fc] focus:outline-none font-bold select-all"
-                  />
-                  <p className="mt-1 text-[11px] text-white/50">
-                    Controls the copyable address card in Hero, Header, and Token Information.
-                  </p>
-                </div>
-
-                <div>
-                  <label className="block text-xs text-purple-300 font-semibold mb-1">
-                    St. Jude Charity Vault Solana Address
-                  </label>
-                  <input
-                    type="text"
-                    value={draft.global.charityVaultAddress}
-                    onChange={(e) => updateField('global', 'charityVaultAddress', e.target.value)}
-                    className="w-full rounded-xl border border-purple-400/40 bg-black/40 px-3.5 py-2.5 font-mono text-sm text-purple-200 focus:border-[#c084fc] focus:outline-none font-bold select-all"
-                  />
-                  <p className="mt-1 text-[11px] text-white/50">
-                    Controls the donation wallet address in the St. Jude partnership section.
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">Official Telegram Community URL</label>
-                    <input
-                      type="text"
-                      value={draft.global.telegramUrl}
-                      onChange={(e) => updateField('global', 'telegramUrl', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">DexScreener Pair Page URL</label>
-                    <input
-                      type="text"
-                      value={draft.global.dexScreenerUrl}
-                      onChange={(e) => updateField('global', 'dexScreenerUrl', e.target.value)}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs text-white/70 mb-1">DexScreener Embed Iframe URL</label>
-                  <input
-                    type="text"
-                    value={draft.global.dexScreenerChartEmbedUrl}
-                    onChange={(e) => updateField('global', 'dexScreenerChartEmbedUrl', e.target.value)}
-                    className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-xs text-white focus:border-[#c084fc] focus:outline-none font-mono"
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* ================= TAB 9: SETTINGS & BACKUP ================= */}
-          {activeTab === 'settings' && (
-            <div className="space-y-6">
-              <div className="pb-4 border-b border-white/10">
-                <h2 className="text-xl sm:text-2xl font-black text-white">
-                  CMS & Security Settings
-                </h2>
-                <p className="text-xs sm:text-sm text-purple-200/70">
-                  Manage admin passcodes and Firebase database synchronization.
-                </p>
-              </div>
-
-              {/* Change Passcode */}
-              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 space-y-4">
-                <h3 className="text-sm font-bold text-purple-200 uppercase tracking-wider flex items-center gap-2">
-                  <Shield size={16} />
-                  <span>Admin Passcode Security</span>
-                </h3>
-
-                <form onSubmit={handleChangePasscode} className="space-y-3 max-w-md">
-                  <div>
-                    <label className="block text-xs text-white/70 mb-1">
-                      New Admin Passcode
-                    </label>
-                    <input
-                      type="password"
-                      value={newPasscode}
-                      onChange={(e) => setNewPasscode(e.target.value)}
-                      placeholder="Enter new secret passcode..."
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    className="inline-flex items-center gap-2 rounded-xl bg-purple-600 hover:bg-purple-500 px-4 py-2 text-xs font-bold text-white transition active:scale-95"
-                  >
-                    <span>Update Passcode</span>
-                  </button>
-                </form>
-              </div>
-
-              {/* Database sync actions */}
-              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 space-y-4">
-                <h3 className="text-sm font-bold text-purple-200 uppercase tracking-wider flex items-center gap-2">
-                  <Database size={16} />
-                  <span>Firestore Database Management</span>
-                </h3>
-
-                <div className="p-4 rounded-xl border border-white/10 bg-black/40 space-y-2 text-xs text-purple-200/80">
-                  <p><strong>Project ID:</strong> admiral-1a377</p>
-                  <p><strong>Target Collection:</strong> pots</p>
-                  <p><strong>Target Document:</strong> content</p>
-                  <p><strong>Status:</strong> {isFirebaseConnected ? 'Connected & Active' : 'Waiting for connection'}</p>
-                </div>
-
-                <div className="pt-2">
-                  <button
-                    onClick={handleSyncAllDefaults}
-                    className="inline-flex items-center gap-2 rounded-xl border border-purple-400/40 bg-purple-900/30 hover:bg-purple-800/40 px-4 py-2.5 text-xs sm:text-sm font-bold text-purple-200 transition"
-                  >
-                    <RotateCcw size={14} />
-                    <span>Force Re-seed All Default Content to Firebase</span>
-                  </button>
-                  <p className="mt-1.5 text-[11px] text-white/50">
-                    Use this if you ever need to restore everything back to initial production defaults in the 'pots' collection.
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Floating Unsaved Changes Pill */}
-          {hasUnsavedChanges && (
-            <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-[#170932] border border-[#c084fc]/80 px-5 py-3 rounded-2xl shadow-[0_10px_35px_rgba(0,0,0,0.8),0_0_25px_rgba(168,85,247,0.5)] backdrop-blur-xl animate-bounce">
-              <div className="flex items-center gap-2 text-xs font-bold text-amber-300">
-                <AlertCircle size={16} />
-                <span>You have unsaved changes!</span>
               </div>
               <button
-                onClick={handleSave}
-                disabled={isSaving}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 px-4 py-1.5 text-xs font-black text-white shadow-md active:scale-95 transition"
+                onClick={() => setShowSettingsDrawer(false)}
+                className="grid size-8 place-items-center rounded-xl bg-white/5 hover:bg-white/15 text-white/70 hover:text-white"
               >
-                {isSaving ? <RefreshCw size={12} className="animate-spin" /> : <Save size={12} />}
-                <span>Save Now</span>
+                <X size={16} />
               </button>
             </div>
-          )}
-        </main>
-      </div>
+
+            {/* Solana Contract Address */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-purple-200/80">
+                Solana Contract Address (SPL)
+              </label>
+              <input
+                type="text"
+                value={content.global.solanaContractAddress}
+                onChange={(e) => updateFieldByPath('global.solanaContractAddress', e.target.value)}
+                className="w-full rounded-xl border border-white/15 bg-black/50 px-3.5 py-2 text-xs font-mono text-white focus:border-[#c084fc] focus:outline-none"
+              />
+            </div>
+
+            {/* Charity Vault Address */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-purple-200/80">
+                Charity Vault Wallet Address
+              </label>
+              <input
+                type="text"
+                value={content.global.charityVaultAddress}
+                onChange={(e) => updateFieldByPath('global.charityVaultAddress', e.target.value)}
+                className="w-full rounded-xl border border-white/15 bg-black/50 px-3.5 py-2 text-xs font-mono text-white focus:border-[#c084fc] focus:outline-none"
+              />
+            </div>
+
+            {/* Telegram URL */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-purple-200/80">
+                Telegram Community URL
+              </label>
+              <input
+                type="text"
+                value={content.global.telegramUrl}
+                onChange={(e) => updateFieldByPath('global.telegramUrl', e.target.value)}
+                className="w-full rounded-xl border border-white/15 bg-black/50 px-3.5 py-2 text-xs font-mono text-white focus:border-[#c084fc] focus:outline-none"
+              />
+            </div>
+
+            {/* DexScreener Embed URL */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-purple-200/80">
+                DexScreener Embed Chart URL
+              </label>
+              <input
+                type="text"
+                value={content.global.dexScreenerChartEmbedUrl}
+                onChange={(e) => updateFieldByPath('global.dexScreenerChartEmbedUrl', e.target.value)}
+                className="w-full rounded-xl border border-white/15 bg-black/50 px-3.5 py-2 text-xs font-mono text-white focus:border-[#c084fc] focus:outline-none"
+              />
+            </div>
+
+            {/* Change Admin Passcode */}
+            <div className="pt-4 border-t border-white/10 space-y-3">
+              <label className="block text-xs font-bold uppercase tracking-wider text-purple-200/80">
+                Change Admin Passcode
+              </label>
+              <form onSubmit={handleUpdatePasscode} className="flex gap-2">
+                <input
+                  type="password"
+                  value={newPasscode}
+                  onChange={(e) => setNewPasscode(e.target.value)}
+                  placeholder="Enter new passcode"
+                  className="flex-1 rounded-xl border border-white/15 bg-black/50 px-3.5 py-2 text-xs text-white focus:border-[#c084fc] focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  className="rounded-xl bg-purple-600 hover:bg-purple-500 px-4 py-2 text-xs font-bold text-white transition active:scale-95"
+                >
+                  Update
+                </button>
+              </form>
+              <span className="block text-[11px] text-purple-300/60">
+                Current passcode: <strong className="text-purple-200 font-mono">{customPasscode}</strong>
+              </span>
+            </div>
+
+            {/* Danger Zone: Reset to Defaults */}
+            <div className="pt-4 border-t border-red-500/20 space-y-2">
+              <label className="block text-xs font-bold uppercase tracking-wider text-red-400">
+                Reset Site Content
+              </label>
+              <p className="text-[11px] text-purple-300/70">
+                Reverts all website texts and button links to their initial defaults and saves to Firebase.
+              </p>
+              <button
+                type="button"
+                onClick={() => setShowResetConfirm(true)}
+                className="inline-flex items-center gap-1.5 rounded-xl border border-red-500/40 bg-red-500/10 hover:bg-red-500/20 px-3.5 py-2 text-xs font-bold text-red-300 transition"
+              >
+                <RotateCcw size={13} />
+                <span>Reset to Defaults</span>
+              </button>
+            </div>
+
+            {/* Bottom Actions */}
+            <div className="pt-6 border-t border-white/10 flex items-center justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setShowSettingsDrawer(false)}
+                className="rounded-xl px-4 py-2 text-xs font-bold text-white/70 hover:text-white"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  handleSave()
+                  setShowSettingsDrawer(false)
+                }}
+                className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#9c3eff] to-[#cb7dff] px-5 py-2 text-xs font-bold text-white shadow-md active:scale-95"
+              >
+                <Save size={14} />
+                <span>Save All to Firebase</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* ================= RESET CONFIRMATION MODAL ================= */}
+      {showResetConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="w-full max-w-sm rounded-3xl border border-red-500/40 bg-[#190528] p-6 shadow-2xl text-center space-y-4">
+            <div className="mx-auto size-12 rounded-2xl bg-red-500/20 text-red-400 grid place-items-center">
+              <AlertCircle size={24} />
+            </div>
+            <div>
+              <h4 className="text-lg font-black text-white">Reset to Default Content?</h4>
+              <p className="mt-1 text-xs text-purple-200/70 leading-relaxed">
+                This will overwrite any customized copy with the initial default texts and save directly to Firebase.
+              </p>
+            </div>
+            <div className="flex items-center justify-center gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => setShowResetConfirm(false)}
+                className="rounded-xl px-4 py-2 text-xs font-bold text-white/70 hover:text-white border border-white/10"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleReset}
+                className="inline-flex items-center gap-1.5 rounded-xl bg-red-600 hover:bg-red-500 px-4 py-2 text-xs font-bold text-white shadow-md active:scale-95"
+              >
+                <RotateCcw size={13} />
+                <span>Yes, Reset</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   )
 }
-
