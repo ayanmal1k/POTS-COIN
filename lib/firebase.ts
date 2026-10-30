@@ -74,6 +74,7 @@ export async function getSiteContentFromFirestore(): Promise<SiteContent> {
         },
         footer: { ...DEFAULT_CONTENT.footer, ...(data.footer || {}) },
         global: { ...DEFAULT_CONTENT.global, ...(data.global || {}) },
+        textStyles: data.textStyles || DEFAULT_CONTENT.textStyles || {},
       }
     }
   } catch (error) {
@@ -134,6 +135,7 @@ export function subscribeToSiteContent(
             },
             footer: { ...DEFAULT_CONTENT.footer, ...(data.footer || {}) },
             global: { ...DEFAULT_CONTENT.global, ...(data.global || {}) },
+            textStyles: data.textStyles || DEFAULT_CONTENT.textStyles || {},
           })
         }
       },
