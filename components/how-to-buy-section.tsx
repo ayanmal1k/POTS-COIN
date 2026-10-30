@@ -71,17 +71,6 @@ export function HowToBuySection() {
         {/* ================= 1. SECTION HEADER (Centered & Editorial) ================= */}
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto space-y-4">
           
-          {/* Eyebrow badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 backdrop-blur-md shadow-sm">
-            <Sparkles className="size-3.5 text-[#ffe066]" />
-            <EditableText
-              as="span"
-              value={h.eyebrow}
-              path="howToBuy.eyebrow"
-              className="text-[10.5px] sm:text-xs font-black tracking-[0.24em] uppercase text-[#e9d5ff]"
-            />
-          </div>
-
           {/* Main Title */}
           <h2 className="text-3xl min-[420px]:text-4xl sm:text-5xl lg:text-[54px] font-black tracking-[-0.035em] text-white leading-[1.08]">
             <EditableText

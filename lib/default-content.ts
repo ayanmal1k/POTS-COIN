@@ -205,7 +205,7 @@ export const DEFAULT_CONTENT: SiteContent = {
     ],
   },
   howToBuy: {
-    eyebrow: 'EASY 4-STEP GUIDE',
+    eyebrow: '',
     heading: 'How to Buy $POT on',
     headingHighlight: 'FOMO',
     description: 'Get started with $POT Luck Community in under 3 minutes. Follow this step-by-step guide to swap securely on Solana.',
