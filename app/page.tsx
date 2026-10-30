@@ -114,19 +114,19 @@ export function HeroSection() {
           
           {/* Left Column: Headline, Description & Action Buttons (5 cols) */}
           <div className="lg:col-span-5 flex flex-col justify-center items-center lg:items-start text-center lg:text-left space-y-5 sm:space-y-6 z-20 py-4 lg:py-8">
-            {/* Eyebrow */}
-            <p className="text-xs sm:text-[13px] font-black tracking-[0.24em] uppercase text-[#e9d5ff]">
-              THE EpiCoin ECOSYSTEM
-            </p>
-
-            {/* Headline: $POT Luck in yellow gold gradient, Community in white */}
-            <h1 className="text-4xl min-[400px]:text-5xl sm:text-6xl lg:text-[58px] xl:text-[68px] 2xl:text-[74px] font-black leading-[1.04] tracking-[-0.035em] text-white">
+            {/* Main Headline */}
+            <h1 className="text-3xl min-[400px]:text-4xl sm:text-5xl lg:text-[46px] xl:text-[54px] 2xl:text-[60px] font-black leading-[1.08] tracking-[-0.03em] text-white">
+              Welcome to{' '}
               <span className="bg-gradient-to-r from-[#ffe066] via-[#f59e0b] to-[#fbbf24] bg-clip-text text-transparent drop-shadow-[0_4px_22px_rgba(245,158,11,0.45)]">
                 $POT Luck
-              </span>
-              <br />
-              Community
+              </span>{' '}
+              Community (PLC)
             </h1>
+
+            {/* Text right beneath main heading */}
+            <p className="text-xs sm:text-[13px] font-black tracking-[0.24em] uppercase text-[#e9d5ff]/90">
+              The EpiCoin Ecosystem
+            </p>
 
             {/* 100% Verified Transparency Badge */}
             <div className="flex justify-center lg:justify-start pt-1">
