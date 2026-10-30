@@ -185,9 +185,7 @@ export function HeroSection() {
               </a>
 
               <a
-                href="https://dexscreener.com/solana/GUtUrPGwfJDj3WTb2dEe2B9UnLtG1GGdBMreFtDXJxEw"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#chart"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border border-white/35 bg-white/5 hover:bg-white/15 hover:border-white/60 px-6 py-3.5 text-xs sm:text-sm font-bold text-white backdrop-blur-md transition-all duration-200 hover:scale-[1.03] active:scale-[0.98]"
               >
                 <span>View $POT live chart</span>

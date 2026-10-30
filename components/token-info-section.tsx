@@ -192,7 +192,7 @@ export function TokenInfoSection() {
         </div>
 
         {/* Live DexScreener Chart Block - Styled with Web3 Glassmorphism */}
-        <div className="mt-10 sm:mt-14 lg:mt-16 rounded-3xl sm:rounded-[32px] border border-[#d8b4fe]/80 bg-white/90 p-4 sm:p-6 lg:p-8 backdrop-blur-xl shadow-[0_20px_60px_rgba(110,40,185,0.1)] transition-all duration-300">
+        <div id="chart" className="mt-10 sm:mt-14 lg:mt-16 rounded-3xl sm:rounded-[32px] border border-[#d8b4fe]/80 bg-white/90 p-4 sm:p-6 lg:p-8 backdrop-blur-xl shadow-[0_20px_60px_rgba(110,40,185,0.1)] transition-all duration-300 scroll-mt-20">
           
           {/* Chart Header Bar */}
           <div className="flex items-center gap-3 pb-5 border-b border-[#f0e4ff]">
