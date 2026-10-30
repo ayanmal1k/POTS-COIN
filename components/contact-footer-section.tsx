@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { useContent } from '@/context/content-context'
+import { EditableText } from '@/components/visual-editor/editable'
 import { MapPin, Mail, Globe, FileText, Phone, Building2, Heart } from 'lucide-react'
 
 // Custom SVG X (formerly Twitter) Icon
@@ -244,9 +245,12 @@ export function ContactFooterSection() {
           </a>
 
           {/* Center: Copyright Notice */}
-          <p className="text-xs sm:text-[13px] text-white/60 font-medium">
-            {content.footer.copyright}
-          </p>
+          <EditableText
+            as="p"
+            value={content.footer.copyright}
+            path="footer.copyright"
+            className="text-xs sm:text-[13px] text-white/60 font-medium"
+          />
 
           {/* Right: Twitter / X and Telegram Icons */}
           <div className="flex items-center gap-3">

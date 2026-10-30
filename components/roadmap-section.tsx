@@ -3,6 +3,7 @@
 import React from 'react'
 import { Flag, Target, Rocket, Star, Sparkles } from 'lucide-react'
 import { useContent } from '@/context/content-context'
+import { EditableText } from '@/components/visual-editor/editable'
 
 export function RoadmapSection() {
   const { content } = useContent()
@@ -31,16 +32,26 @@ export function RoadmapSection() {
         <div className="roadmap-header mb-10 sm:mb-14 lg:mb-16 text-left">
           <div className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1 backdrop-blur-md mb-2">
             <Sparkles className="size-3 text-[#c084fc]" />
-            <span className="text-[10px] sm:text-[11px] font-black tracking-[0.2em] uppercase text-[#e9d5ff]">
-              {content.roadmap.eyebrow}
-            </span>
+            <EditableText
+              as="span"
+              value={content.roadmap.eyebrow}
+              path="roadmap.eyebrow"
+              className="text-[10px] sm:text-[11px] font-black tracking-[0.2em] uppercase text-[#e9d5ff]"
+            />
           </div>
-          <h2 className="mt-1 text-3xl min-[420px]:text-4xl sm:text-5xl font-black tracking-tight text-white leading-tight">
-            {content.roadmap.heading}
-          </h2>
-          <p className="mt-2 text-xs sm:text-sm text-purple-200/80 max-w-lg">
-            {content.roadmap.description}
-          </p>
+          <EditableText
+            as="h2"
+            value={content.roadmap.heading}
+            path="roadmap.heading"
+            className="mt-1 text-3xl min-[420px]:text-4xl sm:text-5xl font-black tracking-tight text-white leading-tight"
+          />
+          <EditableText
+            as="p"
+            value={content.roadmap.description}
+            path="roadmap.description"
+            multiline
+            className="mt-2 text-xs sm:text-sm text-purple-200/80 max-w-lg"
+          />
         </div>
 
         {/* ----------------- MOBILE / TABLET VIEW (< lg): CONNECTED VERTICAL TIMELINE ----------------- */}

@@ -3,6 +3,7 @@
 import React from 'react'
 import { Heart } from 'lucide-react'
 import { useContent } from '@/context/content-context'
+import { EditableText, EditableButton } from '@/components/visual-editor/editable'
 
 // Stacked Coin Discs icon exactly matching the image
 function CoinStackIcon({ className = 'size-7' }: { className?: string }) {
@@ -55,30 +56,37 @@ export function WhyPotSection() {
           
           {/* Left Column: Heading, Subtitle & Button */}
           <div className="flex flex-col justify-center text-left md:col-span-2 lg:col-span-1 pr-0 lg:pr-4 py-2">
-            <p className="text-xs sm:text-[13px] font-black tracking-[0.2em] uppercase text-[#6929d9]">
-              {u.eyebrow}
-            </p>
+            <EditableText
+              as="p"
+              value={u.eyebrow}
+              path="utilities.eyebrow"
+              className="text-xs sm:text-[13px] font-black tracking-[0.2em] uppercase text-[#6929d9]"
+            />
 
-            <h2 className="mt-3 text-3xl min-[400px]:text-4xl sm:text-[42px] lg:text-[44px] font-black tracking-tight text-[#1c0836] leading-[1.08]">
-              {headingLines.map((line, idx) => (
-                <React.Fragment key={idx}>
-                  {line}
-                  {idx < headingLines.length - 1 && <br />}
-                </React.Fragment>
-              ))}
-            </h2>
+            <EditableText
+              as="h2"
+              value={u.heading}
+              path="utilities.heading"
+              multiline
+              className="mt-3 text-3xl min-[400px]:text-4xl sm:text-[42px] lg:text-[44px] font-black tracking-tight text-[#1c0836] leading-[1.08] whitespace-pre-line"
+            />
 
-            <p className="mt-4 sm:mt-5 text-sm sm:text-[15px] leading-relaxed text-[#543b74] font-normal max-w-sm">
-              {u.description}
-            </p>
+            <EditableText
+              as="p"
+              value={u.description}
+              path="utilities.description"
+              multiline
+              className="mt-4 sm:mt-5 text-sm sm:text-[15px] leading-relaxed text-[#543b74] font-normal max-w-sm"
+            />
 
             <div className="mt-6 sm:mt-8">
-              <a
-                href={u.buttonLink}
+              <EditableButton
+                text={u.buttonText}
+                textPath="utilities.buttonText"
+                link={u.buttonLink}
+                linkPath="utilities.buttonLink"
                 className="inline-flex items-center justify-center rounded-full bg-[#6929d9] hover:bg-[#581c87] text-white px-7 py-3.5 text-sm font-bold shadow-[0_8px_22px_rgba(105,41,217,0.32)] transition-all duration-200 hover:scale-[1.02] active:scale-95"
-              >
-                <span>{u.buttonText}</span>
-              </a>
+              />
             </div>
           </div>
 
@@ -90,17 +98,27 @@ export function WhyPotSection() {
             </div>
 
             {/* Title & Subtitle */}
-            <h3 className="mt-6 text-xl sm:text-[22px] font-black text-[#1c0836] tracking-tight">
-              {u.card1Title}
-            </h3>
-            <p className="mt-1 text-sm sm:text-[15px] font-bold text-[#6929d9]">
-              {u.card1Badge}
-            </p>
+            <EditableText
+              as="h3"
+              value={u.card1Title}
+              path="utilities.card1Title"
+              className="mt-6 text-xl sm:text-[22px] font-black text-[#1c0836] tracking-tight"
+            />
+            <EditableText
+              as="p"
+              value={u.card1Badge}
+              path="utilities.card1Badge"
+              className="mt-1 text-sm sm:text-[15px] font-bold text-[#6929d9]"
+            />
 
             {/* Description */}
-            <p className="mt-5 text-xs sm:text-[13.5px] leading-relaxed text-[#594772]">
-              {u.card1Desc}
-            </p>
+            <EditableText
+              as="p"
+              value={u.card1Desc}
+              path="utilities.card1Desc"
+              multiline
+              className="mt-5 text-xs sm:text-[13.5px] leading-relaxed text-[#594772]"
+            />
           </div>
 
           {/* Card 2: Real Impact */}
@@ -111,17 +129,27 @@ export function WhyPotSection() {
             </div>
 
             {/* Title & Subtitle */}
-            <h3 className="mt-6 text-xl sm:text-[22px] font-black text-[#1c0836] tracking-tight">
-              {u.card2Title}
-            </h3>
-            <p className="mt-1 text-sm sm:text-[15px] font-bold text-[#059669]">
-              {u.card2Badge}
-            </p>
+            <EditableText
+              as="h3"
+              value={u.card2Title}
+              path="utilities.card2Title"
+              className="mt-6 text-xl sm:text-[22px] font-black text-[#1c0836] tracking-tight"
+            />
+            <EditableText
+              as="p"
+              value={u.card2Badge}
+              path="utilities.card2Badge"
+              className="mt-1 text-sm sm:text-[15px] font-bold text-[#059669]"
+            />
 
             {/* Description */}
-            <p className="mt-5 text-xs sm:text-[13.5px] leading-relaxed text-[#594772]">
-              {u.card2Desc}
-            </p>
+            <EditableText
+              as="p"
+              value={u.card2Desc}
+              path="utilities.card2Desc"
+              multiline
+              className="mt-5 text-xs sm:text-[13.5px] leading-relaxed text-[#594772]"
+            />
           </div>
 
         </div>

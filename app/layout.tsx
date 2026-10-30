@@ -3,6 +3,7 @@ import { Poppins } from 'next/font/google'
 import './globals.css'
 import { SmoothScroll } from '@/components/smooth-scroll'
 import { ContentProvider } from '@/context/content-context'
+import { VisualToolbar } from '@/components/visual-editor/visual-toolbar'
 import { Toaster } from 'sonner'
 
 const poppins = Poppins({
@@ -132,6 +133,7 @@ export default function RootLayout({
         <SmoothScroll />
         <ContentProvider>
           {children}
+          <VisualToolbar />
         </ContentProvider>
         <Toaster position="bottom-right" richColors theme="dark" />
       </body>

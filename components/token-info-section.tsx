@@ -8,6 +8,7 @@ import {
   Activity,
 } from 'lucide-react'
 import { useContent } from '@/context/content-context'
+import { EditableText } from '@/components/visual-editor/editable'
 
 export function TokenInfoSection() {
   const { content } = useContent()
@@ -60,12 +61,18 @@ export function TokenInfoSection() {
         
         {/* Section Header - Bold & Clean */}
         <div className="mb-6 sm:mb-8">
-          <p className="text-xs sm:text-sm font-black tracking-[0.25em] uppercase text-[#7c2ae8]">
-            {content.tokenInfo.eyebrow}
-          </p>
-          <h2 className="mt-1 text-3xl min-[420px]:text-4xl sm:text-5xl lg:text-[54px] font-black tracking-tight text-[#1c0836] leading-none">
-            {content.tokenInfo.heading}
-          </h2>
+          <EditableText
+            as="p"
+            value={content.tokenInfo.eyebrow}
+            path="tokenInfo.eyebrow"
+            className="text-xs sm:text-sm font-black tracking-[0.25em] uppercase text-[#7c2ae8]"
+          />
+          <EditableText
+            as="h2"
+            value={content.tokenInfo.heading}
+            path="tokenInfo.heading"
+            className="mt-1 text-3xl min-[420px]:text-4xl sm:text-5xl lg:text-[54px] font-black tracking-tight text-[#1c0836] leading-none"
+          />
         </div>
 
         {/* 3-Column Ultra-Wide Flow: Specs Box | Key Features | Big Dog Mascot */}
@@ -176,17 +183,26 @@ export function TokenInfoSection() {
             </div>
             <div>
               <div className="flex flex-wrap items-center gap-2">
-                <h3 className="text-xl sm:text-2xl font-black text-[#1c0836] tracking-tight">
-                  {content.tokenInfo.chartTitle}
-                </h3>
+                <EditableText
+                  as="h3"
+                  value={content.tokenInfo.chartTitle}
+                  path="tokenInfo.chartTitle"
+                  className="text-xl sm:text-2xl font-black text-[#1c0836] tracking-tight"
+                />
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100/90 px-2.5 py-0.5 text-[11px] font-black text-emerald-800 border border-emerald-300/60 shadow-sm">
                   <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>{content.tokenInfo.chartBadge}</span>
+                  <EditableText
+                    value={content.tokenInfo.chartBadge}
+                    path="tokenInfo.chartBadge"
+                  />
                 </span>
               </div>
-              <p className="mt-0.5 text-xs sm:text-sm text-[#705295]">
-                {content.tokenInfo.chartSubtitle}
-              </p>
+              <EditableText
+                as="p"
+                value={content.tokenInfo.chartSubtitle}
+                path="tokenInfo.chartSubtitle"
+                className="mt-0.5 text-xs sm:text-sm text-[#705295]"
+              />
             </div>
           </div>
 

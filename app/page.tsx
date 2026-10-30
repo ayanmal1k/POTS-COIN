@@ -9,6 +9,7 @@ import { StJudePartnershipSection } from '@/components/st-jude-partnership'
 import { RoadmapSection } from '@/components/roadmap-section'
 import { TokenInfoSection } from '@/components/token-info-section'
 import { ContactFooterSection } from '@/components/contact-footer-section'
+import { EditableText, EditableButton } from '@/components/visual-editor/editable'
 
 function Brand() {
   const { content } = useContent()
@@ -21,9 +22,12 @@ function Brand() {
           className="size-full object-contain"
         />
       </div>
-      <span className="text-xl sm:text-2xl font-black tracking-tight text-white group-hover:text-[#e9d5ff]">
-        {content.global.brandName}
-      </span>
+      <EditableText
+        as="span"
+        value={content.global.brandName}
+        path="global.brandName"
+        className="text-xl sm:text-2xl font-black tracking-tight text-white group-hover:text-[#e9d5ff]"
+      />
     </a>
   )
 }
@@ -93,14 +97,16 @@ export function HeroSection() {
           ))}
         </nav>
         <div className="flex items-center gap-3">
-          <a
-            href={content.global.telegramUrl}
+          <EditableButton
+            text={content.hero.joinButtonText}
+            textPath="hero.joinButtonText"
+            link={content.global.telegramUrl}
+            linkPath="global.telegramUrl"
             target="_blank"
             rel="noopener noreferrer"
             className="hidden items-center gap-2 rounded-full bg-gradient-to-r from-[#9c3eff] to-[#c67aff] px-5 py-2.5 text-xs font-bold text-white shadow-[0_4px_20px_rgba(156,62,255,0.45)] transition duration-200 hover:scale-105 active:scale-95 lg:flex"
-          >
-            {content.hero.joinButtonText} <Send size={13} className="fill-white" />
-          </a>
+            icon={<Send size={13} className="fill-white" />}
+          />
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="rounded-full bg-white/10 p-2 text-white backdrop-blur-md transition hover:bg-white/20 lg:hidden"
@@ -119,30 +125,48 @@ export function HeroSection() {
           <div className="lg:col-span-5 xl:col-span-4 2xl:col-span-4 flex flex-col justify-center items-center lg:items-start text-center lg:text-left space-y-5 sm:space-y-6 z-20 py-2 sm:py-4 lg:py-8 w-full max-w-[520px] md:max-w-[620px] lg:max-w-[560px] mx-auto lg:mx-0">
             {/* Main Headline */}
             <h1 className="text-3xl min-[400px]:text-4xl sm:text-5xl md:text-[52px] lg:text-[46px] xl:text-[54px] 2xl:text-[60px] font-black leading-[1.08] tracking-[-0.03em] text-white">
-              {content.hero.headingPart1}{' '}
-              <span className="bg-gradient-to-r from-[#ffe066] via-[#f59e0b] to-[#fbbf24] bg-clip-text text-transparent drop-shadow-[0_4px_22px_rgba(245,158,11,0.45)]">
-                {content.hero.headingHighlight}
-              </span>{' '}
-              {content.hero.headingPart2}
+              <EditableText
+                value={content.hero.headingPart1}
+                path="hero.headingPart1"
+              />{' '}
+              <EditableText
+                value={content.hero.headingHighlight}
+                path="hero.headingHighlight"
+                className="bg-gradient-to-r from-[#ffe066] via-[#f59e0b] to-[#fbbf24] bg-clip-text text-transparent drop-shadow-[0_4px_22px_rgba(245,158,11,0.45)] inline-block"
+              />{' '}
+              <EditableText
+                value={content.hero.headingPart2}
+                path="hero.headingPart2"
+              />
             </h1>
 
             {/* Text right beneath main heading */}
-            <p className="text-xs sm:text-[13px] md:text-sm font-black tracking-[0.24em] uppercase text-[#e9d5ff]/90">
-              {content.hero.eyebrow}
-            </p>
+            <EditableText
+              as="p"
+              value={content.hero.eyebrow}
+              path="hero.eyebrow"
+              className="text-xs sm:text-[13px] md:text-sm font-black tracking-[0.24em] uppercase text-[#e9d5ff]/90"
+            />
 
             {/* 100% Verified Transparency Badge */}
             <div className="flex justify-center lg:justify-start pt-1">
               <div className="inline-flex items-center gap-2 rounded-full border border-[#b56fff]/55 bg-[#7526de]/30 px-4 py-1.5 sm:px-5 sm:py-2 md:px-6 md:py-2.5 text-xs sm:text-[13px] md:text-sm font-bold text-white shadow-[0_0_25px_rgba(160,65,255,0.45)] backdrop-blur-md">
                 <ShieldCheck className="size-4 sm:size-4.5 md:size-5 text-[#3df586] shrink-0" />
-                <span>{content.hero.transparencyBadge}</span>
+                <EditableText
+                  value={content.hero.transparencyBadge}
+                  path="hero.transparencyBadge"
+                />
               </div>
             </div>
 
             {/* Description */}
-            <p className="text-xs sm:text-sm md:text-base lg:text-[14.5px] leading-relaxed text-white/85 max-w-[480px] md:max-w-[580px]">
-              {content.hero.description}
-            </p>
+            <EditableText
+              as="p"
+              value={content.hero.description}
+              path="hero.description"
+              multiline
+              className="text-xs sm:text-sm md:text-base lg:text-[14.5px] leading-relaxed text-white/85 max-w-[480px] md:max-w-[580px]"
+            />
 
             {/* Contract Address Card - expansive on iPad */}
             <div className="w-full max-w-[480px] md:max-w-[580px] rounded-2xl border border-[#9d4eff]/45 bg-[#170932]/85 p-2.5 sm:p-3.5 shadow-[0_8px_32px_rgba(0,0,0,0.55),0_0_24px_rgba(150,65,255,0.25)] backdrop-blur-xl transition-all duration-300 hover:border-[#bf7bff]/80 hover:shadow-[0_0_32px_rgba(168,82,255,0.45)] text-left">
@@ -154,7 +178,10 @@ export function HeroSection() {
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-1.5 text-[9.5px] sm:text-[10px] md:text-[11px] font-medium tracking-wider uppercase text-white/55">
                       <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      <span>{content.hero.contractLabel}</span>
+                      <EditableText
+                        value={content.hero.contractLabel}
+                        path="hero.contractLabel"
+                      />
                     </div>
                     <span className="block truncate font-mono text-[11px] min-[400px]:text-[11.5px] sm:text-xs md:text-[13px] font-semibold tracking-tight text-white/95 select-all">
                       {address}
@@ -177,23 +204,25 @@ export function HeroSection() {
 
             {/* CTA Buttons: Join the Community & View $POT live chart */}
             <div className="flex w-full max-w-[480px] md:max-w-[580px] flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-1">
-              <a
-                href={content.hero.joinButtonLink}
+              <EditableButton
+                text={content.hero.joinButtonText}
+                textPath="hero.joinButtonText"
+                link={content.hero.joinButtonLink}
+                linkPath="hero.joinButtonLink"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-[#9c3eff] via-[#ad4eff] to-[#cb7dff] px-7 py-3.5 sm:px-8 sm:py-4 text-xs sm:text-sm md:text-base font-bold text-white shadow-[0_0_26px_rgba(168,62,255,0.55),0_4px_16px_rgba(0,0,0,0.3)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_36px_rgba(174,79,255,0.75)] active:scale-[0.98]"
-              >
-                <span>{content.hero.joinButtonText}</span>
-                <Send size={15} className="fill-white" />
-              </a>
+                icon={<Send size={15} className="fill-white" />}
+              />
 
-              <a
-                href={content.hero.chartButtonLink}
+              <EditableButton
+                text={content.hero.chartButtonText}
+                textPath="hero.chartButtonText"
+                link={content.hero.chartButtonLink}
+                linkPath="hero.chartButtonLink"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border border-white/35 bg-white/5 hover:bg-white/15 hover:border-white/60 px-6 py-3.5 sm:px-7 sm:py-4 text-xs sm:text-sm md:text-base font-bold text-white backdrop-blur-md transition-all duration-200 hover:scale-[1.03] active:scale-[0.98]"
-              >
-                <span>{content.hero.chartButtonText}</span>
-                <TrendingUp size={16} className="text-emerald-400" />
-              </a>
+                icon={<TrendingUp size={16} className="text-emerald-400" />}
+              />
             </div>
           </div>
 
@@ -223,28 +252,48 @@ export function HeroSection() {
                   <Heart className="size-6 md:size-7 text-white fill-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]" />
                 </div>
                 <div>
-                  <span className="block text-xs md:text-sm font-semibold text-purple-200/80 uppercase tracking-wider">
-                    {content.hero.stJudeCardEyebrow}
-                  </span>
-                  <h4 className="text-base sm:text-lg md:text-xl font-extrabold text-white leading-tight">
-                    {content.hero.stJudeCardTitle}
-                  </h4>
+                  <EditableText
+                    as="span"
+                    value={content.hero.stJudeCardEyebrow}
+                    path="hero.stJudeCardEyebrow"
+                    className="block text-xs md:text-sm font-semibold text-purple-200/80 uppercase tracking-wider"
+                  />
+                  <EditableText
+                    as="h4"
+                    value={content.hero.stJudeCardTitle}
+                    path="hero.stJudeCardTitle"
+                    className="text-base sm:text-lg md:text-xl font-extrabold text-white leading-tight"
+                  />
                 </div>
               </div>
 
               {/* Card Middle: Milestone Goal + Arrow Link */}
               <div className="flex items-center justify-between gap-3 pt-3 pb-3 border-t border-white/10">
                 <p className="text-xs sm:text-sm md:text-base leading-relaxed text-[#f3e8ff]/90">
-                  {content.hero.stJudeCardMilestonePrefix} <strong className="text-[#fbbf24] font-black text-sm sm:text-base md:text-lg">{content.hero.stJudeCardMilestoneHighlight}</strong> {content.hero.stJudeCardMilestoneSuffix}
+                  <EditableText
+                    value={content.hero.stJudeCardMilestonePrefix}
+                    path="hero.stJudeCardMilestonePrefix"
+                  />{' '}
+                  <EditableText
+                    as="strong"
+                    value={content.hero.stJudeCardMilestoneHighlight}
+                    path="hero.stJudeCardMilestoneHighlight"
+                    className="text-[#fbbf24] font-black text-sm sm:text-base md:text-lg"
+                  />{' '}
+                  <EditableText
+                    value={content.hero.stJudeCardMilestoneSuffix}
+                    path="hero.stJudeCardMilestoneSuffix"
+                  />
                 </p>
 
-                <a
-                  href={content.hero.stJudeCardButtonLink}
+                <EditableButton
+                  text=""
+                  textPath="hero.stJudeCardEyebrow"
+                  link={content.hero.stJudeCardButtonLink}
+                  linkPath="hero.stJudeCardButtonLink"
                   className="grid size-9 sm:size-10 shrink-0 place-items-center rounded-full bg-[#7c2ae8] text-white hover:bg-[#9333ea] shadow-[0_0_18px_rgba(124,42,232,0.8)] transition-all hover:scale-110 active:scale-95"
-                  aria-label="View St. Jude details"
-                >
-                  <ArrowRight className="size-4 md:size-5" />
-                </a>
+                  icon={<ArrowRight className="size-4 md:size-5" />}
+                />
               </div>
 
               {/* Card Bottom: St. Jude Logo All White using CSS + Permanent Pure White PNG */}
@@ -311,15 +360,25 @@ export function MissionSection() {
       <div className="relative z-10 mx-auto grid max-w-[1360px] items-center gap-12 sm:gap-14 px-6 sm:px-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16 xl:gap-20 lg:px-16 xl:px-20">
         {/* Left Column: Text & Features */}
         <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
-          <p className="text-[11px] sm:text-xs font-black tracking-[0.22em] uppercase text-[#e9d5ff]">
-            {content.mission.eyebrow}
-          </p>
-          <h2 className="mt-3 text-3xl min-[400px]:text-4xl sm:text-5xl lg:text-[50px] xl:text-[54px] font-black tracking-[-0.035em] text-white leading-[1.08]">
-            {content.mission.heading}
-          </h2>
-          <p className="mt-4 sm:mt-5 max-w-[540px] text-base sm:text-lg lg:text-[17px] leading-relaxed text-[#f3e8ff]/90">
-            {content.mission.description}
-          </p>
+          <EditableText
+            as="p"
+            value={content.mission.eyebrow}
+            path="mission.eyebrow"
+            className="text-[11px] sm:text-xs font-black tracking-[0.22em] uppercase text-[#e9d5ff]"
+          />
+          <EditableText
+            as="h2"
+            value={content.mission.heading}
+            path="mission.heading"
+            className="mt-3 text-3xl min-[400px]:text-4xl sm:text-5xl lg:text-[50px] xl:text-[54px] font-black tracking-[-0.035em] text-white leading-[1.08]"
+          />
+          <EditableText
+            as="p"
+            value={content.mission.description}
+            path="mission.description"
+            multiline
+            className="mt-4 sm:mt-5 max-w-[540px] text-base sm:text-lg lg:text-[17px] leading-relaxed text-[#f3e8ff]/90"
+          />
 
           <div className="mt-9 sm:mt-11 w-full space-y-6 sm:space-y-8 max-w-[560px]">
             {content.mission.points.map((pt, idx) => {
@@ -330,12 +389,19 @@ export function MissionSection() {
                     <Icon className="size-6 sm:size-6.5 text-white fill-white" />
                   </span>
                   <div className="pt-0.5 sm:pt-1">
-                    <h3 className="text-base sm:text-lg lg:text-[19px] font-black text-white tracking-tight">
-                      {pt.title}
-                    </h3>
-                    <p className="mt-1 text-xs sm:text-sm lg:text-[14.5px] leading-relaxed text-[#f3e8ff]/80">
-                      {pt.text}
-                    </p>
+                    <EditableText
+                      as="h3"
+                      value={pt.title}
+                      path={`mission.points.${idx}.title`}
+                      className="text-base sm:text-lg lg:text-[19px] font-black text-white tracking-tight"
+                    />
+                    <EditableText
+                      as="p"
+                      value={pt.text}
+                      path={`mission.points.${idx}.text`}
+                      multiline
+                      className="mt-1 text-xs sm:text-sm lg:text-[14.5px] leading-relaxed text-[#f3e8ff]/80"
+                    />
                   </div>
                 </div>
               )

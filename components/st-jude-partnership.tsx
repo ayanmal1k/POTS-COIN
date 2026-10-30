@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useContent } from '@/context/content-context'
+import { EditableText, EditableButton } from '@/components/visual-editor/editable'
 import {
   Heart,
   ShieldCheck,
@@ -154,15 +155,28 @@ export function StJudePartnershipSection() {
           
           <div className="max-w-3xl mx-auto lg:mx-0">
             <h2 className="text-3xl min-[420px]:text-4xl sm:text-5xl lg:text-[58px] xl:text-[64px] font-black tracking-[-0.035em] text-[#1c0836] leading-[1.05]">
-              {content.partnership.heading}<br />
-              <span className="bg-gradient-to-r from-[#7c2ae8] via-[#a855f7] to-[#d946ef] bg-clip-text text-transparent">
-                {content.partnership.headingHighlight}
-              </span> {content.partnership.headingSuffix}
+              <EditableText
+                value={content.partnership.heading}
+                path="partnership.heading"
+              /><br />
+              <EditableText
+                value={content.partnership.headingHighlight}
+                path="partnership.headingHighlight"
+                className="bg-gradient-to-r from-[#7c2ae8] via-[#a855f7] to-[#d946ef] bg-clip-text text-transparent inline-block"
+              />{' '}
+              <EditableText
+                value={content.partnership.headingSuffix}
+                path="partnership.headingSuffix"
+              />
             </h2>
 
-            <p className="mt-6 text-base sm:text-lg lg:text-[19px] leading-relaxed text-[#432d5e]">
-              {content.partnership.description}
-            </p>
+            <EditableText
+              as="p"
+              value={content.partnership.description}
+              path="partnership.description"
+              multiline
+              className="mt-6 text-base sm:text-lg lg:text-[19px] leading-relaxed text-[#432d5e]"
+            />
           </div>
 
           {/* Big St. Jude Hospital Logo (Transparent, unboxed, bold) */}
@@ -236,15 +250,16 @@ export function StJudePartnershipSection() {
 
             {/* Action buttons */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center sm:justify-start gap-3 pt-2">
-              <a
-                href={content.partnership.donateButtonLink}
+              <EditableButton
+                text={content.partnership.donateButtonText}
+                textPath="partnership.donateButtonText"
+                link={content.partnership.donateButtonLink}
+                linkPath="partnership.donateButtonLink"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#e11d48] via-[#e63946] to-[#be123c] px-6 sm:px-7 py-3 sm:py-3.5 text-xs sm:text-sm font-black text-white shadow-[0_6px_20px_rgba(225,29,72,0.28)] transition-all hover:scale-[1.02] active:scale-95"
-              >
-                <span>{content.partnership.donateButtonText}</span>
-                <ExternalLink size={14} />
-              </a>
+                icon={<ExternalLink size={14} />}
+              />
 
               <a
                 href="#milestone-tracker"
@@ -401,15 +416,16 @@ export function StJudePartnershipSection() {
             </p>
 
             <div className="pt-1">
-              <a
-                href={content.partnership.donateButtonLink}
+              <EditableButton
+                text={content.partnership.donateButtonText}
+                textPath="partnership.donateButtonText"
+                link={content.partnership.donateButtonLink}
+                linkPath="partnership.donateButtonLink"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#e11d48] via-[#e63946] to-[#be123c] px-6 py-3.5 text-xs sm:text-sm font-black text-white shadow-[0_6px_22px_rgba(225,29,72,0.28)] transition-all hover:scale-[1.02] active:scale-95"
-              >
-                <span>{content.partnership.donateButtonText}</span>
-                <ExternalLink size={14} />
-              </a>
+                icon={<ExternalLink size={14} />}
+              />
             </div>
 
             <span className="block text-[10.5px] sm:text-[11px] text-[#8e6575]">
