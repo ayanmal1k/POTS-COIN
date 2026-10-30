@@ -199,7 +199,7 @@ export function HeroSection() {
 
           {/* Center Column on Mobile: Dog sitting inline */}
           <div className="block lg:hidden w-full relative z-10 py-2">
-            <div className="relative mx-auto max-w-[400px] sm:max-w-[480px] md:max-w-[530px]">
+            <div className="relative mx-auto max-w-[360px] sm:max-w-[430px] md:max-w-[480px]">
               <div className="absolute inset-0 rounded-full bg-gradient-to-t from-[#9333ea]/40 via-[#c084fc]/25 to-transparent blur-3xl pointer-events-none" />
               <img
                 src="/dog.png"
@@ -259,14 +259,14 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Center Big Dog Mascot Attached to the Bottom of Section on Big Screens - moved down slightly and 10% taller */}
-      <div className="hidden lg:flex absolute -bottom-5 lg:-bottom-7 xl:-bottom-9 left-[53%] xl:left-[54%] 2xl:left-[55%] -translate-x-[50%] pointer-events-none select-none z-10 items-end justify-center">
+      {/* Center Big Dog Mascot Attached Flush to the Bottom of Section on Big Screens */}
+      <div className="hidden lg:flex absolute bottom-0 left-[53%] xl:left-[54%] 2xl:left-[55%] -translate-x-[50%] pointer-events-none select-none z-10 items-end justify-center">
         {/* Glow behind dog paws and body */}
-        <div className="absolute bottom-4 size-[550px] xl:size-[650px] rounded-full bg-gradient-to-t from-[#9333ea]/45 via-[#c084fc]/25 to-transparent blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 size-[500px] xl:size-[600px] rounded-full bg-gradient-to-t from-[#9333ea]/45 via-[#c084fc]/25 to-transparent blur-3xl pointer-events-none" />
         <img
           src="/dog.png"
           alt="$POT Mascot Dog"
-          className="relative z-10 w-auto h-[700px] lg:h-[815px] xl:h-[900px] 2xl:h-[970px] max-w-none object-contain object-bottom filter drop-shadow-[0_20px_50px_rgba(10,2,25,0.8)]"
+          className="relative z-10 w-auto h-[630px] lg:h-[735px] xl:h-[810px] 2xl:h-[870px] max-w-none object-contain object-bottom filter drop-shadow-[0_20px_50px_rgba(10,2,25,0.8)]"
           loading="eager"
         />
       </div>
