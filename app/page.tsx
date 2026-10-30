@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowRight, Check, Copy, Heart, Menu, PawPrint, Send, Shield, ShieldCheck, Users, Wallet, X } from 'lucide-react'
+import { ArrowRight, Check, Copy, Heart, Menu, PawPrint, Send, Shield, ShieldCheck, TrendingUp, Users, Wallet, X } from 'lucide-react'
 import { useState } from 'react'
 import { WhyPotSection } from '@/components/why-pot-section'
 import { PawPrint3DWatermark, CustomPawPrint } from '@/components/why-pot-icons'
@@ -138,7 +138,7 @@ export function HeroSection() {
 
             {/* Description */}
             <p className="text-xs sm:text-sm md:text-[14.5px] leading-relaxed text-white/85 max-w-[470px]">
-              Welcome to the $POT Luck Community (PLC), a community-driven Solana meme coin built on transparency, organic growth, and real-world charitable impact.
+              PLC combines meme culture with real-world impact to transform the lives of vulnerable children.
             </p>
 
             {/* Contract Address Card */}
@@ -172,16 +172,26 @@ export function HeroSection() {
               </div>
             </div>
 
-            {/* CTA Button: Join the Community */}
-            <div className="flex w-full max-w-[470px] flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-1">
+            {/* CTA Buttons: Join the Community & View $POT live chart */}
+            <div className="flex w-full max-w-[490px] flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-1">
               <a
                 href="https://t.me/epicoins"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-[#9c3eff] via-[#ad4eff] to-[#cb7dff] px-8 py-3.5 sm:px-9 sm:py-4 text-xs sm:text-sm font-bold text-white shadow-[0_0_26px_rgba(168,62,255,0.55),0_4px_16px_rgba(0,0,0,0.3)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_36px_rgba(174,79,255,0.75)] active:scale-[0.98]"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#9c3eff] via-[#ad4eff] to-[#cb7dff] px-7 py-3.5 text-xs sm:text-sm font-bold text-white shadow-[0_0_26px_rgba(168,62,255,0.55),0_4px_16px_rgba(0,0,0,0.3)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_36px_rgba(174,79,255,0.75)] active:scale-[0.98]"
               >
                 <span>Join the Community</span>
                 <Send size={14} className="fill-white" />
+              </a>
+
+              <a
+                href="https://dexscreener.com/solana/GUtUrPGwfJDj3WTb2dEe2B9UnLtG1GGdBMreFtDXJxEw"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border border-white/35 bg-white/5 hover:bg-white/15 hover:border-white/60 px-6 py-3.5 text-xs sm:text-sm font-bold text-white backdrop-blur-md transition-all duration-200 hover:scale-[1.03] active:scale-[0.98]"
+              >
+                <span>View $POT live chart</span>
+                <TrendingUp size={15} className="text-emerald-400" />
               </a>
             </div>
           </div>
