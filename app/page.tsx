@@ -45,7 +45,7 @@ export function HeroSection() {
   return (
     <section
       id="home"
-      className="hero-section relative w-full overflow-hidden text-white min-h-[680px] sm:min-h-[730px] lg:min-h-[800px] xl:min-h-[850px] flex flex-col justify-between"
+      className="hero-section relative w-full overflow-hidden text-white min-h-[680px] sm:min-h-[730px] md:min-h-[920px] lg:min-h-[760px] xl:min-h-[850px] flex flex-col justify-between"
       style={{
         background: `
           radial-gradient(ellipse 85% 65% at 50% -12%, rgba(168, 85, 247, 0.48) 0%, transparent 65%),
@@ -109,13 +109,13 @@ export function HeroSection() {
       </header>
 
       {/* Main Hero Content Area */}
-      <div className="relative z-20 mx-auto w-full max-w-none px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-24 pt-2 sm:pt-4 lg:pt-5 pb-8 lg:pb-0 flex-1 flex flex-col justify-center">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-4 xl:gap-8 items-center lg:items-stretch min-h-[510px] lg:min-h-[570px] xl:min-h-[640px]">
+      <div className="relative z-20 mx-auto w-full max-w-none px-6 sm:px-8 md:px-10 lg:px-12 xl:px-16 2xl:px-24 pt-2 sm:pt-4 lg:pt-5 pb-8 lg:pb-0 flex-1 flex flex-col justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-6 lg:gap-4 xl:gap-8 items-center md:items-start lg:items-stretch min-h-[510px] md:min-h-[500px] lg:min-h-[570px] xl:min-h-[640px]">
           
-          {/* Left Column: Headline, Description & Action Buttons (5 cols) */}
-          <div className="lg:col-span-5 xl:col-span-4 2xl:col-span-4 flex flex-col justify-center items-center lg:items-start text-center lg:text-left space-y-5 sm:space-y-6 z-20 py-4 lg:py-8 max-w-[560px]">
+          {/* Left Column: Headline, Description & Action Buttons */}
+          <div className="md:col-span-7 lg:col-span-5 xl:col-span-4 2xl:col-span-4 flex flex-col justify-center items-center md:items-start text-center md:text-left space-y-4 sm:space-y-5 md:space-y-4 lg:space-y-6 z-20 py-2 md:py-4 lg:py-8 max-w-[560px]">
             {/* Main Headline */}
-            <h1 className="text-3xl min-[400px]:text-4xl sm:text-5xl lg:text-[46px] xl:text-[54px] 2xl:text-[60px] font-black leading-[1.08] tracking-[-0.03em] text-white">
+            <h1 className="text-3xl min-[400px]:text-4xl sm:text-5xl md:text-[34px] lg:text-[46px] xl:text-[54px] 2xl:text-[60px] font-black leading-[1.08] tracking-[-0.03em] text-white">
               Welcome to{' '}
               <span className="bg-gradient-to-r from-[#ffe066] via-[#f59e0b] to-[#fbbf24] bg-clip-text text-transparent drop-shadow-[0_4px_22px_rgba(245,158,11,0.45)]">
                 $POT Luck
@@ -129,15 +129,15 @@ export function HeroSection() {
             </p>
 
             {/* 100% Verified Transparency Badge */}
-            <div className="flex justify-center lg:justify-start pt-1">
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#b56fff]/55 bg-[#7526de]/30 px-4 py-1.5 sm:px-5 sm:py-2 text-xs sm:text-[13px] font-bold text-white shadow-[0_0_25px_rgba(160,65,255,0.45)] backdrop-blur-md">
+            <div className="flex justify-center md:justify-start pt-1">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#b56fff]/55 bg-[#7526de]/30 px-3.5 py-1.5 sm:px-5 sm:py-2 text-xs sm:text-[13px] font-bold text-white shadow-[0_0_25px_rgba(160,65,255,0.45)] backdrop-blur-md">
                 <ShieldCheck className="size-4 sm:size-4.5 text-[#3df586] shrink-0" />
                 <span>100% Verified Transparency</span>
               </div>
             </div>
 
             {/* Description */}
-            <p className="text-xs sm:text-sm md:text-[14.5px] leading-relaxed text-white/85 max-w-[470px]">
+            <p className="text-xs sm:text-sm md:text-[13.5px] lg:text-[14.5px] leading-relaxed text-white/85 max-w-[470px]">
               PLC combines meme culture with real-world impact to transform the lives of vulnerable children.
             </p>
 
@@ -173,12 +173,12 @@ export function HeroSection() {
             </div>
 
             {/* CTA Buttons: Join the Community & View $POT live chart */}
-            <div className="flex w-full max-w-[490px] flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-1">
+            <div className="flex w-full max-w-[490px] flex-col sm:flex-row items-center justify-center md:justify-start gap-2.5 sm:gap-3 pt-1">
               <a
                 href="https://t.me/epicoins"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#9c3eff] via-[#ad4eff] to-[#cb7dff] px-7 py-3.5 text-xs sm:text-sm font-bold text-white shadow-[0_0_26px_rgba(168,62,255,0.55),0_4px_16px_rgba(0,0,0,0.3)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_36px_rgba(174,79,255,0.75)] active:scale-[0.98]"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#9c3eff] via-[#ad4eff] to-[#cb7dff] px-6 py-3 sm:px-7 sm:py-3.5 text-xs sm:text-sm font-bold text-white shadow-[0_0_26px_rgba(168,62,255,0.55),0_4px_16px_rgba(0,0,0,0.3)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_36px_rgba(174,79,255,0.75)] active:scale-[0.98]"
               >
                 <span>Join the Community</span>
                 <Send size={14} className="fill-white" />
@@ -186,7 +186,7 @@ export function HeroSection() {
 
               <a
                 href="#chart"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border border-white/35 bg-white/5 hover:bg-white/15 hover:border-white/60 px-6 py-3.5 text-xs sm:text-sm font-bold text-white backdrop-blur-md transition-all duration-200 hover:scale-[1.03] active:scale-[0.98]"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border border-white/35 bg-white/5 hover:bg-white/15 hover:border-white/60 px-5 py-3 sm:px-6 sm:py-3.5 text-xs sm:text-sm font-bold text-white backdrop-blur-md transition-all duration-200 hover:scale-[1.03] active:scale-[0.98]"
               >
                 <span>View $POT live chart</span>
                 <TrendingUp size={15} className="text-emerald-400" />
@@ -197,9 +197,9 @@ export function HeroSection() {
           {/* Spacer Column on Desktop so text does not overlap dog */}
           <div className="hidden lg:block lg:col-span-3 xl:col-span-4 2xl:col-span-4 pointer-events-none" />
 
-          {/* Center Column on Mobile: Dog sitting inline */}
-          <div className="block lg:hidden w-full relative z-10 py-2">
-            <div className="relative mx-auto max-w-[360px] sm:max-w-[430px] md:max-w-[480px]">
+          {/* Center Column on Mobile (< md only): Dog sitting inline */}
+          <div className="block md:hidden w-full relative z-10 py-2">
+            <div className="relative mx-auto max-w-[320px] sm:max-w-[380px]">
               <div className="absolute inset-0 rounded-full bg-gradient-to-t from-[#9333ea]/40 via-[#c084fc]/25 to-transparent blur-3xl pointer-events-none" />
               <img
                 src="/dog.png"
@@ -210,20 +210,20 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* Right Column: St. Jude Card with ENLARGED all-white hospital logo (4 cols on lg, 3 cols on xl) */}
-          <div className="lg:col-span-4 xl:col-span-4 2xl:col-span-4 flex items-center justify-center lg:justify-end z-20 py-4 lg:py-8">
-            <div className="w-full max-w-[360px] sm:max-w-[400px] lg:max-w-[370px] xl:max-w-[410px] rounded-[32px] sm:rounded-[36px] border border-[#a855f7]/45 bg-gradient-to-b from-[#240a4b]/85 via-[#1a0736]/90 to-[#120326]/95 backdrop-blur-xl p-6 sm:p-7 xl:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5),0_0_35px_rgba(168,85,247,0.22)] transition-all duration-300 hover:border-[#c084fc]/60 space-y-5">
+          {/* Right Column: St. Jude Card */}
+          <div className="md:col-span-5 lg:col-span-4 xl:col-span-4 2xl:col-span-4 flex items-center justify-center md:justify-end z-20 py-2 md:py-4 lg:py-8">
+            <div className="w-full max-w-[340px] md:max-w-[330px] lg:max-w-[370px] xl:max-w-[410px] rounded-[28px] md:rounded-[32px] sm:rounded-[36px] border border-[#a855f7]/45 bg-gradient-to-b from-[#240a4b]/85 via-[#1a0736]/90 to-[#120326]/95 backdrop-blur-xl p-5 sm:p-6 lg:p-7 xl:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5),0_0_35px_rgba(168,85,247,0.22)] transition-all duration-300 hover:border-[#c084fc]/60 space-y-4 sm:space-y-5">
               
               {/* Card Top: 3D Heart + Supporting Text */}
-              <div className="flex items-center gap-3.5">
-                <div className="size-11 sm:size-12 shrink-0 rounded-2xl bg-gradient-to-br from-[#c084fc] via-[#9333ea] to-[#6b21a8] flex items-center justify-center shadow-[0_0_24px_rgba(192,132,252,0.7)]">
-                  <Heart className="size-6 text-white fill-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]" />
+              <div className="flex items-center gap-3 sm:gap-3.5">
+                <div className="size-10 sm:size-11 md:size-12 shrink-0 rounded-2xl bg-gradient-to-br from-[#c084fc] via-[#9333ea] to-[#6b21a8] flex items-center justify-center shadow-[0_0_24px_rgba(192,132,252,0.7)]">
+                  <Heart className="size-5 sm:size-6 text-white fill-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]" />
                 </div>
                 <div>
-                  <span className="block text-xs font-semibold text-purple-200/80 uppercase tracking-wider">
+                  <span className="block text-[11px] sm:text-xs font-semibold text-purple-200/80 uppercase tracking-wider">
                     Supporting
                   </span>
-                  <h4 className="text-base sm:text-lg font-extrabold text-white leading-tight">
+                  <h4 className="text-sm sm:text-base md:text-lg font-extrabold text-white leading-tight">
                     St. Jude Children&apos;s<br />Research Hospital
                   </h4>
                 </div>
@@ -237,19 +237,23 @@ export function HeroSection() {
 
                 <a
                   href="#partnership"
-                  className="grid size-9 shrink-0 place-items-center rounded-full bg-[#7c2ae8] text-white hover:bg-[#9333ea] shadow-[0_0_18px_rgba(124,42,232,0.8)] transition-all hover:scale-110 active:scale-95"
+                  className="grid size-8 sm:size-9 shrink-0 place-items-center rounded-full bg-[#7c2ae8] text-white hover:bg-[#9333ea] shadow-[0_0_18px_rgba(124,42,232,0.8)] transition-all hover:scale-110 active:scale-95"
                   aria-label="View St. Jude details"
                 >
                   <ArrowRight className="size-4" />
                 </a>
               </div>
 
-              {/* Card Bottom: St. Jude Logo All White using CSS - ENLARGED TO MATCH IMAGE */}
-              <div className="pt-4 border-t border-white/10 flex flex-col items-center justify-center">
+              {/* Card Bottom: St. Jude Logo All White using CSS + Permanent Pure White PNG */}
+              <div className="pt-3 sm:pt-4 border-t border-white/10 flex flex-col items-center justify-center">
                 <img
-                  src="/st jude children hospital logo.png"
+                  src="/st-jude-logo-white.png"
                   alt="St. Jude Children's Research Hospital"
-                  className="h-24 sm:h-28 lg:h-30 xl:h-34 w-auto object-contain filter brightness-0 invert opacity-95 hover:opacity-100 transition-opacity drop-shadow-[0_4px_20px_rgba(255,255,255,0.3)]"
+                  style={{
+                    filter: 'brightness(0) invert(1)',
+                    WebkitFilter: 'brightness(0) invert(1)',
+                  }}
+                  className="h-20 sm:h-24 md:h-22 lg:h-28 xl:h-32 w-auto object-contain filter brightness-0 invert opacity-95 hover:opacity-100 transition-opacity drop-shadow-[0_4px_20px_rgba(255,255,255,0.3)]"
                 />
               </div>
 
@@ -259,14 +263,14 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Center Big Dog Mascot Attached Flush to the Bottom of Section on Big Screens */}
-      <div className="hidden lg:flex absolute bottom-0 left-[53%] xl:left-[54%] 2xl:left-[55%] -translate-x-[50%] pointer-events-none select-none z-10 items-end justify-center">
+      {/* Center Big Dog Mascot Attached Flush to the Bottom of Section on Tablet & Desktop */}
+      <div className="hidden md:flex absolute bottom-0 left-1/2 -translate-x-1/2 lg:left-[53%] xl:left-[54%] 2xl:left-[55%] lg:-translate-x-[50%] pointer-events-none select-none z-10 items-end justify-center">
         {/* Glow behind dog paws and body */}
-        <div className="absolute bottom-0 size-[500px] xl:size-[600px] rounded-full bg-gradient-to-t from-[#9333ea]/45 via-[#c084fc]/25 to-transparent blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 size-[360px] md:size-[420px] lg:size-[500px] xl:size-[600px] rounded-full bg-gradient-to-t from-[#9333ea]/45 via-[#c084fc]/25 to-transparent blur-3xl pointer-events-none" />
         <img
           src="/dog.png"
           alt="$POT Mascot Dog"
-          className="relative z-10 w-auto h-[630px] lg:h-[735px] xl:h-[810px] 2xl:h-[870px] max-w-none object-contain object-bottom filter drop-shadow-[0_20px_50px_rgba(10,2,25,0.8)]"
+          className="relative z-10 w-auto h-[380px] md:h-[420px] lg:h-[630px] xl:h-[735px] 2xl:h-[870px] max-w-none object-contain object-bottom filter drop-shadow-[0_20px_50px_rgba(10,2,25,0.8)]"
           loading="eager"
         />
       </div>
