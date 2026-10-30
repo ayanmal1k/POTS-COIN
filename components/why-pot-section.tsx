@@ -92,81 +92,110 @@ export function WhyPotSection() {
           </div>
 
           {/* Card 1: Holder Rewards */}
-          <div className="group rounded-[28px] sm:rounded-[32px] border border-[#e8ddfb] bg-white p-7 sm:p-8 shadow-[0_12px_36px_rgba(110,40,185,0.06)] flex flex-col justify-start transition-all duration-300 hover:shadow-[0_18px_45px_rgba(110,40,185,0.12)] hover:border-[#c084fc]/60">
-            {/* Circular Purple Icon Badge */}
-            <div className="size-13 sm:size-14 rounded-full bg-[#6929d9] flex items-center justify-center text-white shadow-[0_6px_20px_rgba(105,41,217,0.3)] transition-transform duration-300 group-hover:scale-105">
-              <EditableIcon
-                name={u.card1Icon}
-                namePath="utilities.card1Icon"
-                filled={u.card1IconFilled}
-                fillPath="utilities.card1IconFilled"
-                defaultIcon="CoinStack"
-                defaultFilled={false}
-                className="size-6 sm:size-6.5 text-white"
+          <div className="group rounded-[28px] sm:rounded-[32px] border border-[#e8ddfb] bg-white p-7 sm:p-8 shadow-[0_12px_36px_rgba(110,40,185,0.06)] flex flex-col justify-between transition-all duration-300 hover:shadow-[0_18px_45px_rgba(110,40,185,0.12)] hover:border-[#c084fc]/60">
+            <div>
+              {/* Circular Purple Icon Badge */}
+              <div className="size-13 sm:size-14 rounded-full bg-[#6929d9] flex items-center justify-center text-white shadow-[0_6px_20px_rgba(105,41,217,0.3)] transition-transform duration-300 group-hover:scale-105">
+                <EditableIcon
+                  name={u.card1Icon}
+                  namePath="utilities.card1Icon"
+                  filled={u.card1IconFilled}
+                  fillPath="utilities.card1IconFilled"
+                  defaultIcon="CoinStack"
+                  defaultFilled={false}
+                  className="size-6 sm:size-6.5 text-white"
+                />
+              </div>
+
+              {/* Title & Subtitle */}
+              <EditableText
+                as="h3"
+                value={u.card1Title}
+                path="utilities.card1Title"
+                className="mt-6 text-xl sm:text-[22px] font-black text-[#1c0836] tracking-tight"
+              />
+              <EditableText
+                as="p"
+                value={u.card1Badge}
+                path="utilities.card1Badge"
+                className="mt-1 text-sm sm:text-[15px] font-bold text-[#6929d9]"
+              />
+
+              {/* Description */}
+              <EditableText
+                as="p"
+                value={u.card1Desc}
+                path="utilities.card1Desc"
+                multiline
+                className="mt-5 text-xs sm:text-[13.5px] leading-relaxed text-[#594772]"
               />
             </div>
 
-            {/* Title & Subtitle */}
-            <EditableText
-              as="h3"
-              value={u.card1Title}
-              path="utilities.card1Title"
-              className="mt-6 text-xl sm:text-[22px] font-black text-[#1c0836] tracking-tight"
-            />
-            <EditableText
-              as="p"
-              value={u.card1Badge}
-              path="utilities.card1Badge"
-              className="mt-1 text-sm sm:text-[15px] font-bold text-[#6929d9]"
-            />
-
-            {/* Description */}
-            <EditableText
-              as="p"
-              value={u.card1Desc}
-              path="utilities.card1Desc"
-              multiline
-              className="mt-5 text-xs sm:text-[13.5px] leading-relaxed text-[#594772]"
-            />
+            {/* Holder Trust Feature Tag */}
+            <div className="mt-6 pt-4 border-t border-[#f3ebfc] flex items-center justify-between text-xs text-[#6929d9] font-bold">
+              <span className="flex items-center gap-1.5">
+                <span className="size-2 rounded-full bg-[#6929d9]" />
+                Automated Solana Distribution
+              </span>
+              <span className="text-[#9333ea] font-extrabold">100% On-Chain</span>
+            </div>
           </div>
 
           {/* Card 2: Real Impact */}
-          <div className="group rounded-[28px] sm:rounded-[32px] border border-[#d1fae5]/80 bg-white p-7 sm:p-8 shadow-[0_12px_36px_rgba(16,185,129,0.06)] flex flex-col justify-start transition-all duration-300 hover:shadow-[0_18px_45px_rgba(16,185,129,0.12)] hover:border-[#10b981]/50">
-            {/* Circular Green Icon Badge with Yellow Heart */}
-            <div className="size-13 sm:size-14 rounded-full bg-[#10b981] flex items-center justify-center shadow-[0_6px_20px_rgba(160,185,129,0.3)] transition-transform duration-300 group-hover:scale-105">
-              <EditableIcon
-                name={u.card2Icon}
-                namePath="utilities.card2Icon"
-                filled={u.card2IconFilled}
-                fillPath="utilities.card2IconFilled"
-                defaultIcon="Heart"
-                defaultFilled={true}
-                className="size-6 sm:size-6.5 text-[#facc15]"
+          <div className="group rounded-[28px] sm:rounded-[32px] border border-[#d1fae5]/80 bg-white p-7 sm:p-8 shadow-[0_12px_36px_rgba(16,185,129,0.06)] flex flex-col justify-between transition-all duration-300 hover:shadow-[0_18px_45px_rgba(16,185,129,0.12)] hover:border-[#10b981]/50">
+            <div>
+              {/* Circular Green Icon Badge with Yellow Heart */}
+              <div className="size-13 sm:size-14 rounded-full bg-[#10b981] flex items-center justify-center shadow-[0_6px_20px_rgba(160,185,129,0.3)] transition-transform duration-300 group-hover:scale-105">
+                <EditableIcon
+                  name={u.card2Icon}
+                  namePath="utilities.card2Icon"
+                  filled={u.card2IconFilled}
+                  fillPath="utilities.card2IconFilled"
+                  defaultIcon="Heart"
+                  defaultFilled={true}
+                  className="size-6 sm:size-6.5 text-[#facc15]"
+                />
+              </div>
+
+              {/* Title & Subtitle */}
+              <EditableText
+                as="h3"
+                value={u.card2Title}
+                path="utilities.card2Title"
+                className="mt-6 text-xl sm:text-[22px] font-black text-[#1c0836] tracking-tight"
+              />
+              <EditableText
+                as="p"
+                value={u.card2Badge}
+                path="utilities.card2Badge"
+                className="mt-1 text-sm sm:text-[15px] font-bold text-[#059669]"
+              />
+
+              {/* Description */}
+              <EditableText
+                as="p"
+                value={u.card2Desc}
+                path="utilities.card2Desc"
+                multiline
+                className="mt-5 text-xs sm:text-[13.5px] leading-relaxed text-[#594772]"
               />
             </div>
 
-            {/* Title & Subtitle */}
-            <EditableText
-              as="h3"
-              value={u.card2Title}
-              path="utilities.card2Title"
-              className="mt-6 text-xl sm:text-[22px] font-black text-[#1c0836] tracking-tight"
-            />
-            <EditableText
-              as="p"
-              value={u.card2Badge}
-              path="utilities.card2Badge"
-              className="mt-1 text-sm sm:text-[15px] font-bold text-[#059669]"
-            />
-
-            {/* Description */}
-            <EditableText
-              as="p"
-              value={u.card2Desc}
-              path="utilities.card2Desc"
-              multiline
-              className="mt-5 text-xs sm:text-[13.5px] leading-relaxed text-[#594772]"
-            />
+            {/* Heartwarming Child Photo Badge */}
+            <div className="mt-6 relative overflow-hidden rounded-2xl border border-emerald-100 shadow-[0_8px_20px_rgba(16,185,129,0.12)] group/img">
+              <img
+                src="/impact-child.jpg"
+                alt="Smiling pediatric cancer patient supported by POTS community"
+                className="w-full h-44 sm:h-48 object-cover object-center transition-transform duration-500 group-hover/img:scale-105 select-none"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#064e3b]/85 via-black/15 to-transparent flex items-end p-3.5">
+                <div className="flex items-center gap-2 text-xs font-bold text-white drop-shadow-sm">
+                  <span className="size-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+                  <span className="truncate">Fighting Cancer With Hope &bull; 12 SOL</span>
+                </div>
+              </div>
+            </div>
           </div>
 
         </div>

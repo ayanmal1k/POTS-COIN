@@ -403,19 +403,37 @@ export function StJudePartnershipSection() {
           </div>
 
           {/* Direct Giving Portal Column */}
-          <div className="lg:col-span-5 space-y-3.5 lg:pl-6 lg:border-l lg:border-[#e2ccfc]/80">
-            <div className="flex items-center gap-2 text-[#e11d48]">
-              <Heart className="size-4.5 sm:size-5 fill-[#e11d48]" />
-              <h4 className="text-lg sm:text-xl font-black text-[#1c0836]">
-                Prefer to Donate Directly?
-              </h4>
+          <div className="lg:col-span-5 flex flex-col justify-between space-y-4 lg:pl-6 lg:border-l lg:border-[#e2ccfc]/80">
+            <div className="space-y-3.5">
+              <div className="flex items-center gap-2 text-[#e11d48]">
+                <Heart className="size-4.5 sm:size-5 fill-[#e11d48]" />
+                <h4 className="text-lg sm:text-xl font-black text-[#1c0836]">
+                  Prefer to Donate Directly?
+                </h4>
+              </div>
+
+              <p className="text-xs sm:text-[13.5px] leading-relaxed text-[#593946]">
+                Support St. Jude's life-saving mission directly using cryptocurrency through their official St. Jude crypto donation portal.
+              </p>
+
+              {/* Heartwarming Superhero Hope Children Photo */}
+              <div className="relative overflow-hidden rounded-2xl border border-rose-100 shadow-[0_8px_24px_rgba(225,29,72,0.12)] group/img">
+                <img
+                  src="/hope-children.jpg"
+                  alt="Brave pediatric cancer patients holding hope sign - St. Jude mission"
+                  className="w-full h-40 sm:h-44 object-cover object-center transition-transform duration-500 group-hover/img:scale-105 select-none"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent flex items-end p-3">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-white drop-shadow-sm">
+                    <span className="size-2 rounded-full bg-rose-400 animate-pulse shrink-0" />
+                    <span className="truncate">Fighting Cancer With Hope &bull; Official St. Jude Giving</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <p className="text-xs sm:text-[13.5px] leading-relaxed text-[#593946]">
-              Support St. Jude's life-saving mission directly using cryptocurrency through their official St. Jude crypto donation portal.
-            </p>
-
-            <div className="pt-1">
+            <div className="pt-2 space-y-2">
               <EditableButton
                 text={content.partnership.donateButtonText}
                 textPath="partnership.donateButtonText"
@@ -426,11 +444,10 @@ export function StJudePartnershipSection() {
                 className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#e11d48] via-[#e63946] to-[#be123c] px-6 py-3.5 text-xs sm:text-sm font-black text-white shadow-[0_6px_22px_rgba(225,29,72,0.28)] transition-all hover:scale-[1.02] active:scale-95"
                 icon={<ExternalLink size={14} />}
               />
+              <span className="block text-[10.5px] sm:text-[11px] text-[#8e6575]">
+                Official 501(c)(3) nonprofit portal &bull; Receipts issued by St. Jude
+              </span>
             </div>
-
-            <span className="block text-[10.5px] sm:text-[11px] text-[#8e6575]">
-              Official 501(c)(3) nonprofit portal &bull; Receipts issued by St. Jude
-            </span>
           </div>
 
         </div>
