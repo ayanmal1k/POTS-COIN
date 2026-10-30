@@ -119,11 +119,10 @@ export function HeroSection() {
               THE EpiCoin ECOSYSTEM
             </p>
 
-            {/* Headline matching image: $POT (white), Luck (yellow gradient), Community (white) */}
+            {/* Headline: $POT Luck in yellow gold gradient, Community in white */}
             <h1 className="text-4xl min-[400px]:text-5xl sm:text-6xl lg:text-[58px] xl:text-[68px] 2xl:text-[74px] font-black leading-[1.04] tracking-[-0.035em] text-white">
-              $POT{' '}
               <span className="bg-gradient-to-r from-[#ffe066] via-[#f59e0b] to-[#fbbf24] bg-clip-text text-transparent drop-shadow-[0_4px_22px_rgba(245,158,11,0.45)]">
-                Luck
+                $POT Luck
               </span>
               <br />
               Community
