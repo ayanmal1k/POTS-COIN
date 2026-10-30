@@ -45,7 +45,7 @@ export function HeroSection() {
   return (
     <section
       id="home"
-      className="hero-section relative w-full overflow-hidden text-white min-h-[750px] lg:min-h-[860px] xl:min-h-[920px] 2xl:min-h-[960px] flex flex-col justify-between"
+      className="hero-section relative w-full overflow-hidden text-white min-h-[620px] sm:min-h-[660px] lg:min-h-[720px] xl:min-h-[770px] flex flex-col justify-between"
       style={{
         background: `
           radial-gradient(ellipse 85% 65% at 50% -12%, rgba(168, 85, 247, 0.48) 0%, transparent 65%),
@@ -69,7 +69,7 @@ export function HeroSection() {
       </div>
 
       {/* Top Header / Navigation */}
-      <header className="relative z-30 mx-auto flex w-full max-w-[1480px] items-center justify-between px-6 py-5 sm:px-10 lg:px-16 xl:px-20">
+      <header className="relative z-30 mx-auto flex w-full max-w-[1480px] items-center justify-between px-6 py-3.5 sm:px-10 lg:px-16 xl:px-20">
         <Brand />
         <nav
           className={`${mobileOpen
@@ -109,8 +109,8 @@ export function HeroSection() {
       </header>
 
       {/* Main Hero Content Area */}
-      <div className="relative z-20 mx-auto w-full max-w-[1480px] px-5 sm:px-10 lg:px-14 xl:px-18 pt-4 sm:pt-8 lg:pt-10 pb-10 lg:pb-0 flex-1 flex flex-col justify-center">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-4 xl:gap-8 items-center lg:items-stretch min-h-[550px] lg:min-h-[640px] xl:min-h-[700px]">
+      <div className="relative z-20 mx-auto w-full max-w-[1480px] px-5 sm:px-10 lg:px-14 xl:px-18 pt-2 sm:pt-4 lg:pt-5 pb-8 lg:pb-0 flex-1 flex flex-col justify-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-4 xl:gap-8 items-center lg:items-stretch min-h-[460px] lg:min-h-[520px] xl:min-h-[580px]">
           
           {/* Left Column: Headline, Description & Action Buttons (5 cols) */}
           <div className="lg:col-span-5 flex flex-col justify-center items-center lg:items-start text-center lg:text-left space-y-5 sm:space-y-6 z-20 py-4 lg:py-8">
@@ -192,7 +192,7 @@ export function HeroSection() {
 
           {/* Center Column on Mobile: Dog sitting inline */}
           <div className="block lg:hidden w-full relative z-10 py-2">
-            <div className="relative mx-auto max-w-[320px] sm:max-w-[400px]">
+            <div className="relative mx-auto max-w-[360px] sm:max-w-[440px] md:max-w-[480px]">
               <div className="absolute inset-0 rounded-full bg-gradient-to-t from-[#9333ea]/40 via-[#c084fc]/25 to-transparent blur-3xl pointer-events-none" />
               <img
                 src="/dog.png"
@@ -259,7 +259,7 @@ export function HeroSection() {
         <img
           src="/dog.png"
           alt="$POT Mascot Dog"
-          className="relative z-10 w-auto h-[580px] lg:h-[660px] xl:h-[740px] 2xl:h-[800px] max-w-none object-contain object-bottom filter drop-shadow-[0_20px_50px_rgba(10,2,25,0.8)]"
+          className="relative z-10 w-auto h-[640px] lg:h-[740px] xl:h-[820px] 2xl:h-[880px] max-w-none object-contain object-bottom filter drop-shadow-[0_20px_50px_rgba(10,2,25,0.8)]"
           loading="eager"
         />
       </div>
