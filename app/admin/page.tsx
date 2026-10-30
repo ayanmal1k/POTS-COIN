@@ -21,7 +21,7 @@ import { RoadmapSection } from '@/components/roadmap-section'
 import { TokenInfoSection } from '@/components/token-info-section'
 import { ContactFooterSection } from '@/components/contact-footer-section'
 
-const DEFAULT_PASSCODE = 'admin123'
+const DEFAULT_PASSCODE = 'poTs@dmin098'
 
 export default function AdminPage() {
   const {
@@ -38,8 +38,13 @@ export default function AdminPage() {
 
   // Check saved session passcode
   useEffect(() => {
-    const savedPin = localStorage.getItem('pot_admin_passcode') || DEFAULT_PASSCODE
-    setCustomPasscode(savedPin)
+    const savedPin = localStorage.getItem('pot_admin_passcode')
+    if (!savedPin || savedPin === 'admin123') {
+      localStorage.setItem('pot_admin_passcode', DEFAULT_PASSCODE)
+      setCustomPasscode(DEFAULT_PASSCODE)
+    } else {
+      setCustomPasscode(savedPin)
+    }
     const isSessionAuth = sessionStorage.getItem('pot_admin_auth') === 'true'
     if (isSessionAuth) {
       setIsAuthenticated(true)
@@ -70,7 +75,7 @@ export default function AdminPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
-    if (passcode === customPasscode || passcode === 'admin123' || passcode === 'potadmin2026') {
+    if (passcode === customPasscode || passcode === DEFAULT_PASSCODE || passcode === 'poTs@dmin098') {
       setIsAuthenticated(true)
       sessionStorage.setItem('pot_admin_auth', 'true')
       toast.success('Welcome to $POT Visual Editor!')
