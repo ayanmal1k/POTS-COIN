@@ -444,7 +444,7 @@ export function MissionSection() {
           {/* Polaroid Image from public */}
           <div className="relative z-[1] w-full filter drop-shadow-[0_24px_50px_rgba(10,2,25,0.65)] transition-transform duration-300 hover:scale-[1.02]">
             <img
-              src="/mission-polaroid.webp"
+              src="/mission-new-polaroid.png"
               alt="Together We Make A Difference - Golden Retriever holding purple heart"
               className="w-full h-auto object-contain select-none"
               loading="lazy"
