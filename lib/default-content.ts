@@ -148,7 +148,7 @@ export const DEFAULT_CONTENT: SiteContent = {
     description: 'PLC combines meme culture with real-world impact to transform the lives of vulnerable children.',
     contractLabel: 'Contract Address (SPL)',
     joinButtonText: 'Buy Now',
-    joinButtonLink: 'http://fomo.family/tokens/solana/GUtUrPGwfJDj3WTb2dEe2B9UnLtG1GGdBMreFtDXJxEw?r=MistyJustViper',
+    joinButtonLink: 'https://dexscreener.com/solana/GUtUrPGwfJDj3WTb2dEe2B9UnLtG1GGdBMreFtDXJxEw',
     chartButtonText: 'View $POT live chart',
     chartButtonLink: '#chart',
     stJudeCardEyebrow: 'Supporting',

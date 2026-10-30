@@ -100,16 +100,6 @@ export function HeroSection() {
               </a>
             )
           })}
-          <a
-            href={content.hero.joinButtonLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => setMobileOpen(false)}
-            className="mt-2 flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#9c3eff] to-[#c67aff] px-5 py-3 text-xs font-bold text-white shadow-lg"
-          >
-            <span>{content.hero.joinButtonText || 'Buy Now'}</span>
-            <ExternalLink size={13} />
-          </a>
         </nav>
         <div className="flex items-center gap-3">
           <EditableButton
