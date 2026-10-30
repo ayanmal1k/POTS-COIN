@@ -105,7 +105,7 @@ export default function AdminPage() {
       sessionStorage.setItem('pot_admin_auth', 'true')
       toast.success('Welcome to $POT Visual Studio!')
     } else {
-      toast.error('Incorrect passcode. Default: admin123')
+      toast.error('Incorrect passcode. Please try again.')
     }
   }
 
@@ -206,7 +206,7 @@ export default function AdminPage() {
                 type="password"
                 value={passcode}
                 onChange={(e) => setPasscode(e.target.value)}
-                placeholder="Enter passcode (default: admin123)"
+                placeholder="Enter admin passcode"
                 className="w-full rounded-xl border border-white/15 bg-black/50 px-4 py-3 text-sm text-white placeholder-white/35 focus:border-[#c084fc] focus:outline-none transition shadow-inner font-mono"
                 autoFocus
               />
@@ -222,8 +222,9 @@ export default function AdminPage() {
           </form>
 
           <div className="pt-2 border-t border-white/10 flex items-center justify-between text-xs text-purple-300/60">
-            <span>
-              Default: <strong className="text-purple-200 font-mono">admin123</strong>
+            <span className="flex items-center gap-1.5 text-purple-300/50">
+              <ShieldCheck size={13} />
+              <span>Protected Admin Area</span>
             </span>
             <Link href="/" className="hover:text-white transition flex items-center gap-1">
               <span>View Public Site</span>
@@ -547,7 +548,7 @@ export default function AdminPage() {
                 </button>
               </form>
               <span className="block text-[11px] text-purple-300/60">
-                Current passcode: <strong className="text-purple-200 font-mono">{customPasscode}</strong>
+                Passcode is securely saved for this browser session.
               </span>
             </div>
 
