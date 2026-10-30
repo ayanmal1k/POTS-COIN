@@ -25,6 +25,10 @@ export interface SiteContent {
     stJudeCardMilestoneHighlight: string
     stJudeCardMilestoneSuffix: string
     stJudeCardButtonLink: string
+    transparencyBadgeIcon?: string
+    transparencyBadgeIconFilled?: boolean
+    stJudeCardIcon?: string
+    stJudeCardIconFilled?: boolean
   }
   utilities: {
     eyebrow: string
@@ -35,9 +39,13 @@ export interface SiteContent {
     card1Title: string
     card1Badge: string
     card1Desc: string
+    card1Icon?: string
+    card1IconFilled?: boolean
     card2Title: string
     card2Badge: string
     card2Desc: string
+    card2Icon?: string
+    card2IconFilled?: boolean
   }
   mission: {
     eyebrow: string
@@ -46,6 +54,8 @@ export interface SiteContent {
     points: Array<{
       title: string
       text: string
+      icon?: string
+      iconFilled?: boolean
     }>
   }
   partnership: {
@@ -73,6 +83,8 @@ export interface SiteContent {
       badge: string
       description: string
       items: string[]
+      icon?: string
+      iconFilled?: boolean
     }>
   }
   tokenInfo: {
@@ -84,6 +96,8 @@ export interface SiteContent {
     chartTitle: string
     chartBadge: string
     chartSubtitle: string
+    chartIcon?: string
+    chartIconFilled?: boolean
     features: string[]
   }
   footer: {
@@ -91,6 +105,8 @@ export interface SiteContent {
     subheading: string
     telegramButtonText: string
     telegramButtonLink: string
+    contactIcon?: string
+    contactIconFilled?: boolean
     copyright: string
   }
 }
@@ -122,6 +138,10 @@ export const DEFAULT_CONTENT: SiteContent = {
     stJudeCardMilestoneHighlight: '12 SOL',
     stJudeCardMilestoneSuffix: 'to St. Jude.',
     stJudeCardButtonLink: '#partnership',
+    transparencyBadgeIcon: 'ShieldCheck',
+    transparencyBadgeIconFilled: false,
+    stJudeCardIcon: 'Heart',
+    stJudeCardIconFilled: true,
   },
   utilities: {
     eyebrow: 'WHY $POT LUCK?',
@@ -132,9 +152,13 @@ export const DEFAULT_CONTENT: SiteContent = {
     card1Title: 'Holder Rewards',
     card1Badge: '3% SOL Reflections',
     card1Desc: 'The longer you hold and the more volume we do, the better your return.',
+    card1Icon: 'CoinStack',
+    card1IconFilled: false,
     card2Title: 'Real Impact',
     card2Badge: 'Charity at $100K MC',
     card2Desc: "Reach $100K market cap and we donate 12 SOL to St. Jude Children's Hospital.",
+    card2Icon: 'Heart',
+    card2IconFilled: true,
   },
   mission: {
     eyebrow: 'OUR MISSION',
@@ -144,14 +168,20 @@ export const DEFAULT_CONTENT: SiteContent = {
       {
         title: 'Reach $100K Market Cap',
         text: "Donate 12 SOL to St. Jude Children's Research Hospital.",
+        icon: 'Heart',
+        iconFilled: true,
       },
       {
         title: 'Full Transparency',
         text: 'Public charity wallet on-chain. Track our progress.',
+        icon: 'Shield',
+        iconFilled: true,
       },
       {
         title: 'Real Community',
         text: 'No insider groups. No artificial hype. Just people with a purpose.',
+        icon: 'Users',
+        iconFilled: true,
       },
     ],
   },

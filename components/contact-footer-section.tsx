@@ -3,6 +3,7 @@
 import React from 'react'
 import { useContent } from '@/context/content-context'
 import { EditableText } from '@/components/visual-editor/editable'
+import { EditableIcon } from '@/components/visual-editor/icon-library'
 import { MapPin, Mail, Globe, FileText, Phone, Building2, Heart } from 'lucide-react'
 
 // Custom SVG X (formerly Twitter) Icon
@@ -59,7 +60,15 @@ export function ContactFooterSection() {
           {/* Section Header: Icon + Title */}
           <div className="mb-12 sm:mb-16 flex items-center gap-3">
             <div className="grid size-10 place-items-center rounded-xl bg-white/10 backdrop-blur-md border border-white/15 shadow-sm">
-              <Mail className="size-5 text-white" />
+              <EditableIcon
+                name={content.footer.contactIcon}
+                namePath="footer.contactIcon"
+                filled={content.footer.contactIconFilled}
+                fillPath="footer.contactIconFilled"
+                defaultIcon="Mail"
+                defaultFilled={false}
+                className="size-5 text-white"
+              />
             </div>
             <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
               Contact &amp; Project Information

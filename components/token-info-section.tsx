@@ -9,6 +9,7 @@ import {
 } from 'lucide-react'
 import { useContent } from '@/context/content-context'
 import { EditableText } from '@/components/visual-editor/editable'
+import { EditableIcon } from '@/components/visual-editor/icon-library'
 
 export function TokenInfoSection() {
   const { content } = useContent()
@@ -179,7 +180,15 @@ export function TokenInfoSection() {
           {/* Chart Header Bar */}
           <div className="flex items-center gap-3 pb-5 border-b border-[#f0e4ff]">
             <div className="grid size-11 sm:size-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#7c2ae8] via-[#9333ea] to-[#c084fc] text-white shadow-[0_6px_20px_rgba(124,42,232,0.35)]">
-              <TrendingUp className="size-6 text-white" />
+              <EditableIcon
+                name={content.tokenInfo.chartIcon}
+                namePath="tokenInfo.chartIcon"
+                filled={content.tokenInfo.chartIconFilled}
+                fillPath="tokenInfo.chartIconFilled"
+                defaultIcon="TrendingUp"
+                defaultFilled={false}
+                className="size-6 text-white"
+              />
             </div>
             <div>
               <div className="flex flex-wrap items-center gap-2">

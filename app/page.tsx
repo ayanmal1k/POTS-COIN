@@ -10,6 +10,7 @@ import { RoadmapSection } from '@/components/roadmap-section'
 import { TokenInfoSection } from '@/components/token-info-section'
 import { ContactFooterSection } from '@/components/contact-footer-section'
 import { EditableText, EditableButton } from '@/components/visual-editor/editable'
+import { EditableIcon } from '@/components/visual-editor/icon-library'
 
 function Brand() {
   const { content } = useContent()
@@ -151,7 +152,15 @@ export function HeroSection() {
             {/* 100% Verified Transparency Badge */}
             <div className="flex justify-center lg:justify-start pt-1">
               <div className="inline-flex items-center gap-2 rounded-full border border-[#b56fff]/55 bg-[#7526de]/30 px-4 py-1.5 sm:px-5 sm:py-2 md:px-6 md:py-2.5 text-xs sm:text-[13px] md:text-sm font-bold text-white shadow-[0_0_25px_rgba(160,65,255,0.45)] backdrop-blur-md">
-                <ShieldCheck className="size-4 sm:size-4.5 md:size-5 text-[#3df586] shrink-0" />
+                <EditableIcon
+                  name={content.hero.transparencyBadgeIcon}
+                  namePath="hero.transparencyBadgeIcon"
+                  filled={content.hero.transparencyBadgeIconFilled}
+                  fillPath="hero.transparencyBadgeIconFilled"
+                  defaultIcon="ShieldCheck"
+                  defaultFilled={false}
+                  className="size-4 sm:size-4.5 md:size-5 text-[#3df586] shrink-0"
+                />
                 <EditableText
                   value={content.hero.transparencyBadge}
                   path="hero.transparencyBadge"
@@ -249,7 +258,15 @@ export function HeroSection() {
               {/* Card Top: 3D Heart + Supporting Text */}
               <div className="flex items-center gap-3.5 sm:gap-4">
                 <div className="size-11 sm:size-12 md:size-14 shrink-0 rounded-2xl bg-gradient-to-br from-[#c084fc] via-[#9333ea] to-[#6b21a8] flex items-center justify-center shadow-[0_0_24px_rgba(192,132,252,0.7)]">
-                  <Heart className="size-6 md:size-7 text-white fill-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]" />
+                  <EditableIcon
+                    name={content.hero.stJudeCardIcon}
+                    namePath="hero.stJudeCardIcon"
+                    filled={content.hero.stJudeCardIconFilled}
+                    fillPath="hero.stJudeCardIconFilled"
+                    defaultIcon="Heart"
+                    defaultFilled={true}
+                    className="size-6 md:size-7 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]"
+                  />
                 </div>
                 <div>
                   <EditableText
@@ -382,11 +399,20 @@ export function MissionSection() {
 
           <div className="mt-9 sm:mt-11 w-full space-y-6 sm:space-y-8 max-w-[560px]">
             {content.mission.points.map((pt, idx) => {
-              const Icon = icons[idx % icons.length]
+              const defaultIcons = ['Heart', 'Shield', 'Users', 'PawPrint']
+              const defIcon = defaultIcons[idx % defaultIcons.length]
               return (
                 <div className="flex items-start gap-4 sm:gap-5 text-left" key={pt.title + idx}>
                   <span className="grid size-12 sm:size-14 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#c084fc] via-[#9333ea] to-[#581c87] shadow-[0_0_24px_rgba(192,132,252,0.8),inset_0_2px_4px_rgba(255,255,255,0.6)] ring-1 ring-white/35 transition-transform duration-200 hover:scale-105">
-                    <Icon className="size-6 sm:size-6.5 text-white fill-white" />
+                    <EditableIcon
+                      name={pt.icon}
+                      namePath={`mission.points.${idx}.icon`}
+                      filled={pt.iconFilled}
+                      fillPath={`mission.points.${idx}.iconFilled`}
+                      defaultIcon={defIcon}
+                      defaultFilled={true}
+                      className="size-6 sm:size-6.5 text-white"
+                    />
                   </span>
                   <div className="pt-0.5 sm:pt-1">
                     <EditableText

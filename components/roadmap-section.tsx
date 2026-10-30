@@ -4,6 +4,7 @@ import React from 'react'
 import { Flag, Target, Rocket, Star, Sparkles } from 'lucide-react'
 import { useContent } from '@/context/content-context'
 import { EditableText } from '@/components/visual-editor/editable'
+import { EditableIcon } from '@/components/visual-editor/icon-library'
 
 export function RoadmapSection() {
   const { content } = useContent()
@@ -68,7 +69,15 @@ export function RoadmapSection() {
                 <div key={phase.phaseNumber} className="relative flex items-start gap-3.5 sm:gap-6">
                   {/* Glowing Node on Timeline */}
                   <div className="relative z-10 size-12 sm:size-14 shrink-0 rounded-full bg-gradient-to-br from-[#c084fc] via-[#9333ea] to-[#581c87] ring-4 ring-[#2a0a6b] shadow-[0_0_24px_rgba(192,132,252,0.65)] flex items-center justify-center">
-                    <Icon className="size-5 sm:size-6 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" />
+                    <EditableIcon
+                      name={phase.icon}
+                      namePath={`roadmap.phases.${index}.icon`}
+                      filled={phase.iconFilled}
+                      fillPath={`roadmap.phases.${index}.iconFilled`}
+                      defaultIcon={index === 0 ? 'Flag' : index === 1 ? 'Target' : index === 2 ? 'Rocket' : 'Star'}
+                      defaultFilled={true}
+                      className="size-5 sm:size-6 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
+                    />
                   </div>
 
                   {/* Frosted Glass Phase Card */}
@@ -135,7 +144,15 @@ export function RoadmapSection() {
               >
                 {/* Glowing Purple Orb Badge */}
                 <div className="relative size-14 sm:size-15 shrink-0 rounded-full bg-gradient-to-br from-[#c084fc] via-[#9333ea] to-[#581c87] shadow-[0_0_28px_rgba(192,132,252,0.7),inset_0_2px_4px_rgba(255,255,255,0.6)] flex items-center justify-center ring-1 ring-white/35 transition-transform duration-300 group-hover:scale-110 group-hover:shadow-[0_0_36px_rgba(216,180,254,0.9)]">
-                  <Icon className="size-6 sm:size-6.5 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] transition-transform duration-300 group-hover:scale-105" />
+                  <EditableIcon
+                    name={phase.icon}
+                    namePath={`roadmap.phases.${index}.icon`}
+                    filled={phase.iconFilled}
+                    fillPath={`roadmap.phases.${index}.iconFilled`}
+                    defaultIcon={index === 0 ? 'Flag' : index === 1 ? 'Target' : index === 2 ? 'Rocket' : 'Star'}
+                    defaultFilled={true}
+                    className="size-6 sm:size-6.5 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
+                  />
                 </div>
 
                 {/* Header: Phase Number & Status Tag */}

@@ -4,6 +4,7 @@ import React from 'react'
 import { Heart } from 'lucide-react'
 import { useContent } from '@/context/content-context'
 import { EditableText, EditableButton } from '@/components/visual-editor/editable'
+import { EditableIcon } from '@/components/visual-editor/icon-library'
 
 // Stacked Coin Discs icon exactly matching the image
 function CoinStackIcon({ className = 'size-7' }: { className?: string }) {
@@ -94,7 +95,15 @@ export function WhyPotSection() {
           <div className="group rounded-[28px] sm:rounded-[32px] border border-[#e8ddfb] bg-white p-7 sm:p-8 shadow-[0_12px_36px_rgba(110,40,185,0.06)] flex flex-col justify-start transition-all duration-300 hover:shadow-[0_18px_45px_rgba(110,40,185,0.12)] hover:border-[#c084fc]/60">
             {/* Circular Purple Icon Badge */}
             <div className="size-13 sm:size-14 rounded-full bg-[#6929d9] flex items-center justify-center text-white shadow-[0_6px_20px_rgba(105,41,217,0.3)] transition-transform duration-300 group-hover:scale-105">
-              <CoinStackIcon className="size-6 sm:size-6.5 text-white" />
+              <EditableIcon
+                name={u.card1Icon}
+                namePath="utilities.card1Icon"
+                filled={u.card1IconFilled}
+                fillPath="utilities.card1IconFilled"
+                defaultIcon="CoinStack"
+                defaultFilled={false}
+                className="size-6 sm:size-6.5 text-white"
+              />
             </div>
 
             {/* Title & Subtitle */}
@@ -125,7 +134,15 @@ export function WhyPotSection() {
           <div className="group rounded-[28px] sm:rounded-[32px] border border-[#d1fae5]/80 bg-white p-7 sm:p-8 shadow-[0_12px_36px_rgba(16,185,129,0.06)] flex flex-col justify-start transition-all duration-300 hover:shadow-[0_18px_45px_rgba(16,185,129,0.12)] hover:border-[#10b981]/50">
             {/* Circular Green Icon Badge with Yellow Heart */}
             <div className="size-13 sm:size-14 rounded-full bg-[#10b981] flex items-center justify-center shadow-[0_6px_20px_rgba(160,185,129,0.3)] transition-transform duration-300 group-hover:scale-105">
-              <Heart className="size-6 sm:size-6.5 fill-[#facc15] text-[#facc15]" />
+              <EditableIcon
+                name={u.card2Icon}
+                namePath="utilities.card2Icon"
+                filled={u.card2IconFilled}
+                fillPath="utilities.card2IconFilled"
+                defaultIcon="Heart"
+                defaultFilled={true}
+                className="size-6 sm:size-6.5 text-[#facc15]"
+              />
             </div>
 
             {/* Title & Subtitle */}
