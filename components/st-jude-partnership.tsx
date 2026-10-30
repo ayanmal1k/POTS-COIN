@@ -354,57 +354,87 @@ export function StJudePartnershipSection() {
         </div>
 
         {/* 3. Open Giving Channels & Community Vault (Seamless Responsive Flow) */}
-        <div className="pt-8 sm:pt-12 border-t border-[#e2ccfc]/80 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
+        <div className="pt-10 sm:pt-14 border-t border-[#e2ccfc]/80 space-y-8 sm:space-y-10">
           
-          {/* Community Charity Vault Column */}
-          <div className="lg:col-span-7 space-y-3.5">
-            <div className="flex items-center gap-2 text-[#7c2ae8]">
-              <Wallet className="size-4.5 sm:size-5" />
-              <h4 className="text-lg sm:text-xl font-black text-[#1c0836]">
-                PLC Charity Funds Solana Address
-              </h4>
+          {/* Full-Width Big Hope & Courage Children Showcase (100% Fully Visible) */}
+          <div className="w-full relative overflow-hidden rounded-3xl sm:rounded-[36px] border border-[#d8b4fe]/60 bg-gradient-to-b from-[#240a4b] via-[#1a0736] to-[#120326] shadow-[0_24px_55px_rgba(75,20,120,0.25)] p-3 sm:p-5 md:p-6 group">
+            {/* Ambient soft glow behind image */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(192,132,252,0.18)_0%,transparent_70%)] pointer-events-none" />
+
+            <div className="relative w-full flex items-center justify-center overflow-hidden rounded-2xl sm:rounded-[28px] bg-[#16042e]">
+              <img
+                src="/hope-children.jpg"
+                alt="Brave pediatric cancer patients holding hope sign - St. Jude Children's Research Hospital"
+                className="w-full h-auto max-h-[720px] object-contain select-none transition-transform duration-700 group-hover:scale-[1.01]"
+                loading="lazy"
+              />
             </div>
 
-            <p className="text-xs sm:text-[13.5px] leading-relaxed text-[#543d73]">
-              You can also deposit or donate SOL directly to the PLC charity fund address below. Those funds will be donated together as the <strong>12 SOL</strong> milestone to St. Jude when we reach <strong>$100k market cap</strong>.
-            </p>
-
-            {/* Responsive Copyable Address Strip */}
-            <div className="flex items-center justify-between gap-2 rounded-2xl border border-[#b87aff]/50 bg-white/90 p-2.5 sm:p-3.5 shadow-sm backdrop-blur-md">
-              <span className="min-w-0 flex-1 font-mono text-[11px] min-[400px]:text-xs sm:text-sm font-bold text-[#1c0836] truncate select-all">
-                {content.global.charityVaultAddress}
-              </span>
-
-              <button
-                onClick={copyCharityAddress}
-                title={copied ? 'Copied!' : 'Copy address'}
-                className={`grid size-8 sm:size-9 shrink-0 place-items-center rounded-xl border transition-all active:scale-95 ${
-                  copied
-                    ? 'border-emerald-500 bg-emerald-50 text-emerald-600'
-                    : 'border-[#d8b4fe] bg-white text-[#7c2ae8] hover:bg-[#7c2ae8] hover:text-white'
-                }`}
-                aria-label="Copy charity address"
-              >
-                {copied ? <Check size={14} /> : <Copy size={14} />}
-              </button>
-            </div>
-
-            {/* Live Vault Balance Directly Under Address (No progress bar) */}
-            <div className="flex items-center gap-2 pt-1 text-xs">
-              <span className="relative flex size-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#0891b2] opacity-75" />
-                <span className="relative inline-flex size-2 rounded-full bg-[#06b6d4]" />
-              </span>
-              <span className="font-medium text-[#705295]">Live Vault:</span>
-              <span className="font-mono text-sm sm:text-base font-black text-[#1c0836]">
-                {loadingBalance ? 'Checking...' : `${solBalance.toFixed(3)} SOL`}
+            {/* Impact Banner across the entire width */}
+            <div className="mt-4 sm:mt-5 px-2 sm:px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-white">
+              <div className="flex items-center gap-2.5">
+                <span className="size-2.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+                <span className="text-xs sm:text-sm font-bold text-white tracking-wide">
+                  We Fight With Hope &bull; Supporting St. Jude Children's Research Hospital
+                </span>
+              </div>
+              <span className="text-[11px] sm:text-xs text-purple-200/80 font-medium">
+                No family ever receives a bill from St. Jude for treatment, travel, housing, or food.
               </span>
             </div>
           </div>
 
-          {/* Direct Giving Portal Column */}
-          <div className="lg:col-span-5 flex flex-col justify-between space-y-4 lg:pl-6 lg:border-l lg:border-[#e2ccfc]/80">
-            <div className="space-y-3.5">
+          {/* Giving Channels: Community Vault (Left) & Direct Giving Portal (Right) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
+            
+            {/* Community Charity Vault Column */}
+            <div className="lg:col-span-7 space-y-3.5">
+              <div className="flex items-center gap-2 text-[#7c2ae8]">
+                <Wallet className="size-4.5 sm:size-5" />
+                <h4 className="text-lg sm:text-xl font-black text-[#1c0836]">
+                  PLC Charity Funds Solana Address
+                </h4>
+              </div>
+
+              <p className="text-xs sm:text-[13.5px] leading-relaxed text-[#543d73]">
+                You can also deposit or donate SOL directly to the PLC charity fund address below. Those funds will be donated together as the <strong>12 SOL</strong> milestone to St. Jude when we reach <strong>$100k market cap</strong>.
+              </p>
+
+              {/* Responsive Copyable Address Strip */}
+              <div className="flex items-center justify-between gap-2 rounded-2xl border border-[#b87aff]/50 bg-white/90 p-2.5 sm:p-3.5 shadow-sm backdrop-blur-md">
+                <span className="min-w-0 flex-1 font-mono text-[11px] min-[400px]:text-xs sm:text-sm font-bold text-[#1c0836] truncate select-all">
+                  {content.global.charityVaultAddress}
+                </span>
+
+                <button
+                  onClick={copyCharityAddress}
+                  title={copied ? 'Copied!' : 'Copy address'}
+                  className={`grid size-8 sm:size-9 shrink-0 place-items-center rounded-xl border transition-all active:scale-95 ${
+                    copied
+                      ? 'border-emerald-500 bg-emerald-50 text-emerald-600'
+                      : 'border-[#d8b4fe] bg-white text-[#7c2ae8] hover:bg-[#7c2ae8] hover:text-white'
+                  }`}
+                  aria-label="Copy charity address"
+                >
+                  {copied ? <Check size={14} /> : <Copy size={14} />}
+                </button>
+              </div>
+
+              {/* Live Vault Balance Directly Under Address (No progress bar) */}
+              <div className="flex items-center gap-2 pt-1 text-xs">
+                <span className="relative flex size-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#0891b2] opacity-75" />
+                  <span className="relative inline-flex size-2 rounded-full bg-[#06b6d4]" />
+                </span>
+                <span className="font-medium text-[#705295]">Live Vault:</span>
+                <span className="font-mono text-sm sm:text-base font-black text-[#1c0836]">
+                  {loadingBalance ? 'Checking...' : `${solBalance.toFixed(3)} SOL`}
+                </span>
+              </div>
+            </div>
+
+            {/* Direct Giving Portal Column */}
+            <div className="lg:col-span-5 space-y-3.5 lg:pl-6 lg:border-l lg:border-[#e2ccfc]/80">
               <div className="flex items-center gap-2 text-[#e11d48]">
                 <Heart className="size-4.5 sm:size-5 fill-[#e11d48]" />
                 <h4 className="text-lg sm:text-xl font-black text-[#1c0836]">
@@ -416,38 +446,24 @@ export function StJudePartnershipSection() {
                 Support St. Jude's life-saving mission directly using cryptocurrency through their official St. Jude crypto donation portal.
               </p>
 
-              {/* Heartwarming Superhero Hope Children Photo */}
-              <div className="relative overflow-hidden rounded-2xl border border-rose-100 shadow-[0_8px_24px_rgba(225,29,72,0.12)] group/img">
-                <img
-                  src="/hope-children.jpg"
-                  alt="Brave pediatric cancer patients holding hope sign - St. Jude mission"
-                  className="w-full h-40 sm:h-44 object-cover object-center transition-transform duration-500 group-hover/img:scale-105 select-none"
-                  loading="lazy"
+              <div className="pt-2">
+                <EditableButton
+                  text={content.partnership.donateButtonText}
+                  textPath="partnership.donateButtonText"
+                  link={content.partnership.donateButtonLink}
+                  linkPath="partnership.donateButtonLink"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#e11d48] via-[#e63946] to-[#be123c] px-6 py-3.5 text-xs sm:text-sm font-black text-white shadow-[0_6px_22px_rgba(225,29,72,0.28)] transition-all hover:scale-[1.02] active:scale-95"
+                  icon={<ExternalLink size={14} />}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent flex items-end p-3">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-white drop-shadow-sm">
-                    <span className="size-2 rounded-full bg-rose-400 animate-pulse shrink-0" />
-                    <span className="truncate">Fighting Cancer With Hope &bull; Official St. Jude Giving</span>
-                  </div>
-                </div>
               </div>
-            </div>
 
-            <div className="pt-2 space-y-2">
-              <EditableButton
-                text={content.partnership.donateButtonText}
-                textPath="partnership.donateButtonText"
-                link={content.partnership.donateButtonLink}
-                linkPath="partnership.donateButtonLink"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#e11d48] via-[#e63946] to-[#be123c] px-6 py-3.5 text-xs sm:text-sm font-black text-white shadow-[0_6px_22px_rgba(225,29,72,0.28)] transition-all hover:scale-[1.02] active:scale-95"
-                icon={<ExternalLink size={14} />}
-              />
               <span className="block text-[10.5px] sm:text-[11px] text-[#8e6575]">
                 Official 501(c)(3) nonprofit portal &bull; Receipts issued by St. Jude
               </span>
             </div>
+
           </div>
 
         </div>
