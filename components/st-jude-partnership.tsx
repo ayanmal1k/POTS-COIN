@@ -373,30 +373,15 @@ export function StJudePartnershipSection() {
             </div>
 
             {/* Live Vault Balance Directly Under Address (No progress bar) */}
-            <div className="flex flex-wrap items-center justify-between gap-2 pt-1 text-xs">
-              <div className="flex items-center gap-2">
-                <span className="relative flex size-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#0891b2] opacity-75" />
-                  <span className="relative inline-flex size-2 rounded-full bg-[#06b6d4]" />
-                </span>
-                <span className="font-medium text-[#705295]">Live Vault:</span>
-                <span className="font-mono text-sm sm:text-base font-black text-[#1c0836]">
-                  {loadingBalance ? 'Checking...' : `${solBalance.toFixed(3)} SOL`}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <a
-                  href={`https://solscan.io/account/${CHARITY_WALLET_ADDRESS}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 font-bold text-[#7c2ae8] hover:underline"
-                >
-                  <span>View on Solscan</span>
-                  <ExternalLink size={11} />
-                </a>
-                <span className="text-[#8e74ae]">&bull; Solana Mainnet</span>
-              </div>
+            <div className="flex items-center gap-2 pt-1 text-xs">
+              <span className="relative flex size-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#0891b2] opacity-75" />
+                <span className="relative inline-flex size-2 rounded-full bg-[#06b6d4]" />
+              </span>
+              <span className="font-medium text-[#705295]">Live Vault:</span>
+              <span className="font-mono text-sm sm:text-base font-black text-[#1c0836]">
+                {loadingBalance ? 'Checking...' : `${solBalance.toFixed(3)} SOL`}
+              </span>
             </div>
           </div>
 
