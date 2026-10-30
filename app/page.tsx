@@ -129,56 +129,61 @@ export function HeroSection() {
               Community
             </h1>
 
-            {/* Sub-headline description matching image */}
-            <div className="space-y-2 text-sm sm:text-base lg:text-[17px] leading-relaxed text-white/90 max-w-[500px]">
-              <p className="font-bold text-white text-base sm:text-lg lg:text-[19px]">
-                More than a meme coin.<br className="hidden sm:inline" /> A movement for a better tomorrow.
-              </p>
-              <p className="text-white/80">
-                Join a transparent, organic community on Solana and help make a real difference.
-              </p>
+            {/* 100% Verified Transparency Badge */}
+            <div className="flex justify-center lg:justify-start pt-1">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#b56fff]/55 bg-[#7526de]/30 px-4 py-1.5 sm:px-5 sm:py-2 text-xs sm:text-[13px] font-bold text-white shadow-[0_0_25px_rgba(160,65,255,0.45)] backdrop-blur-md">
+                <ShieldCheck className="size-4 sm:size-4.5 text-[#3df586] shrink-0" />
+                <span>100% Verified Transparency</span>
+              </div>
             </div>
 
-            {/* CTA Buttons: Get $POT & View Roadmap (matching reference image) */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3.5 pt-2">
-              <a
-                href="https://t.me/epicoins"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-full bg-[#6929d9] hover:bg-[#5b21b6] text-white px-8 py-3.5 sm:px-9 sm:py-4 text-sm sm:text-base font-bold shadow-[0_8px_25px_rgba(105,41,217,0.45)] transition-all duration-200 hover:scale-105 active:scale-95"
-              >
-                Get $POT
-              </a>
+            {/* Description */}
+            <p className="text-xs sm:text-sm md:text-[14.5px] leading-relaxed text-white/85 max-w-[470px]">
+              Welcome to the $POT Luck Community (PLC), a community-driven Solana meme coin built on transparency, organic growth, and real-world charitable impact.
+            </p>
 
-              <a
-                href="#roadmap"
-                className="inline-flex items-center justify-center rounded-full border border-white/25 bg-white/[0.06] hover:bg-white/15 text-white px-7 py-3.5 sm:px-8 sm:py-4 text-sm sm:text-base font-bold backdrop-blur-md transition-all duration-200 hover:scale-105 active:scale-95"
-              >
-                View Roadmap
-              </a>
-            </div>
-
-            {/* Compact Contract Address Strip */}
-            <div className="w-full max-w-[460px] pt-1">
-              <div className="flex items-center justify-between gap-2.5 rounded-2xl border border-white/15 bg-black/40 px-3.5 py-2.5 backdrop-blur-md text-left">
-                <div className="flex min-w-0 flex-1 items-center gap-2">
-                  <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-                  <span className="truncate font-mono text-xs font-semibold text-white/90 select-all">
-                    {address}
-                  </span>
+            {/* Contract Address Card */}
+            <div className="w-full max-w-[470px] rounded-2xl border border-[#9d4eff]/45 bg-[#170932]/85 p-2.5 sm:p-3 shadow-[0_8px_32px_rgba(0,0,0,0.55),0_0_24px_rgba(150,65,255,0.25)] backdrop-blur-xl transition-all duration-300 hover:border-[#bf7bff]/80 hover:shadow-[0_0_32px_rgba(168,82,255,0.45)] text-left">
+              <div className="flex items-center justify-between gap-2.5">
+                <div className="flex min-w-0 flex-1 items-center gap-2.5 sm:gap-3">
+                  <div className="grid size-9 sm:size-10 shrink-0 place-items-center rounded-xl bg-black/60 border border-white/10 shadow-inner">
+                    <img src="/solana-logo.svg" alt="Solana Logo" className="size-5 sm:size-5.5" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-1.5 text-[9.5px] sm:text-[10px] font-medium tracking-wider uppercase text-white/55">
+                      <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <span>Contract Address (SPL)</span>
+                    </div>
+                    <span className="block truncate font-mono text-[11px] min-[400px]:text-[11.5px] sm:text-xs font-semibold tracking-tight text-white/95 select-all">
+                      {address}
+                    </span>
+                  </div>
                 </div>
                 <button
                   onClick={copyAddress}
                   title={copied ? "Copied!" : "Copy address"}
-                  className={`grid size-8 shrink-0 place-items-center rounded-xl border transition-all active:scale-90 ${copied
-                      ? 'border-emerald-500/60 bg-emerald-500/20 text-emerald-400'
-                      : 'border-white/15 bg-white/10 text-white/80 hover:bg-white/20 hover:text-white'
+                  className={`grid size-9 shrink-0 place-items-center rounded-xl border transition-all active:scale-90 ${copied
+                      ? 'border-emerald-500/60 bg-emerald-500/20 text-emerald-400 shadow-[0_0_15px_rgba(52,211,153,0.4)]'
+                      : 'border-white/10 bg-white/5 text-white/80 hover:bg-white/15 hover:text-white'
                     }`}
                   aria-label="Copy contract address"
                 >
-                  {copied ? <Check size={14} /> : <Copy size={14} />}
+                  {copied ? <Check size={16} /> : <Copy size={15} />}
                 </button>
               </div>
+            </div>
+
+            {/* CTA Button: Join the Community */}
+            <div className="flex w-full max-w-[470px] flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-1">
+              <a
+                href="https://t.me/epicoins"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-[#9c3eff] via-[#ad4eff] to-[#cb7dff] px-8 py-3.5 sm:px-9 sm:py-4 text-xs sm:text-sm font-bold text-white shadow-[0_0_26px_rgba(168,62,255,0.55),0_4px_16px_rgba(0,0,0,0.3)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_36px_rgba(174,79,255,0.75)] active:scale-[0.98]"
+              >
+                <span>Join the Community</span>
+                <Send size={14} className="fill-white" />
+              </a>
             </div>
           </div>
 
