@@ -69,7 +69,7 @@ export function HeroSection() {
       </div>
 
       {/* Top Header / Navigation */}
-      <header className="relative z-30 mx-auto flex w-full max-w-[1480px] items-center justify-between px-6 py-3.5 sm:px-10 lg:px-16 xl:px-20">
+      <header className="relative z-30 mx-auto flex w-full max-w-none items-center justify-between px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-24 py-3.5">
         <Brand />
         <nav
           className={`${mobileOpen
@@ -109,11 +109,11 @@ export function HeroSection() {
       </header>
 
       {/* Main Hero Content Area */}
-      <div className="relative z-20 mx-auto w-full max-w-[1480px] px-5 sm:px-10 lg:px-14 xl:px-18 pt-2 sm:pt-4 lg:pt-5 pb-8 lg:pb-0 flex-1 flex flex-col justify-center">
+      <div className="relative z-20 mx-auto w-full max-w-none px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-24 pt-2 sm:pt-4 lg:pt-5 pb-8 lg:pb-0 flex-1 flex flex-col justify-center">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-4 xl:gap-8 items-center lg:items-stretch min-h-[510px] lg:min-h-[570px] xl:min-h-[640px]">
           
           {/* Left Column: Headline, Description & Action Buttons (5 cols) */}
-          <div className="lg:col-span-5 flex flex-col justify-center items-center lg:items-start text-center lg:text-left space-y-5 sm:space-y-6 z-20 py-4 lg:py-8">
+          <div className="lg:col-span-5 xl:col-span-4 2xl:col-span-4 flex flex-col justify-center items-center lg:items-start text-center lg:text-left space-y-5 sm:space-y-6 z-20 py-4 lg:py-8 max-w-[560px]">
             {/* Main Headline */}
             <h1 className="text-3xl min-[400px]:text-4xl sm:text-5xl lg:text-[46px] xl:text-[54px] 2xl:text-[60px] font-black leading-[1.08] tracking-[-0.03em] text-white">
               Welcome to{' '}
@@ -195,7 +195,7 @@ export function HeroSection() {
           </div>
 
           {/* Spacer Column on Desktop so text does not overlap dog */}
-          <div className="hidden lg:block lg:col-span-3 xl:col-span-4 pointer-events-none" />
+          <div className="hidden lg:block lg:col-span-3 xl:col-span-4 2xl:col-span-4 pointer-events-none" />
 
           {/* Center Column on Mobile: Dog sitting inline */}
           <div className="block lg:hidden w-full relative z-10 py-2">
@@ -211,7 +211,7 @@ export function HeroSection() {
           </div>
 
           {/* Right Column: St. Jude Card with ENLARGED all-white hospital logo (4 cols on lg, 3 cols on xl) */}
-          <div className="lg:col-span-4 xl:col-span-3 flex items-center justify-center lg:justify-end z-20 py-4 lg:py-8">
+          <div className="lg:col-span-4 xl:col-span-4 2xl:col-span-4 flex items-center justify-center lg:justify-end z-20 py-4 lg:py-8">
             <div className="w-full max-w-[360px] sm:max-w-[400px] lg:max-w-[370px] xl:max-w-[410px] rounded-[32px] sm:rounded-[36px] border border-[#a855f7]/45 bg-gradient-to-b from-[#240a4b]/85 via-[#1a0736]/90 to-[#120326]/95 backdrop-blur-xl p-6 sm:p-7 xl:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5),0_0_35px_rgba(168,85,247,0.22)] transition-all duration-300 hover:border-[#c084fc]/60 space-y-5">
               
               {/* Card Top: 3D Heart + Supporting Text */}
@@ -260,7 +260,7 @@ export function HeroSection() {
       </div>
 
       {/* Center Big Dog Mascot Attached to the Bottom of Section on Big Screens - moved down slightly and 10% taller */}
-      <div className="hidden lg:flex absolute -bottom-5 lg:-bottom-7 xl:-bottom-9 left-[50%] -translate-x-[48%] pointer-events-none select-none z-10 items-end justify-center">
+      <div className="hidden lg:flex absolute -bottom-5 lg:-bottom-7 xl:-bottom-9 left-[53%] xl:left-[54%] 2xl:left-[55%] -translate-x-[50%] pointer-events-none select-none z-10 items-end justify-center">
         {/* Glow behind dog paws and body */}
         <div className="absolute bottom-4 size-[550px] xl:size-[650px] rounded-full bg-gradient-to-t from-[#9333ea]/45 via-[#c084fc]/25 to-transparent blur-3xl pointer-events-none" />
         <img
