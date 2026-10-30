@@ -207,7 +207,7 @@ export function HeroSection() {
             </div>
 
             {/* CTA Buttons & Transparency Badge */}
-            <div className="flex w-full max-w-[540px] md:max-w-[640px] flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-3.5 pt-1">
+            <div className="flex w-full flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-3.5 pt-1">
               <EditableButton
                 text={content.hero.joinButtonText}
                 textPath="hero.joinButtonText"
@@ -219,30 +219,33 @@ export function HeroSection() {
                 icon={<ExternalLink size={15} className="text-white" />}
               />
 
-              <EditableButton
-                text={content.hero.chartButtonText}
-                textPath="hero.chartButtonText"
-                link={content.hero.chartButtonLink}
-                linkPath="hero.chartButtonLink"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border border-white/35 bg-white/5 hover:bg-white/15 hover:border-white/60 px-6 py-3.5 sm:px-7 sm:py-4 text-xs sm:text-sm md:text-base font-bold text-white backdrop-blur-md transition-all duration-200 hover:scale-[1.03] active:scale-[0.98]"
-                icon={<TrendingUp size={16} className="text-emerald-400" />}
-              />
+              {/* View Chart and Transparency paired together side-by-side (Transparency directly to the right of View Chart) */}
+              <div className="flex items-center justify-center gap-2.5 sm:gap-3 w-full sm:w-auto">
+                <EditableButton
+                  text={content.hero.chartButtonText}
+                  textPath="hero.chartButtonText"
+                  link={content.hero.chartButtonLink}
+                  linkPath="hero.chartButtonLink"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-white/35 bg-white/5 hover:bg-white/15 hover:border-white/60 px-5 py-3.5 sm:px-6 sm:py-4 text-xs sm:text-sm md:text-base font-bold text-white backdrop-blur-md transition-all duration-200 hover:scale-[1.03] active:scale-[0.98]"
+                  icon={<TrendingUp size={16} className="text-emerald-400" />}
+                />
 
-              {/* 100% Verified Transparency Badge moved next to View Chart */}
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#b56fff]/55 bg-[#7526de]/30 px-4 py-2.5 sm:px-5 sm:py-3.5 text-xs sm:text-[13px] md:text-sm font-bold text-white shadow-[0_0_25px_rgba(160,65,255,0.45)] backdrop-blur-md">
-                <EditableIcon
-                  name={content.hero.transparencyBadgeIcon}
-                  namePath="hero.transparencyBadgeIcon"
-                  filled={content.hero.transparencyBadgeIconFilled}
-                  fillPath="hero.transparencyBadgeIconFilled"
-                  defaultIcon="ShieldCheck"
-                  defaultFilled={false}
-                  className="size-4 sm:size-4.5 text-[#3df586] shrink-0"
-                />
-                <EditableText
-                  value={content.hero.transparencyBadge}
-                  path="hero.transparencyBadge"
-                />
+                {/* 100% Verified Transparency Badge directly to the right of View Chart */}
+                <div className="inline-flex items-center gap-2 rounded-full border border-[#b56fff]/55 bg-[#7526de]/30 px-4 py-3 sm:px-4.5 sm:py-3.5 text-xs sm:text-[13px] md:text-sm font-bold text-white shadow-[0_0_25px_rgba(160,65,255,0.45)] backdrop-blur-md shrink-0">
+                  <EditableIcon
+                    name={content.hero.transparencyBadgeIcon}
+                    namePath="hero.transparencyBadgeIcon"
+                    filled={content.hero.transparencyBadgeIconFilled}
+                    fillPath="hero.transparencyBadgeIconFilled"
+                    defaultIcon="ShieldCheck"
+                    defaultFilled={false}
+                    className="size-4 sm:size-4.5 text-[#3df586] shrink-0"
+                  />
+                  <EditableText
+                    value={content.hero.transparencyBadge}
+                    path="hero.transparencyBadge"
+                  />
+                </div>
               </div>
             </div>
           </div>
