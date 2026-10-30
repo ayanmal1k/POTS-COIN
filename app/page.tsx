@@ -2,6 +2,7 @@
 
 import { ArrowRight, Check, Copy, Heart, Menu, PawPrint, Send, Shield, ShieldCheck, TrendingUp, Users, Wallet, X } from 'lucide-react'
 import { useState } from 'react'
+import { useContent } from '@/context/content-context'
 import { WhyPotSection } from '@/components/why-pot-section'
 import { PawPrint3DWatermark, CustomPawPrint } from '@/components/why-pot-icons'
 import { StJudePartnershipSection } from '@/components/st-jude-partnership'
@@ -10,26 +11,28 @@ import { TokenInfoSection } from '@/components/token-info-section'
 import { ContactFooterSection } from '@/components/contact-footer-section'
 
 function Brand() {
+  const { content } = useContent()
   return (
     <a href="#home" className="flex items-center gap-2.5 sm:gap-3 text-lg font-extrabold tracking-tight text-white group transition-transform duration-200 hover:scale-105">
       <div className="grid size-10 sm:size-11 md:size-12 shrink-0 place-items-center rounded-full bg-white p-1 shadow-[0_0_18px_rgba(255,255,255,0.4)] border border-white/80 overflow-hidden">
         <img
           src="/logo.png"
-          alt="EpiCoin Logo"
+          alt={`${content.global.brandName} Logo`}
           className="size-full object-contain"
         />
       </div>
       <span className="text-xl sm:text-2xl font-black tracking-tight text-white group-hover:text-[#e9d5ff]">
-        EpiCoin
+        {content.global.brandName}
       </span>
     </a>
   )
 }
 
 export function HeroSection() {
+  const { content } = useContent()
   const [copied, setCopied] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const address = 'GUtUrPGwfJDj3WTb2dEe2B9UnLtG1GGdBMreFtDXJxEw'
+  const address = content.global.solanaContractAddress
 
   const copyAddress = async () => {
     try {
@@ -91,12 +94,12 @@ export function HeroSection() {
         </nav>
         <div className="flex items-center gap-3">
           <a
-            href="https://t.me/epicoins"
+            href={content.global.telegramUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="hidden items-center gap-2 rounded-full bg-gradient-to-r from-[#9c3eff] to-[#c67aff] px-5 py-2.5 text-xs font-bold text-white shadow-[0_4px_20px_rgba(156,62,255,0.45)] transition duration-200 hover:scale-105 active:scale-95 lg:flex"
           >
-            Join Community <Send size={13} className="fill-white" />
+            {content.hero.joinButtonText} <Send size={13} className="fill-white" />
           </a>
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -116,29 +119,29 @@ export function HeroSection() {
           <div className="lg:col-span-5 xl:col-span-4 2xl:col-span-4 flex flex-col justify-center items-center lg:items-start text-center lg:text-left space-y-5 sm:space-y-6 z-20 py-2 sm:py-4 lg:py-8 w-full max-w-[520px] md:max-w-[620px] lg:max-w-[560px] mx-auto lg:mx-0">
             {/* Main Headline */}
             <h1 className="text-3xl min-[400px]:text-4xl sm:text-5xl md:text-[52px] lg:text-[46px] xl:text-[54px] 2xl:text-[60px] font-black leading-[1.08] tracking-[-0.03em] text-white">
-              Welcome to{' '}
+              {content.hero.headingPart1}{' '}
               <span className="bg-gradient-to-r from-[#ffe066] via-[#f59e0b] to-[#fbbf24] bg-clip-text text-transparent drop-shadow-[0_4px_22px_rgba(245,158,11,0.45)]">
-                $POT Luck
+                {content.hero.headingHighlight}
               </span>{' '}
-              Community (PLC)
+              {content.hero.headingPart2}
             </h1>
 
             {/* Text right beneath main heading */}
             <p className="text-xs sm:text-[13px] md:text-sm font-black tracking-[0.24em] uppercase text-[#e9d5ff]/90">
-              The EpiCoin Ecosystem
+              {content.hero.eyebrow}
             </p>
 
             {/* 100% Verified Transparency Badge */}
             <div className="flex justify-center lg:justify-start pt-1">
               <div className="inline-flex items-center gap-2 rounded-full border border-[#b56fff]/55 bg-[#7526de]/30 px-4 py-1.5 sm:px-5 sm:py-2 md:px-6 md:py-2.5 text-xs sm:text-[13px] md:text-sm font-bold text-white shadow-[0_0_25px_rgba(160,65,255,0.45)] backdrop-blur-md">
                 <ShieldCheck className="size-4 sm:size-4.5 md:size-5 text-[#3df586] shrink-0" />
-                <span>100% Verified Transparency</span>
+                <span>{content.hero.transparencyBadge}</span>
               </div>
             </div>
 
             {/* Description */}
             <p className="text-xs sm:text-sm md:text-base lg:text-[14.5px] leading-relaxed text-white/85 max-w-[480px] md:max-w-[580px]">
-              PLC combines meme culture with real-world impact to transform the lives of vulnerable children.
+              {content.hero.description}
             </p>
 
             {/* Contract Address Card - expansive on iPad */}
@@ -151,7 +154,7 @@ export function HeroSection() {
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-1.5 text-[9.5px] sm:text-[10px] md:text-[11px] font-medium tracking-wider uppercase text-white/55">
                       <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      <span>Contract Address (SPL)</span>
+                      <span>{content.hero.contractLabel}</span>
                     </div>
                     <span className="block truncate font-mono text-[11px] min-[400px]:text-[11.5px] sm:text-xs md:text-[13px] font-semibold tracking-tight text-white/95 select-all">
                       {address}
@@ -175,20 +178,20 @@ export function HeroSection() {
             {/* CTA Buttons: Join the Community & View $POT live chart */}
             <div className="flex w-full max-w-[480px] md:max-w-[580px] flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-1">
               <a
-                href="https://t.me/epicoins"
+                href={content.hero.joinButtonLink}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-[#9c3eff] via-[#ad4eff] to-[#cb7dff] px-7 py-3.5 sm:px-8 sm:py-4 text-xs sm:text-sm md:text-base font-bold text-white shadow-[0_0_26px_rgba(168,62,255,0.55),0_4px_16px_rgba(0,0,0,0.3)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_36px_rgba(174,79,255,0.75)] active:scale-[0.98]"
               >
-                <span>Join the Community</span>
+                <span>{content.hero.joinButtonText}</span>
                 <Send size={15} className="fill-white" />
               </a>
 
               <a
-                href="#chart"
+                href={content.hero.chartButtonLink}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border border-white/35 bg-white/5 hover:bg-white/15 hover:border-white/60 px-6 py-3.5 sm:px-7 sm:py-4 text-xs sm:text-sm md:text-base font-bold text-white backdrop-blur-md transition-all duration-200 hover:scale-[1.03] active:scale-[0.98]"
               >
-                <span>View $POT live chart</span>
+                <span>{content.hero.chartButtonText}</span>
                 <TrendingUp size={16} className="text-emerald-400" />
               </a>
             </div>
@@ -221,10 +224,10 @@ export function HeroSection() {
                 </div>
                 <div>
                   <span className="block text-xs md:text-sm font-semibold text-purple-200/80 uppercase tracking-wider">
-                    Supporting
+                    {content.hero.stJudeCardEyebrow}
                   </span>
                   <h4 className="text-base sm:text-lg md:text-xl font-extrabold text-white leading-tight">
-                    St. Jude Children&apos;s<br />Research Hospital
+                    {content.hero.stJudeCardTitle}
                   </h4>
                 </div>
               </div>
@@ -232,11 +235,11 @@ export function HeroSection() {
               {/* Card Middle: Milestone Goal + Arrow Link */}
               <div className="flex items-center justify-between gap-3 pt-3 pb-3 border-t border-white/10">
                 <p className="text-xs sm:text-sm md:text-base leading-relaxed text-[#f3e8ff]/90">
-                  When we reach a $100K market cap, we donate <strong className="text-[#fbbf24] font-black text-sm sm:text-base md:text-lg">12 SOL</strong> to St. Jude.
+                  {content.hero.stJudeCardMilestonePrefix} <strong className="text-[#fbbf24] font-black text-sm sm:text-base md:text-lg">{content.hero.stJudeCardMilestoneHighlight}</strong> {content.hero.stJudeCardMilestoneSuffix}
                 </p>
 
                 <a
-                  href="#partnership"
+                  href={content.hero.stJudeCardButtonLink}
                   className="grid size-9 sm:size-10 shrink-0 place-items-center rounded-full bg-[#7c2ae8] text-white hover:bg-[#9333ea] shadow-[0_0_18px_rgba(124,42,232,0.8)] transition-all hover:scale-110 active:scale-95"
                   aria-label="View St. Jude details"
                 >
@@ -280,23 +283,8 @@ export function HeroSection() {
 }
 
 export function MissionSection() {
-  const points = [
-    {
-      icon: Heart,
-      title: 'Reach $100K Market Cap',
-      text: "Donate 12 SOL to St. Jude Children's Research Hospital.",
-    },
-    {
-      icon: Shield,
-      title: 'Full Transparency',
-      text: 'Public charity wallet on-chain. Track our progress.',
-    },
-    {
-      icon: Users,
-      title: 'Real Community',
-      text: 'No insider groups. No artificial hype. Just people with a purpose.',
-    },
-  ]
+  const { content } = useContent()
+  const icons = [Heart, Shield, Users, PawPrint]
 
   return (
     <section
@@ -324,31 +312,34 @@ export function MissionSection() {
         {/* Left Column: Text & Features */}
         <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
           <p className="text-[11px] sm:text-xs font-black tracking-[0.22em] uppercase text-[#e9d5ff]">
-            OUR MISSION
+            {content.mission.eyebrow}
           </p>
           <h2 className="mt-3 text-3xl min-[400px]:text-4xl sm:text-5xl lg:text-[50px] xl:text-[54px] font-black tracking-[-0.035em] text-white leading-[1.08]">
-            More Than a Meme Coin
+            {content.mission.heading}
           </h2>
           <p className="mt-4 sm:mt-5 max-w-[540px] text-base sm:text-lg lg:text-[17px] leading-relaxed text-[#f3e8ff]/90">
-            We’re building a transparent, organic, peer-to-peer community focused on sustainable growth and meaningful impact. PLC represents the philanthropic heart of the EpiCoin ecosystem.
+            {content.mission.description}
           </p>
 
           <div className="mt-9 sm:mt-11 w-full space-y-6 sm:space-y-8 max-w-[560px]">
-            {points.map(({ icon: Icon, title, text }) => (
-              <div className="flex items-start gap-4 sm:gap-5 text-left" key={title}>
-                <span className="grid size-12 sm:size-14 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#c084fc] via-[#9333ea] to-[#581c87] shadow-[0_0_24px_rgba(192,132,252,0.8),inset_0_2px_4px_rgba(255,255,255,0.6)] ring-1 ring-white/35 transition-transform duration-200 hover:scale-105">
-                  <Icon className="size-6 sm:size-6.5 text-white fill-white" />
-                </span>
-                <div className="pt-0.5 sm:pt-1">
-                  <h3 className="text-base sm:text-lg lg:text-[19px] font-black text-white tracking-tight">
-                    {title}
-                  </h3>
-                  <p className="mt-1 text-xs sm:text-sm lg:text-[14.5px] leading-relaxed text-[#f3e8ff]/80">
-                    {text}
-                  </p>
+            {content.mission.points.map((pt, idx) => {
+              const Icon = icons[idx % icons.length]
+              return (
+                <div className="flex items-start gap-4 sm:gap-5 text-left" key={pt.title + idx}>
+                  <span className="grid size-12 sm:size-14 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#c084fc] via-[#9333ea] to-[#581c87] shadow-[0_0_24px_rgba(192,132,252,0.8),inset_0_2px_4px_rgba(255,255,255,0.6)] ring-1 ring-white/35 transition-transform duration-200 hover:scale-105">
+                    <Icon className="size-6 sm:size-6.5 text-white fill-white" />
+                  </span>
+                  <div className="pt-0.5 sm:pt-1">
+                    <h3 className="text-base sm:text-lg lg:text-[19px] font-black text-white tracking-tight">
+                      {pt.title}
+                    </h3>
+                    <p className="mt-1 text-xs sm:text-sm lg:text-[14.5px] leading-relaxed text-[#f3e8ff]/80">
+                      {pt.text}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
 

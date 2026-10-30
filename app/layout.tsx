@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from 'next'
 import { Poppins } from 'next/font/google'
 import './globals.css'
 import { SmoothScroll } from '@/components/smooth-scroll'
+import { ContentProvider } from '@/context/content-context'
+import { Toaster } from 'sonner'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -128,7 +130,10 @@ export default function RootLayout({
       </head>
       <body className="font-sans antialiased selection:bg-[#9c3fff] selection:text-white">
         <SmoothScroll />
-        {children}
+        <ContentProvider>
+          {children}
+        </ContentProvider>
+        <Toaster position="bottom-right" richColors theme="dark" />
       </body>
     </html>
   )

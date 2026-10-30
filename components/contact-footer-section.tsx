@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { useContent } from '@/context/content-context'
 import { MapPin, Mail, Globe, FileText, Phone, Building2, Heart } from 'lucide-react'
 
 // Custom SVG X (formerly Twitter) Icon
@@ -32,6 +33,7 @@ function TelegramIcon({ className = 'size-5' }: { className?: string }) {
 }
 
 export function ContactFooterSection() {
+  const { content } = useContent()
   return (
     <footer id="contact" className="relative w-full overflow-hidden text-white">
       
@@ -237,13 +239,13 @@ export function ContactFooterSection() {
               className="size-12 sm:size-14 md:size-16 object-contain drop-shadow-[0_0_22px_rgba(168,85,247,0.7)]"
             />
             <span className="text-xl sm:text-2xl font-black tracking-tight text-white group-hover:text-[#e9d5ff]">
-              EpiCoin
+              {content.global.brandName}
             </span>
           </a>
 
           {/* Center: Copyright Notice */}
           <p className="text-xs sm:text-[13px] text-white/60 font-medium">
-            &copy; 2026 EpiCoin AI / $POT Luck. All rights reserved.
+            {content.footer.copyright}
           </p>
 
           {/* Right: Twitter / X and Telegram Icons */}
@@ -258,7 +260,7 @@ export function ContactFooterSection() {
               <XTwitterIcon className="size-4" />
             </a>
             <a
-              href="https://t.me/epicoins"
+              href={content.global.telegramUrl}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Join our Telegram"

@@ -4,35 +4,29 @@ import React, { useState } from 'react'
 import {
   Check,
   Copy,
-  ExternalLink,
   TrendingUp,
   Activity,
 } from 'lucide-react'
-
-const TOKEN_SPECS = [
-  { label: 'Token Name', value: 'POT Luck' },
-  { label: 'Ticker', value: '$POT / PLC', isTicker: true },
-  { label: 'Blockchain', value: 'Solana', isChain: true },
-  {
-    label: 'Contract Address',
-    value: 'GUtUrPGwfJDj3WTb2dEe2B9UnLtG1GGdBMreFtDXJxEw',
-    isAddress: true,
-  },
-]
-
-const KEY_FEATURES = [
-  'Community-driven development focused on organic participation.',
-  'A holder reward mechanism designed around 3% SOL reflections.',
-  'Locked liquidity, as represented by the project\'s stated liquidity arrangements.',
-  'No founder allocation, according to the project\'s stated token distribution.',
-  'A charitable mission supporting St. Jude Children\'s Research Hospital.',
-  'Publicly accessible on-chain charity wallet activity.',
-]
+import { useContent } from '@/context/content-context'
 
 export function TokenInfoSection() {
+  const { content } = useContent()
   const [copied, setCopied] = useState(false)
   const [chartLoaded, setChartLoaded] = useState(false)
-  const contractAddress = 'GUtUrPGwfJDj3WTb2dEe2B9UnLtG1GGdBMreFtDXJxEw'
+
+  const contractAddress = content.global.solanaContractAddress
+  const chartUrl = content.global.dexScreenerChartEmbedUrl
+
+  const tokenSpecs = [
+    { label: 'Token Name', value: content.tokenInfo.tokenName },
+    { label: 'Ticker', value: content.tokenInfo.ticker, isTicker: true },
+    { label: 'Blockchain', value: content.tokenInfo.blockchain, isChain: true },
+    {
+      label: 'Contract Address',
+      value: contractAddress,
+      isAddress: true,
+    },
+  ]
 
   const copyAddress = async () => {
     try {
@@ -44,8 +38,6 @@ export function TokenInfoSection() {
       setTimeout(() => setCopied(false), 2000)
     }
   }
-
-  const chartUrl = `https://dexscreener.com/solana/${contractAddress}?embed=1&theme=dark&trades=0&info=0`
 
   return (
     <section
@@ -69,10 +61,10 @@ export function TokenInfoSection() {
         {/* Section Header - Bold & Clean */}
         <div className="mb-6 sm:mb-8">
           <p className="text-xs sm:text-sm font-black tracking-[0.25em] uppercase text-[#7c2ae8]">
-            $POT LUCK TOKEN INFORMATION
+            {content.tokenInfo.eyebrow}
           </p>
           <h2 className="mt-1 text-3xl min-[420px]:text-4xl sm:text-5xl lg:text-[54px] font-black tracking-tight text-[#1c0836] leading-none">
-            $POT / PLC
+            {content.tokenInfo.heading}
           </h2>
         </div>
 
@@ -82,7 +74,7 @@ export function TokenInfoSection() {
           {/* Left: Token Specifications Card (5 cols) */}
           <div className="lg:col-span-5 rounded-3xl border border-[#d8b4fe]/60 bg-white/90 p-5 sm:p-7 md:p-8 backdrop-blur-xl shadow-[0_16px_40px_rgba(110,40,185,0.08)] transition-all duration-300 hover:shadow-[0_20px_50px_rgba(110,40,185,0.13)]">
             <div className="space-y-4">
-              {TOKEN_SPECS.map((spec) => (
+              {tokenSpecs.map((spec) => (
                 <div
                   key={spec.label}
                   className="pb-3 border-b border-[#f0e4ff] last:border-b-0 last:pb-0"
@@ -128,35 +120,18 @@ export function TokenInfoSection() {
                 </div>
               ))}
             </div>
-
-            <div className="mt-4 pt-3 border-t border-[#f0e4ff] flex items-center justify-between text-xs text-[#7c2ae8]">
-              <a
-                href={`https://solscan.io/token/${contractAddress}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 font-bold hover:underline"
-              >
-                <span>View on Solscan</span>
-                <ExternalLink size={13} />
-              </a>
-              <span className="text-[#8e74ae] font-semibold">SPL Token Standard</span>
-            </div>
           </div>
 
-          {/* Middle: Key Features (4 cols) with Larger Text */}
-          <div className="lg:col-span-4 space-y-3 sm:space-y-4">
-            <h3 className="text-xl sm:text-2xl font-black text-[#1c0836] tracking-tight">
-              Key Features
+          {/* Center: Key Features & Value Proposition (4 cols) */}
+          <div className="lg:col-span-4 rounded-3xl border border-[#d8b4fe]/60 bg-white/90 p-5 sm:p-7 md:p-8 backdrop-blur-xl shadow-[0_16px_40px_rgba(110,40,185,0.08)] transition-all duration-300 hover:shadow-[0_20px_50px_rgba(110,40,185,0.13)]">
+            <h3 className="text-base sm:text-lg font-black text-[#1c0836] mb-4 pb-2 border-b border-[#f0e4ff]">
+              Key Highlights
             </h3>
-
-            <ul className="space-y-3">
-              {KEY_FEATURES.map((feature) => (
-                <li
-                  key={feature}
-                  className="flex items-start gap-3 text-xs sm:text-sm md:text-[15px] font-medium leading-relaxed text-[#351b54] transition-transform duration-200 hover:translate-x-1"
-                >
-                  <span className="grid size-5 sm:size-6 shrink-0 place-items-center rounded-full bg-[#7c2ae8]/15 text-[#7c2ae8] mt-0.5">
-                    <Check className="size-3 sm:size-3.5 stroke-[3]" />
+            <ul className="space-y-3.5 text-xs sm:text-sm text-[#4b3366] leading-relaxed">
+              {content.tokenInfo.features.map((feature, i) => (
+                <li key={i} className="flex items-start gap-2.5">
+                  <span className="size-5 shrink-0 rounded-full bg-[#f3e8ff] text-[#7c2ae8] grid place-items-center text-xs font-black mt-0.5">
+                    ✓
                   </span>
                   <span>{feature}</span>
                 </li>
@@ -164,7 +139,7 @@ export function TokenInfoSection() {
             </ul>
           </div>
 
-          {/* Right: Big Dog Mascot (3 cols) - Scaled Up Significantly */}
+          {/* Right: Big Dog Mascot (3 cols) */}
           <div className="lg:col-span-3 relative flex flex-col items-center justify-center">
             {/* Ambient radiant light behind dog */}
             <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#d8b4fe]/60 via-[#f0abfc]/40 to-transparent blur-3xl pointer-events-none" />
@@ -179,7 +154,7 @@ export function TokenInfoSection() {
               </span>
             </div>
 
-            {/* Dog Mascot Image - Rendered Big and Crisp */}
+            {/* Dog Mascot Image */}
             <div className="relative z-10 w-full max-w-[340px] sm:max-w-[420px] md:max-w-[460px] lg:max-w-[500px] xl:max-w-[540px] transition-transform duration-500 hover:scale-105 select-none">
               <img
                 src="/tokeninfo-dog.png"
@@ -202,22 +177,21 @@ export function TokenInfoSection() {
             <div>
               <div className="flex flex-wrap items-center gap-2">
                 <h3 className="text-xl sm:text-2xl font-black text-[#1c0836] tracking-tight">
-                  Live DexScreener Chart
+                  {content.tokenInfo.chartTitle}
                 </h3>
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100/90 px-2.5 py-0.5 text-[11px] font-black text-emerald-800 border border-emerald-300/60 shadow-sm">
                   <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>LIVE ON-CHAIN</span>
+                  <span>{content.tokenInfo.chartBadge}</span>
                 </span>
               </div>
               <p className="mt-0.5 text-xs sm:text-sm text-[#705295]">
-                Real-time price candles, liquidity, and trading volume for <strong className="font-extrabold text-[#1c0836]">$POT / SOL</strong>
+                {content.tokenInfo.chartSubtitle}
               </p>
             </div>
           </div>
 
           {/* Interactive Chart Container */}
           <div className="relative mt-5 w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-[#e2ccfc]/80 bg-[#0e071e] shadow-inner">
-            {/* Ambient loading placeholder */}
             {!chartLoaded && (
               <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[#0e071e]/90 text-white backdrop-blur-sm gap-3">
                 <div className="size-10 rounded-full border-3 border-purple-500 border-t-transparent animate-spin" />
@@ -227,7 +201,6 @@ export function TokenInfoSection() {
               </div>
             )}
 
-            {/* Responsive Iframe Container (Optimal height across viewports) */}
             <div className="relative w-full h-[500px] min-[480px]:h-[560px] sm:h-[620px] lg:h-[680px]">
               <iframe
                 src={chartUrl}

@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import { useContent } from '@/context/content-context'
 import {
   Heart,
   ShieldCheck,
@@ -19,13 +20,14 @@ import {
 const TOKEN_ADDRESS = 'GUtUrPGwfJDj3WTb2dEe2B9UnLtG1GGdBMreFtDXJxEw'
 
 // Official PLC Charity Funds Solana Public Address
-const CHARITY_WALLET_ADDRESS = '4UE6MCdehqLbeDuvKB5piM1VMm199WJxCWqTubQpim7k'
+const DEFAULT_CHARITY_WALLET_ADDRESS = '4UE6MCdehqLbeDuvKB5piM1VMm199WJxCWqTubQpim7k'
 
 // Milestone Targets
 const TARGET_MARKET_CAP = 100000 // $100k
 const TARGET_DONATION_SOL = 12 // 12 SOL
 
 export function StJudePartnershipSection() {
+  const { content } = useContent()
   const [copied, setCopied] = useState(false)
   const [loadingMcap, setLoadingMcap] = useState(true)
   const [loadingBalance, setLoadingBalance] = useState(true)
@@ -38,7 +40,7 @@ export function StJudePartnershipSection() {
   // Copy PLC Charity Wallet address
   const copyCharityAddress = async () => {
     try {
-      await navigator.clipboard.writeText(CHARITY_WALLET_ADDRESS)
+      await navigator.clipboard.writeText(content.global.charityVaultAddress)
       setCopied(true)
       setTimeout(() => setCopied(false), 2200)
     } catch {
@@ -80,7 +82,7 @@ export function StJudePartnershipSection() {
         jsonrpc: '2.0',
         id: 1,
         method: 'getBalance',
-        params: [CHARITY_WALLET_ADDRESS],
+        params: [content.global.charityVaultAddress],
       }
 
       let success = false
@@ -152,14 +154,14 @@ export function StJudePartnershipSection() {
           
           <div className="max-w-3xl mx-auto lg:mx-0">
             <h2 className="text-3xl min-[420px]:text-4xl sm:text-5xl lg:text-[58px] xl:text-[64px] font-black tracking-[-0.035em] text-[#1c0836] leading-[1.05]">
-              Our Partnership with<br />
+              {content.partnership.heading}<br />
               <span className="bg-gradient-to-r from-[#7c2ae8] via-[#a855f7] to-[#d946ef] bg-clip-text text-transparent">
-                St. Jude Children's
-              </span> Research Hospital
+                {content.partnership.headingHighlight}
+              </span> {content.partnership.headingSuffix}
             </h2>
 
             <p className="mt-6 text-base sm:text-lg lg:text-[19px] leading-relaxed text-[#432d5e]">
-              Our most significant charitable relationship is our authorized connection with <strong className="font-extrabold text-[#1c0836]">St. Jude Children's Research Hospital</strong>. St. Jude is internationally recognized for its pioneering work in pediatric cancer treatment and research, freely sharing breakthroughs to advance childhood medicine worldwide.
+              {content.partnership.description}
             </p>
           </div>
 
@@ -235,12 +237,12 @@ export function StJudePartnershipSection() {
             {/* Action buttons */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center sm:justify-start gap-3 pt-2">
               <a
-                href="https://www.stjude.org/donate/crypto.html"
+                href={content.partnership.donateButtonLink}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#e11d48] via-[#e63946] to-[#be123c] px-6 sm:px-7 py-3 sm:py-3.5 text-xs sm:text-sm font-black text-white shadow-[0_6px_20px_rgba(225,29,72,0.28)] transition-all hover:scale-[1.02] active:scale-95"
               >
-                <span>Donate to St. Jude Directly (Crypto)</span>
+                <span>{content.partnership.donateButtonText}</span>
                 <ExternalLink size={14} />
               </a>
 
@@ -355,7 +357,7 @@ export function StJudePartnershipSection() {
             {/* Responsive Copyable Address Strip */}
             <div className="flex items-center justify-between gap-2 rounded-2xl border border-[#b87aff]/50 bg-white/90 p-2.5 sm:p-3.5 shadow-sm backdrop-blur-md">
               <span className="min-w-0 flex-1 font-mono text-[11px] min-[400px]:text-xs sm:text-sm font-bold text-[#1c0836] truncate select-all">
-                {CHARITY_WALLET_ADDRESS}
+                {content.global.charityVaultAddress}
               </span>
 
               <button
@@ -400,12 +402,12 @@ export function StJudePartnershipSection() {
 
             <div className="pt-1">
               <a
-                href="https://www.stjude.org/donate/crypto.html"
+                href={content.partnership.donateButtonLink}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#e11d48] via-[#e63946] to-[#be123c] px-6 py-3.5 text-xs sm:text-sm font-black text-white shadow-[0_6px_22px_rgba(225,29,72,0.28)] transition-all hover:scale-[1.02] active:scale-95"
               >
-                <span>Donate to St. Jude Directly (Crypto)</span>
+                <span>{content.partnership.donateButtonText}</span>
                 <ExternalLink size={14} />
               </a>
             </div>
