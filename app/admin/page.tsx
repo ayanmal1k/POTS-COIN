@@ -20,6 +20,7 @@ import { StJudePartnershipSection } from '@/components/st-jude-partnership'
 import { RoadmapSection } from '@/components/roadmap-section'
 import { TokenInfoSection } from '@/components/token-info-section'
 import { ContactFooterSection } from '@/components/contact-footer-section'
+import { HowToBuySection } from '@/components/how-to-buy-section'
 
 const DEFAULT_PASSCODE = 'poTs@dmin098'
 
@@ -247,6 +248,7 @@ export default function AdminPage() {
         <HeroSection />
         <WhyPotSection />
         <MissionSection />
+        <HowToBuySection />
         <StJudePartnershipSection />
         <RoadmapSection />
         <TokenInfoSection />

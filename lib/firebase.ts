@@ -56,6 +56,11 @@ export async function getSiteContentFromFirestore(): Promise<SiteContent> {
           ...(data.mission || {}),
           points: data.mission?.points || DEFAULT_CONTENT.mission.points,
         },
+        howToBuy: {
+          ...DEFAULT_CONTENT.howToBuy,
+          ...(data.howToBuy || {}),
+          steps: data.howToBuy?.steps || DEFAULT_CONTENT.howToBuy.steps,
+        },
         partnership: { ...DEFAULT_CONTENT.partnership, ...(data.partnership || {}) },
         roadmap: {
           ...DEFAULT_CONTENT.roadmap,
@@ -110,6 +115,11 @@ export function subscribeToSiteContent(
               ...DEFAULT_CONTENT.mission,
               ...(data.mission || {}),
               points: data.mission?.points || DEFAULT_CONTENT.mission.points,
+            },
+            howToBuy: {
+              ...DEFAULT_CONTENT.howToBuy,
+              ...(data.howToBuy || {}),
+              steps: data.howToBuy?.steps || DEFAULT_CONTENT.howToBuy.steps,
             },
             partnership: { ...DEFAULT_CONTENT.partnership, ...(data.partnership || {}) },
             roadmap: {

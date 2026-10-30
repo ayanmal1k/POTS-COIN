@@ -9,6 +9,7 @@ import { StJudePartnershipSection } from '@/components/st-jude-partnership'
 import { RoadmapSection } from '@/components/roadmap-section'
 import { TokenInfoSection } from '@/components/token-info-section'
 import { ContactFooterSection } from '@/components/contact-footer-section'
+import { HowToBuySection } from '@/components/how-to-buy-section'
 import { EditableText, EditableButton } from '@/components/visual-editor/editable'
 import { EditableIcon } from '@/components/visual-editor/icon-library'
 
@@ -85,17 +86,20 @@ export function HeroSection() {
               : 'hidden'
             } z-30 lg:static lg:flex lg:flex-row lg:items-center lg:gap-8 text-xs font-semibold tracking-wide text-white/80`}
         >
-          {['Home', 'Ecosystem', 'Mission', 'Partnership', 'Roadmap', 'Token', 'Contact'].map((item, index) => (
-            <a
-              key={item}
-              href={index === 0 ? '#home' : `#${item.toLowerCase()}`}
-              onClick={() => setMobileOpen(false)}
-              className={`transition-colors duration-200 hover:text-white ${index === 0 ? 'border-b-2 border-white pb-1 text-white' : ''
-                }`}
-            >
-              {item}
-            </a>
-          ))}
+          {['Home', 'Ecosystem', 'Mission', 'How to Buy', 'Partnership', 'Roadmap', 'Token', 'Contact'].map((item, index) => {
+            const href = index === 0 ? '#home' : item === 'How to Buy' ? '#how-to-buy' : `#${item.toLowerCase()}`
+            return (
+              <a
+                key={item}
+                href={href}
+                onClick={() => setMobileOpen(false)}
+                className={`transition-colors duration-200 hover:text-white ${index === 0 ? 'border-b-2 border-white pb-1 text-white' : ''
+                  }`}
+              >
+                {item}
+              </a>
+            )
+          })}
         </nav>
         <div className="flex items-center gap-3">
           <EditableButton
@@ -458,6 +462,7 @@ export default function Home() {
       <HeroSection />
       <WhyPotSection />
       <MissionSection />
+      <HowToBuySection />
       <StJudePartnershipSection />
       <RoadmapSection />
       <TokenInfoSection />

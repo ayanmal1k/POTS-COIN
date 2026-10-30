@@ -58,6 +58,25 @@ export interface SiteContent {
       iconFilled?: boolean
     }>
   }
+  howToBuy: {
+    eyebrow: string
+    heading: string
+    headingHighlight: string
+    description: string
+    contractLabel: string
+    buyButtonText: string
+    buyButtonLink: string
+    chartButtonText: string
+    chartButtonLink: string
+    steps: Array<{
+      stepNumber: string
+      stepBadge: string
+      title: string
+      description: string
+      icon?: string
+      iconFilled?: boolean
+    }>
+  }
   partnership: {
     heading: string
     headingHighlight: string
@@ -181,6 +200,51 @@ export const DEFAULT_CONTENT: SiteContent = {
         title: 'Real Community',
         text: 'No insider groups. No artificial hype. Just people with a purpose.',
         icon: 'Users',
+        iconFilled: true,
+      },
+    ],
+  },
+  howToBuy: {
+    eyebrow: 'EASY 4-STEP GUIDE',
+    heading: 'How to Buy $POT on',
+    headingHighlight: 'FOMO',
+    description: 'Get started with $POT Luck Community in under 3 minutes. Follow this step-by-step guide to swap securely on Solana.',
+    contractLabel: 'Official Verified Token Address (SPL)',
+    buyButtonText: 'Buy on FOMO',
+    buyButtonLink: 'https://dexscreener.com/solana/GUtUrPGwfJDj3WTb2dEe2B9UnLtG1GGdBMreFtDXJxEw',
+    chartButtonText: 'View Live Chart',
+    chartButtonLink: '#chart',
+    steps: [
+      {
+        stepNumber: '01',
+        stepBadge: 'STEP 1',
+        title: 'Get a Solana Wallet',
+        description: 'Download and install Phantom, Solflare, or Backpack wallet on your browser extension or mobile app. Create a new wallet and keep your recovery phrase safe.',
+        icon: 'Wallet',
+        iconFilled: true,
+      },
+      {
+        stepNumber: '02',
+        stepBadge: 'STEP 2',
+        title: 'Add SOL to Your Wallet',
+        description: 'Purchase Solana (SOL) directly within your wallet or withdraw it from an exchange (Coinbase, Binance, Kraken) to your personal Solana wallet public address.',
+        icon: 'Coins',
+        iconFilled: true,
+      },
+      {
+        stepNumber: '03',
+        stepBadge: 'STEP 3',
+        title: 'Connect to FOMO',
+        description: 'Navigate to FOMO or your preferred Solana swap platform. Connect your wallet and paste the official $POT contract address to import the verified token.',
+        icon: 'Compass',
+        iconFilled: true,
+      },
+      {
+        stepNumber: '04',
+        stepBadge: 'STEP 4',
+        title: 'Swap SOL for $POT',
+        description: 'Choose the amount of SOL you want to swap for $POT, review transaction details, and confirm the trade. Welcome to the $POT Luck Community!',
+        icon: 'Rocket',
         iconFilled: true,
       },
     ],
