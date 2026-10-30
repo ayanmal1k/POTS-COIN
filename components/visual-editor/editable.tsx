@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
-import { Edit3, ExternalLink, Check, Link as LinkIcon, X } from 'lucide-react'
+import { createPortal } from 'react-dom'
+import { Edit3, ExternalLink, Check, Link as LinkIcon, X, Sparkles } from 'lucide-react'
 import { useContent } from '@/context/content-context'
 
 interface EditableTextProps {
@@ -103,7 +104,8 @@ interface EditableButtonProps {
 
 /**
  * Visual In-Place Editable Button / Link component.
- * In Edit Mode, clicking the button opens a mini-popover to change Text AND Link URL directly on the live page!
+ * Uses a top-level Portal with z-[99999] so the edit modal is NEVER clipped by overflow:hidden,
+ * transform, or lower stacking contexts!
  */
 export function EditableButton({
   text,
@@ -117,14 +119,32 @@ export function EditableButton({
   rel,
 }: EditableButtonProps) {
   const { isVisualEditMode, updateFieldByPath } = useContent()
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [draftText, setDraftText] = useState(text)
   const [draftLink, setDraftLink] = useState(link)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     setDraftText(text)
     setDraftLink(link)
   }, [text, link])
+
+  // Close modal on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isModalOpen) {
+        setIsModalOpen(false)
+      }
+    }
+    if (isModalOpen) {
+      window.addEventListener('keydown', handleKeyDown)
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isModalOpen])
 
   if (!isVisualEditMode) {
     return (
@@ -135,13 +155,111 @@ export function EditableButton({
     )
   }
 
-  const handleSavePopover = (e: React.FormEvent) => {
+  const handleSaveModal = (e: React.FormEvent) => {
     e.preventDefault()
     e.stopPropagation()
     updateFieldByPath(textPath, draftText)
     updateFieldByPath(linkPath, draftLink)
-    setIsPopoverOpen(false)
+    setIsModalOpen(false)
   }
+
+  // The modal overlay rendered via React Portal directly into document.body
+  const modalContent = isModalOpen && mounted ? (
+    <div
+      role="dialog"
+      aria-modal="true"
+      onClick={(e) => {
+        e.stopPropagation()
+        setIsModalOpen(false)
+      }}
+      className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-lg rounded-3xl border border-purple-400/60 bg-[#16062c] p-6 sm:p-8 shadow-[0_25px_80px_rgba(0,0,0,0.95),0_0_50px_rgba(168,85,247,0.4)] backdrop-blur-2xl text-white text-left space-y-6 animate-in zoom-in-95 duration-200"
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-white/10 pb-4">
+          <div className="flex items-center gap-3">
+            <div className="grid size-10 place-items-center rounded-xl bg-gradient-to-br from-[#c084fc] to-[#7c2ae8] text-white shadow-md">
+              <Edit3 size={18} />
+            </div>
+            <div>
+              <h3 className="text-base sm:text-lg font-black text-white">
+                Edit Button &amp; Link
+              </h3>
+              <p className="text-xs text-purple-200/70">
+                Update button text and destination URL
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsModalOpen(false)}
+            className="grid size-8 place-items-center rounded-xl bg-white/5 hover:bg-white/15 text-white/60 hover:text-white transition"
+          >
+            <X size={16} />
+          </button>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handleSaveModal} className="space-y-4">
+          {/* Button Label */}
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-wider text-purple-200/90 mb-1.5">
+              Button Text / Label
+            </label>
+            <input
+              type="text"
+              value={draftText}
+              onChange={(e) => setDraftText(e.target.value)}
+              placeholder="e.g. Join the Community"
+              className="w-full rounded-xl border border-white/20 bg-black/50 px-4 py-2.5 text-sm text-white focus:border-[#c084fc] focus:outline-none transition shadow-inner"
+              autoFocus
+            />
+          </div>
+
+          {/* Destination URL */}
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-wider text-purple-200/90 mb-1.5">
+              Destination URL or Page Anchor
+            </label>
+            <div className="flex items-center gap-2 rounded-xl border border-white/20 bg-black/50 px-3.5 py-2.5 shadow-inner focus-within:border-[#c084fc]">
+              <LinkIcon size={15} className="text-purple-300 shrink-0" />
+              <input
+                type="text"
+                value={draftLink}
+                onChange={(e) => setDraftLink(e.target.value)}
+                placeholder="https://... or #section-id"
+                className="w-full bg-transparent text-sm text-white focus:outline-none font-mono"
+              />
+            </div>
+            <span className="block mt-1 text-[11px] text-purple-300/60">
+              Supports web links (<code className="text-purple-200">https://...</code>) or page anchors (<code className="text-purple-200">#ecosystem</code>, <code className="text-purple-200">#partnership</code>)
+            </span>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-white/10">
+            <button
+              type="button"
+              onClick={() => setIsModalOpen(false)}
+              className="rounded-xl px-4 py-2 text-xs font-bold text-white/70 hover:text-white hover:bg-white/5 transition"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#9c3eff] to-[#cb7dff] px-5 py-2.5 text-xs font-bold text-white shadow-lg shadow-purple-500/30 transition hover:scale-[1.02] active:scale-95"
+            >
+              <Check size={14} />
+              <span>Apply Changes</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  ) : null
 
   return (
     <div className="relative inline-block">
@@ -150,84 +268,20 @@ export function EditableButton({
         onClick={(e) => {
           e.preventDefault()
           e.stopPropagation()
-          setIsPopoverOpen(!isPopoverOpen)
+          setIsModalOpen(true)
         }}
-        title="Click to edit button text & link"
-        className={`${className} outline-dashed outline-2 outline-amber-400/70 hover:outline-amber-400 hover:bg-amber-500/10 cursor-pointer relative group`}
+        title="Click to edit button text &amp; link"
+        className={`${className} outline-dashed outline-2 outline-amber-400/80 hover:outline-amber-400 hover:bg-amber-500/10 cursor-pointer relative group`}
       >
         {children || <span>{text}</span>}
         {icon}
-        <span className="absolute -top-2.5 -right-2.5 size-5 rounded-full bg-amber-400 text-black grid place-items-center text-[10px] font-bold shadow-md">
+        <span className="absolute -top-2.5 -right-2.5 size-5 rounded-full bg-amber-400 text-black grid place-items-center text-[10px] font-bold shadow-md transition-transform group-hover:scale-125">
           <Edit3 size={11} />
         </span>
       </button>
 
-      {/* Popover editor modal */}
-      {isPopoverOpen && (
-        <div
-          onClick={(e) => e.stopPropagation()}
-          className="absolute z-50 top-full left-0 mt-3 w-72 sm:w-80 rounded-2xl border border-purple-400/60 bg-[#16062c]/95 p-4 shadow-2xl backdrop-blur-2xl text-white text-left space-y-3 animate-in fade-in zoom-in-95 duration-200"
-        >
-          <div className="flex items-center justify-between border-b border-white/10 pb-2">
-            <span className="text-xs font-bold text-amber-300 flex items-center gap-1.5">
-              <Edit3 size={13} /> Edit Button & Link
-            </span>
-            <button
-              onClick={() => setIsPopoverOpen(false)}
-              className="text-white/60 hover:text-white p-1"
-            >
-              <X size={14} />
-            </button>
-          </div>
-
-          <div>
-            <label className="block text-[11px] font-bold uppercase text-purple-200/80 mb-1">
-              Button Label
-            </label>
-            <input
-              type="text"
-              value={draftText}
-              onChange={(e) => setDraftText(e.target.value)}
-              className="w-full rounded-xl border border-white/20 bg-black/50 px-3 py-1.5 text-xs text-white focus:border-[#c084fc] focus:outline-none"
-              autoFocus
-            />
-          </div>
-
-          <div>
-            <label className="block text-[11px] font-bold uppercase text-purple-200/80 mb-1">
-              Destination URL / Anchor
-            </label>
-            <div className="flex items-center gap-1.5 rounded-xl border border-white/20 bg-black/50 px-3 py-1.5">
-              <LinkIcon size={12} className="text-purple-300 shrink-0" />
-              <input
-                type="text"
-                value={draftLink}
-                onChange={(e) => setDraftLink(e.target.value)}
-                placeholder="https://... or #anchor"
-                className="w-full bg-transparent text-xs text-white focus:outline-none font-mono"
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center justify-end gap-2 pt-1">
-            <button
-              type="button"
-              onClick={() => setIsPopoverOpen(false)}
-              className="px-3 py-1 text-xs text-white/70 hover:text-white rounded-lg hover:bg-white/5"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              onClick={handleSavePopover}
-              className="inline-flex items-center gap-1 rounded-xl bg-gradient-to-r from-[#9c3eff] to-[#cb7dff] px-3.5 py-1.5 text-xs font-bold text-white shadow-md active:scale-95"
-            >
-              <Check size={13} />
-              <span>Apply</span>
-            </button>
-          </div>
-        </div>
-      )}
+      {/* Render modal directly in document.body via Portal */}
+      {mounted && typeof document !== 'undefined' && createPortal(modalContent, document.body)}
     </div>
   )
 }
